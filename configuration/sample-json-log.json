@@ -1,0 +1,26 @@
+{
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss.sss'Z'",
+    "comment-fielddelimiter": "JSON, COMMA, SPACE, TAB",
+    "fielddelimiter": "JSON",
+    "comment-timestampfield": "JSON = timestamp; others = integer of location in string",
+    "timestampfield": "timestamp",
+    "comment-timescale": "JSON = elapsedTimeUnits; others = NANOSECONDS, MILLISECONDS, SECONDS, MINUTES",
+    "timescale": "elapsedTimeUnits",
+    "poi": ["BIND", "SEARCH", "GET"],
+    "BIND": {
+        "identifiers": ["\"operation\":\"BIND\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "SEARCH": {
+        "identifiers": ["\"operation\":\"SEARCH\",", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "GET": {
+        "identifiers": ["\"method\":\"GET\",", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "oldtimestampformat": "yyyy-MM-dd'T'HH:mm:ss.sss'Z'",
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss",
+    "old-fielddelimiter": ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)",
+    "fielddelimiter": "JSON",
+    "timestampfield": "timestamp",
+    "timescale": "elapsedTimeUnits",
+    "allpoi": ["GET-user", "GET", "LOGOUT", "POST-authenticate", "POST-validate", "POST", "PUT-create", "PUT-update", "PUT"],
+    "poi": ["GET-user", "LOGOUT", "POST-authenticate", "POST-validate"],
+    "GET-user": {
+        "identifiers": ["\"method\":\"GET\",", "/json/users", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-authenticate": {
+        "identifiers": ["\"method\":\"POST\",", "/json/authenticate", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-validate": {
+        "identifiers": ["\"method\":\"POST\"", "\"action\":\"validate\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 50
+    },
+    "LOGOUT": {
+        "identifiers": ["\"method\":\"POST\",", "\"action\":\"logout\"", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    }
+}

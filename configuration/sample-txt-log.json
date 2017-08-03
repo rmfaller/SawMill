@@ -1,0 +1,33 @@
+{
+    "old-fielddelimiter": ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)",
+    "timestampformat": "dd/MMM/yyyy:HH:mm:ss",
+    "comment-fielddelimiter": "JSON, COMMA, SPACE, TAB",
+    "fielddelimiter": "SPACE",
+    "comment-timestampfield": "JSON = timestamp; other = integer of location in string",
+    "timestampfield": 0,
+    "comment-timescale": "JSON = read the elapsedTimeUnits value; other = NANOSECONDS, MILLISECONDS, SECONDS, MINUTES",
+    "timescale": "MILLISECONDS",
+    "comment-poi": ["BIND", "MODIFY", "SEARCH"],
+    "poi": ["MODIFY", "BIND", "SEARCH"],
+    "BIND": {
+        "identifiers": ["\"operation\":\"BIND\","],
+        "lapsedtimefield": "etime=",
+        "sla": 50
+    },
+    "MODIFY": {
+        "identifiers": [" MODIFY "],
+        "lapsedtimefield": "etime=",
+        "sla": 200
+    },
+    "SAMPLE-WITH-INDEX-MODIFY": {
+        "identifiers": [" MODIFY "],
+        "lapsedtimefield": "8",
+        "sla": 200
+    },
+    "SEARCH": {
+        "identifiers": ["\"operation\":\"SEARCH\",", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "etime=",
+        "results": "nentries",
+        "sla": 100
+    }
+}

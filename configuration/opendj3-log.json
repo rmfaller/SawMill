@@ -1,0 +1,39 @@
+{
+    "timestampformat": "dd/MMM/yyyy:HH:mm:ss",
+    "fielddelimiter": "SPACE",
+    "timestampfield": 0,
+    "timescale": "MILLISECONDS",
+    "comment-poi": ["SEARCH-one", "SEARCH-sub", "SEARCH-base", "SEARCH", "MODIFY", "BIND", "DELETE", "ADD", "MODIFYDN", "ABANDON", "GET-query", "GET", "PATCH", "POST-create", "POST-action", "POST", "PUT-create", "PUT-update", "PUT"],
+    "poi": ["ADD", "BIND", "DELETE", "MODIFY", "SEARCH"],
+    "ADD": {
+        "identifiers": [" ADD ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "BIND": {
+        "identifiers": [" BIND ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 10
+    },
+    "DELETE": {
+        "identifiers": [" DELETE ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 100
+    },
+    "MODIFY": {
+        "identifiers": [" MODIFY ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "SAMPLE-WITH-INDEX-MODIFY": {
+        "identifiers": [" MODIFY ", " etime="],
+        "lapsedtimefield": "8",
+        "sla": 200
+    },
+    "SEARCH": {
+        "identifiers": [" SEARCH ", " etime="],
+        "lapsedtimefield": "etime=",
+        "results": "nentries",
+        "sla": 100
+    }
+}

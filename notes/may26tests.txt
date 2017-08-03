@@ -1,0 +1,203 @@
+
+{
+    "name": "authenticate-read-logout-user-object",
+    "tasks": [
+        {
+            "authenticate-openam-user-object": 400
+        },
+        {
+            "validate-openam-user-session": 100
+        },
+        {
+            "validate-openam-user-session": 100
+        },
+        {
+            "sleep": 1000
+        },
+        {
+            "read-openam-user-object": 200
+        },
+        {
+            "validate-openam-user-session": 100
+        },
+        {
+            "sleep": 1000
+        },
+        {
+            "validate-openam-user-session": 100
+        },
+        {
+            "sleep": 1000
+        },
+        {
+            "logout-openam-user-object": 100
+        }
+    ]
+}
+
+Job Started with 200 threads on Fri May 26 14:31:38 PDT 2017...and completed Fri May 26 14:33:49 PDT 2017
+Operation                          TxTotal  AccmTime  Thrshold    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime    CbdPsOps     ThrdOps      Avrms/op   Success    Exceed      Fail
+authenticate-openam-user-object       2000   80.988s     400ms      2000   80.988s         0    0.000s         0    0.000s  4939.003/s    24.695/s   40.494ms/op   100.00%     0.00%     0.00%
+validate-openam-user-session          8000   16.321s     100ms      8000   16.321s         0    0.000s         0    0.000s 98033.203/s   490.166/s    2.040ms/op   100.00%     0.00%     0.00%
+read-openam-user-object               2000   29.306s     200ms      2000   29.306s         0    0.000s         0    0.000s 13649.082/s    68.245/s   14.653ms/op   100.00%     0.00%     0.00%
+logout-openam-user-object             2000   16.692s     100ms      2000   16.692s         0    0.000s         0    0.000s 23963.576/s   119.818/s    8.346ms/op   100.00%     0.00%     0.00%
+Job lapsed time =	130564ms
+Passed Accum time =	143307ms
+Total Threads =		200
+Thread group size =	2
+Launch interval =	1000ms
+Transaction goal =	14000
+Transaction actual =	14000
+Successful ops/s =	19538.473
+Ops/s during job =	107.227 
+Success rate =		100.00%
+Total sleep sec =	6083.130 
+Based on following workloads:
+	Workload: user-authenticate-validate4x-logout with 2000 loops;	Percent load = 100.00%
+	Tasks used:
+		authenticate-openam-user-object
+		validate-openam-user-session
+		validate-openam-user-session
+		sleep
+		read-openam-user-object
+		validate-openam-user-session
+		sleep
+		validate-openam-user-session
+		sleep
+		logout-openam-user-object
+Target environment(s): mac laptop running vbox hosting ubuntu (2 cores, 8GB) running an OpenAM 13.5 instance loaded w/2000 objects
+Load generator: mac laptop running JDK 8
+
+
+Job Started with 400 threads on Fri May 26 14:34:16 PDT 2017...and completed Fri May 26 14:38:07 PDT 2017
+Operation                          TxTotal  AccmTime  Thrshold    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime    CbdPsOps     ThrdOps      Avrms/op   Success    Exceed      Fail
+authenticate-openam-user-object       4000  101.131s     400ms      4000  101.131s         0    0.000s         0    0.000s 15821.064/s    39.553/s   25.283ms/op   100.00%     0.00%     0.00%
+validate-openam-user-session         16000   30.967s     100ms     16000   30.967s         0    0.000s         0    0.000s206671.609/s   516.679/s    1.935ms/op   100.00%     0.00%     0.00%
+read-openam-user-object               4000   53.805s     200ms      4000   53.805s         0    0.000s         0    0.000s 29737.016/s    74.343/s   13.451ms/op   100.00%     0.00%     0.00%
+logout-openam-user-object             4000   30.993s     100ms      4000   30.993s         0    0.000s         0    0.000s 51624.563/s   129.061/s    7.748ms/op   100.00%     0.00%     0.00%
+Job lapsed time =	230753ms
+Passed Accum time =	216896ms
+Total Threads =		400
+Thread group size =	2
+Launch interval =	1000ms
+Transaction goal =	28000
+Transaction actual =	28000
+Successful ops/s =	51637.652
+Ops/s during job =	121.342 
+Success rate =		100.00%
+Total sleep sec =	12166.623
+Based on following workloads:
+	Workload: user-authenticate-validate4x-logout with 4000 loops;	Percent load = 100.00%
+	Tasks used:
+		authenticate-openam-user-object
+		validate-openam-user-session
+		validate-openam-user-session
+		sleep
+		read-openam-user-object
+		validate-openam-user-session
+		sleep
+		validate-openam-user-session
+		sleep
+		logout-openam-user-object
+Target environment(s): mac laptop running vbox hosting ubuntu (2 cores, 8GB) running an OpenAM 13.5 instance loaded w/2000 objects
+Load generator: mac laptop running JDK 8
+
+Job Started with 600 threads on Fri May 26 14:38:31 PDT 2017...and completed Fri May 26 14:44:02 PDT 2017
+Operation                          TxTotal  AccmTime  Thrshold    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime    CbdPsOps     ThrdOps      Avrms/op   Success    Exceed      Fail
+authenticate-openam-user-object       6000   99.426s     400ms      6000   99.426s         0    0.000s         0    0.000s 36207.832/s    60.346/s   16.571ms/op   100.00%     0.00%     0.00%
+validate-openam-user-session         24000   43.232s     100ms     24000   43.232s         0    0.000s         0    0.000s333086.594/s   555.144/s    1.801ms/op   100.00%     0.00%     0.00%
+read-openam-user-object               6000   72.804s     200ms      6000   72.804s         0    0.000s         0    0.000s 49447.836/s    82.413/s   12.134ms/op   100.00%     0.00%     0.00%
+logout-openam-user-object             6000   42.313s     100ms      6000   42.313s         0    0.000s         0    0.000s 85080.234/s   141.800/s    7.052ms/op   100.00%     0.00%     0.00%
+Job lapsed time =	331050ms
+Passed Accum time =	257775ms
+Total Threads =		600
+Thread group size =	2
+Launch interval =	1000ms
+Transaction goal =	42000
+Transaction actual =	42000
+Successful ops/s =	97759.672
+Ops/s during job =	126.869 
+Success rate =		100.00%
+Total sleep sec =	18249.783
+Based on following workloads:
+	Workload: user-authenticate-validate4x-logout with 6000 loops;	Percent load = 100.00%
+	Tasks used:
+		authenticate-openam-user-object
+		validate-openam-user-session
+		validate-openam-user-session
+		sleep
+		read-openam-user-object
+		validate-openam-user-session
+		sleep
+		validate-openam-user-session
+		sleep
+		logout-openam-user-object
+Target environment(s): mac laptop running vbox hosting ubuntu (2 cores, 8GB) running an OpenAM 13.5 instance loaded w/2000 objects
+Load generator: mac laptop running JDK 8
+
+Job Started with 200 threads on Fri May 26 14:44:27 PDT 2017...and completed Fri May 26 14:44:57 PDT 2017
+Operation                          TxTotal  AccmTime  Thrshold    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime    CbdPsOps     ThrdOps      Avrms/op   Success    Exceed      Fail
+authenticate-openam-user-object       2000 1430.553s     400ms       717   52.447s      1283 1378.106s         0    0.000s  2734.189/s    13.671/s   73.148ms/op    35.85%    64.15%     0.00%
+validate-openam-user-session          8000   30.712s     100ms      2653   17.198s        59   13.514s      5288    0.000s 30852.424/s   154.262/s    6.482ms/op    33.16%     0.74%    66.10%
+read-openam-user-object               2000   51.587s     200ms       646   26.023s        64   25.564s      1290    0.000s  4964.838/s    24.824/s   40.283ms/op    32.30%     3.20%    64.50%
+logout-openam-user-object             2000   31.185s     100ms       518   10.854s        76   20.331s      1406    0.000s  9544.868/s    47.724/s   20.954ms/op    25.90%     3.80%    70.30%
+Job lapsed time =	29671ms
+Passed Accum time =	106522ms
+Total Threads =		200
+Thread group size =	10
+Launch interval =	1000ms
+Transaction goal =	14000
+Transaction actual =	4534
+Successful ops/s =	8512.796
+Ops/s during job =	152.809 
+Success rate =		32.39%
+Total sleep sec =	1968.325 
+Based on following workloads:
+	Workload: user-authenticate-validate4x-logout with 2000 loops;	Percent load = 100.00%
+	Tasks used:
+		authenticate-openam-user-object
+		validate-openam-user-session
+		validate-openam-user-session
+		sleep
+		read-openam-user-object
+		validate-openam-user-session
+		sleep
+		validate-openam-user-session
+		sleep
+		logout-openam-user-object
+Target environment(s): mac laptop running vbox hosting ubuntu (2 cores, 8GB) running an OpenAM 13.5 instance loaded w/2000 objects
+Load generator: mac laptop running JDK 8
+
+Job Started with 200 threads on Fri May 26 14:47:39 PDT 2017...and completed Fri May 26 14:49:00 PDT 2017
+Operation                          TxTotal  AccmTime  Thrshold    TxPass  PassTime   TxExced  ExcdTime    TxFail  Failtime    CbdPsOps     ThrdOps      Avrms/op   Success    Exceed      Fail
+authenticate-openam-user-object       2000   99.124s     400ms      2000   99.124s         0    0.000s         0    0.000s  4035.350/s    20.177/s   49.562ms/op   100.00%     0.00%     0.00%
+validate-openam-user-session          8000   20.872s     100ms      7994   20.872s         0    0.000s         6    0.000s 76600.227/s   383.001/s    2.611ms/op    99.93%     0.00%     0.08%
+read-openam-user-object               2000   52.553s     200ms      1997   51.940s         3    0.613s         0    0.000s  7689.642/s    38.448/s   26.009ms/op    99.85%     0.15%     0.00%
+logout-openam-user-object             2000   28.576s     100ms      1988   27.598s         9    0.978s         3    0.000s 14406.840/s    72.034/s   13.882ms/op    99.40%     0.45%     0.15%
+Job lapsed time =	80577ms
+Passed Accum time =	199534ms
+Total Threads =		200
+Thread group size =	4
+Launch interval =	1000ms
+Transaction goal =	14000
+Transaction actual =	13979
+Successful ops/s =	14011.647
+Ops/s during job =	173.486 
+Success rate =		99.85%
+Total sleep sec =	6076.454 
+Based on following workloads:
+	Workload: user-authenticate-validate4x-logout with 2000 loops;	Percent load = 100.00%
+	Tasks used:
+		authenticate-openam-user-object
+		validate-openam-user-session
+		validate-openam-user-session
+		sleep
+		read-openam-user-object
+		validate-openam-user-session
+		sleep
+		validate-openam-user-session
+		sleep
+		logout-openam-user-object
+Target environment(s): mac laptop running vbox hosting ubuntu (2 cores, 8GB) running an OpenAM 13.5 instance loaded w/2000 objects
+Load generator: mac laptop running JDK 8
+

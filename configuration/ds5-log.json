@@ -1,0 +1,79 @@
+{
+    "oldtimestampformat": "yyyy-MM-dd'T'HH:mm:ss.sss'Z'",
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss",
+    "old-fielddelimiter": ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)",
+    "fielddelimiter": "JSON",
+    "timestampfield": "timestamp",
+    "timescale": "elapsedTimeUnits",
+    "allpoi": ["SEARCH-FAILED", "SEARCH-one", "SEARCH-sub", "SEARCH-base", "SEARCH", "MODIFY", "BIND", "DELETE", "ADD", "MODIFYDN", "ABANDON", "GET-query", "GET", "PATCH", "POST-create", "POST-action", "POST", "PUT-create", "PUT-update", "PUT"],
+    "poi": ["SEARCH-FAILED", "SEARCH", "MODIFY", "BIND", "DELETE", "ADD"],
+    "SEARCH-FAILED": {
+        "identifiers": ["\"operation\":\"SEARCH\",", "\"status\":\"FAILED\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "SEARCH-one": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"status\":\"SUCCESSFUL\"", "\"scope\":\"one\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH-sub": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"status\":\"SUCCESSFUL\"", "\"scope\":\"sub\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH-base": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"status\":\"SUCCESSFUL\"", "\"scope\":\"base\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "MODIFY": {
+        "identifiers": ["\"operation\":\"MODIFY\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "BIND": {
+        "identifiers": ["\"operation\":\"BIND\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE": {
+        "identifiers": ["\"operation\":\"DELETE\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "ADD": {
+        "identifiers": ["\"operation\":\"ADD\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "MODIFYDN": {
+        "identifiers": ["\"operation\":\"MODIFYDN\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "ABANDON": {
+        "identifiers": ["\"operation\":\"ABANDON\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "GET-query": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"SUCCESSFUL\"", "\"_queryFilter=\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "GET": {
+        "identifiers": ["\"method\":\"GET\",", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    }
+}

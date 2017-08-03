@@ -1,0 +1,23 @@
+{
+    "timestampformat": "dd/MMM/yyyy:HH:mm:ss Z",
+    "fielddelimiter": "TAB",
+    "timestampfield": 3,
+    "timescale": "MILLISECONDS",
+    "comment-http-poi": ["GET-query", "GET", "PATCH", "POST-create", "POST-action", "POST", "PUT-create", "PUT-update", "PUT"],
+    "poi": ["GET-query", "GET"],
+    "GET-query": {
+        "identifiers": ["GET", "_queryFilter="],
+        "lapsedtimefield": "10",
+        "sla": 100
+    },
+    "GET": {
+        "identifiers": ["GET"],
+        "lapsedtimefield": "10",
+        "sla": 10
+    },
+    "POST": {
+        "identifiers": ["POST"],
+        "lapsedtimefield": "10",
+        "sla": 100
+    }
+}

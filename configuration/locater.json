@@ -1,0 +1,11 @@
+{
+    "timestampformat": "dd/MMM/yyyy:HH:mm:ss",
+    "fielddelimiter": "SPACE",
+    "timestampfield": 0,
+    "timescale": "MILLISECONDS",
+    "poi": ["coreTokenId"],
+    "coreTokenId": {
+        "identifiers": ["coreTokenId="],
+        "lapsedtimefield": "etime="
+    }
+}

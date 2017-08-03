@@ -1,0 +1,34 @@
+{
+    "timestampformat": "dd/MMM/yyyy:HH:mm:ss",
+    "fielddelimiter": "SPACE",
+    "timestampfield": 0,
+    "timescale": "MILLISECONDS",
+    "comment-ldap-poi": ["ABANDON", "ADD", "BIND", "DELETE", "MODIFY", "MODIFYDN", "SEARCH-one", "SEARCH-sub", "SEARCH-base", "SEARCH"],
+    "poi": ["ADD", "BIND", "DELETE", "MODIFY", "SEARCH"],
+    "ADD": {
+        "identifiers": [" ADD ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "BIND": {
+        "identifiers": [" BIND ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 10
+    },
+    "DELETE": {
+        "identifiers": [" DELETE ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 100
+    },
+    "MODIFY": {
+        "identifiers": [" MODIFY ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "SEARCH": {
+        "identifiers": [" SEARCH ", " etime="],
+        "lapsedtimefield": "etime=",
+        "results": "nentries",
+        "sla": 100
+    }
+}
