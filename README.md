@@ -8,7 +8,14 @@
 > 
 > ForgeRock shall not be liable for any direct, indirect or consequential damages or costs of any type arising out of any action taken by you or others related to the code.
 
-```
+Based on the .json file in the configuration directory SawMill can either:
+
+condense a single log file from OpenAM, AM, OpenDJ, DS, OpenIDM, IDM, OpenIG, and IG based on the cut value 
+
+- or -
+
+combine (laminate) multiple condensed files into a single file based on timestamp.
+
 SawMill usage:
 java -jar SawMill.jar --condense file_to_condense --configuration configuration/log_file_configuration.json
 	options when condensing:
