@@ -1,0 +1,18 @@
+{
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss.sss'Z'",
+    "comment-fielddelimiter": "JSON, COMMA, SPACE, TAB",
+    "fielddelimiter": "COMMA",
+    "timestampfield": 1,
+    "timescale": "MILLISECONDS",
+    "poi": ["POST-authenticate", "POST-sessions"],
+    "POST-authenticate": {
+        "identifiers": ["\"POST\",", "/json/customer/authenticate\","],
+        "lapsedtimefield": "29",
+        "sla": 50
+    },
+    "POST-sessions": {
+        "identifiers": ["\"POST\",", "/json/customer/sessions\","],
+        "lapsedtimefield": "31",
+        "sla": 200
+    }
+}

@@ -9,27 +9,27 @@ set style data lines
 set grid
 set key autotitle columnhead
 set key outside
-plot './logs/c1.csv' using 1:5 title columnheader, \
+plot './output/am.csv' using 1:5 title columnheader, \
  '' using 1:11 title columnheader, \
  '' using 1:17 title columnheader, \
  '' using 1:23 title columnheader
-plot './logs/c1.csv' using 1:6 title columnheader, \
+plot './output/am.csv' using 1:6 title columnheader, \
  '' using 1:12 title columnheader, \
  '' using 1:18 title columnheader, \
  '' using 1:24 title columnheader
-plot './logs/c1.csv' using 1:7 title columnheader, \
+plot './output/am.csv' using 1:7 title columnheader, \
  '' using 1:13 title columnheader, \
  '' using 1:19 title columnheader, \
  '' using 1:25 title columnheader
-plot './logs/c1.csv' using 1:8 title columnheader, \
+plot './output/am.csv' using 1:8 title columnheader, \
  '' using 1:14 title columnheader, \
  '' using 1:20 title columnheader, \
  '' using 1:26 title columnheader
-plot './logs/c1.csv' using 1:9 title columnheader, \
+plot './output/am.csv' using 1:9 title columnheader, \
  '' using 1:15 title columnheader, \
  '' using 1:21 title columnheader, \
  '' using 1:27 title columnheader
-plot './logs/c1.csv' using 1:10 title columnheader, \
+plot './output/am.csv' using 1:10 title columnheader, \
  '' using 1:16 title columnheader, \
  '' using 1:22 title columnheader, \
  '' using 1:28 title columnheader

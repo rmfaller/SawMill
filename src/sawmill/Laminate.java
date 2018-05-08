@@ -77,7 +77,7 @@ class Laminate {
         System.out.print("Time span(ms),");
         for (int i = 0; i < chdrs.length; i++) {
             for (int j = 4; j < chdrs[i].length; j++) {
-                System.out.print(chdrs[i][j] + ",");
+                System.out.print(i + "-" + chdrs[i][j] + ",");
             }
         }
         System.out.println();

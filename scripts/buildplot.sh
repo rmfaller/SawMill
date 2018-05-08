@@ -6,7 +6,7 @@ poi=0
 prevhdr=null
 for header in $headrow
   do
-  newhdr=`echo $header | cut -f1 -d"~"`
+  newhdr=`echo $header | cut -f1 -d"."`
   if [ "$prevhdr" != "$newhdr" ]
     then 
     prevhdr=$newhdr
@@ -27,7 +27,7 @@ echo "set datafile separator ','"
 echo "set style data lines"
 echo "set grid"
 echo "set key autotitle columnhead"
-echo "set key outside"
+echo "set key outside font \",10\""
 let c=$poi-1
 for (( i=1; i<=$graphs; i++ ))
   do

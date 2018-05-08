@@ -27,7 +27,8 @@ class Condenser {
     }
 
     void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla) {
-        SimpleDateFormat sdf = new SimpleDateFormat(config.get("timestampformat").toString());
+        String timestampformat = config.get("timestampformat").toString();
+        SimpleDateFormat sdf = new SimpleDateFormat(timestampformat);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String fielddelimiter = config.get("fielddelimiter").toString();
         String timestamp = null;
@@ -110,7 +111,11 @@ class Condenser {
 //                            System.out.println("non-json log = " + logentry);
                             Long y = (Long) config.get("timestampfield");
                             brina = logentry.split(String.valueOf(fd));
-                            timestamp = brina[y.intValue()];
+                            if (timestampformat.contains(" ")) {
+                                timestamp = brina[y.intValue()] + " " + brina[(y.intValue() + 1)];
+                            } else {
+                                timestamp = brina[y.intValue()];
+                            }
                             timescale = (String) config.get("timescale");
                             lapsedtimefield = (String) pois[index].get("lapsedtimefield");
                             int fi;
@@ -118,6 +123,7 @@ class Condenser {
                             if (lapsedtimefield.matches("[-+]?\\d+(\\.\\d+)?")) {
                                 ta = brina[Integer.parseInt(lapsedtimefield)];
                                 ta = ta.replaceAll("\\\"", "").replaceAll("\\\"", "");
+//                                                                    System.out.println("found: " + lapsedtimefield + "--" + ta);
                             } else {
                                 fi = brina.length - 1;
                                 while (!brina[fi].contains(lapsedtimefield) && (fi > 0)) {
@@ -136,7 +142,7 @@ class Condenser {
 //                        System.out.println("timestamp ->" + timestamp + "<-");
                         try {
                             operationtime = sdf.parse(timestamp.replaceAll("\\[", "").replaceAll("\\]", ""));
-//                            operationtime = sdf.parse(timestamp);
+                            operationtime = sdf.parse(timestamp);
                         } catch (java.text.ParseException ex) {
                             Logger.getLogger(Condenser.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -300,13 +306,13 @@ class Condenser {
         System.out.print("Logfile,");
         System.out.print("Timespan(ms),");
         for (int i = 0; i < poi.size(); i++) {
-            System.out.print((String) (poi.get(i)) + "~ops,");
-            System.out.print((String) (poi.get(i)) + "~time-op,");
+            System.out.print((String) (poi.get(i)) + ".ops,");
+            System.out.print((String) (poi.get(i)) + ".time-op,");
             if (sla) {
-                System.out.print((String) (poi.get(i)) + "~thld,");
-                System.out.print((String) (poi.get(i)) + "~under,");
-                System.out.print((String) (poi.get(i)) + "~over,");
-                System.out.print((String) (poi.get(i)) + "~percent,");
+                System.out.print((String) (poi.get(i)) + ".thld,");
+                System.out.print((String) (poi.get(i)) + ".under,");
+                System.out.print((String) (poi.get(i)) + ".over,");
+                System.out.print((String) (poi.get(i)) + ".percent,");
             }
         }
         System.out.println();

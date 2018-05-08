@@ -126,12 +126,10 @@ public class SawMill {
                 + "\n\t\t--totals : prints a total for each column. Do not use this option when condensing a file to be laminated."
                 + "\n\t\t--cut x  : where is x an integer and specifies the number of milliseconds used to condense the file by."
                 + "\n\t\t--sla    : includes the number of operations the meet SLAs, exceeded SLAs, and a percentage of operations that met SLAs."
-                + "\n\t\t         : SLAs are assigned within the log_file_configuration."
+                + "\n\t\t           SLAs are assigned within the log_file_configuration."
                 + "\n\nor\n"
                 + "\njava -jar SawMill.jar --laminate condensedfile0 condensedfile1 condensedfilen..."
-                + "\n\nor\n"
-                + "\njava -jar SawMill.jar --example"
-                + "\nprints a JSON formated sample configuration file\n";
+                + "\n";
         System.out.println(help);
     }
 
