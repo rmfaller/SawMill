@@ -1,0 +1,103 @@
+{
+  "timestampformat": "yyyy-MM-dd'T'HH:mm:ss",
+  "fielddelimiter": "JSON",
+  "timestampfield": "timestamp",
+  "timescale": "elapsedTimeUnits",
+  "poi": [
+    "ABANDON"
+    "ADD-s",
+    "ADD-f",
+    "BIND-s",
+    "BIND-f",
+    "DELETE-s",
+    "DELETE-f",
+    "MODIFY-s",
+    "MODIFY-f",
+    "MODIFYDN",
+    "SEARCH-one",
+    "SEARCH-sub",
+    "SEARCH-base",
+    "SEARCH-s",
+    "SEARCH-f"
+  ],
+    "ABANDON": {
+        "identifiers": ["\"operation\":\"ABANDON\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "ADD-s": {
+        "identifiers": ["\"operation\":\"ADD\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "ADD-f": {
+        "identifiers": ["\"operation\":\"ADD\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "BIND-s": {
+        "identifiers": ["\"operation\":\"BIND\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "BIND-f": {
+        "identifiers": ["\"operation\":\"BIND\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-s": {
+        "identifiers": ["\"operation\":\"DELETE\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-f": {
+        "identifiers": ["\"operation\":\"DELETE\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "MODIFY-s": {
+        "identifiers": ["\"operation\":\"MODIFY\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "MODIFY-f": {
+        "identifiers": ["\"operation\":\"MODIFY\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "MODIFYDN": {
+        "identifiers": ["\"operation\":\"MODIFYDN\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "SEARCH-one": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"scope\":\"one\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH-sub": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"scope\":\"sub\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH-base": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"scope\":\"base\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH-s": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH-f": {
+        "identifiers": ["\"operation\":\"SEARCH\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    }
+}

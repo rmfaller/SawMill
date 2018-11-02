@@ -1,0 +1,72 @@
+{
+    "oldtimestampformat": "yyyy-MM-dd'T'HH:mm:ss.sss'Z'",
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss",
+    "old-fielddelimiter": ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)",
+    "fielddelimiter": "JSON",
+    "timestampfield": "timestamp",
+    "timescale": "elapsedTimeUnits",
+    "_poi": ["PUT-successful", "PUT-failed", "POST-successful", "POST-failed", "GET-successful", "GET-failed", "DELETE-successful", "DELETE-failed", "PATCH-successful", "PATCH-failed"],
+    "__poi": ["userid-successful", "userid-failed"], 
+    "poi": ["ops-after-8"], 
+    "userid-successful": {
+        "identifiers": ["\"userId\":\"sa_obsc_spa_identity_service\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "ops-after-8": {
+        "_identifiers": ["\"userId\":\"sa_obsc_spa_identity_service\"", "\"status\":\"FAILED\""],
+        "identifiers": ["\"timestamp\":\"2018-10-25T2"],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PUT-successful": {
+        "identifiers": ["\"method\":\"PUT\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PUT-failed": {
+        "identifiers": ["\"method\":\"PUT\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-successful": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-failed": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "GET-successful": {
+        "identifiers": ["\"method\":\"GET\",", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "GET-failed": {
+        "identifiers": ["\"method\":\"GET\",", "\"status\":\"FAILED\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-successful": {
+        "identifiers": ["\"method\":\"DELETE\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-failed": {
+        "identifiers": ["\"method\":\"DELETE\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PATCH-successful": {
+        "identifiers": ["\"method\":\"PATCH\",", "\"status\":\"SUCCESSFUL\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PATCH-failed": {
+        "identifiers": ["\"method\":\"PATCH\",", "\"status\":\"FAILED\","],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    }
+}

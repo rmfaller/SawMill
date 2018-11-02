@@ -1,0 +1,29 @@
+{
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss.SSSZ':'",
+    "fielddelimiter": "SPACE",
+    "timestampfield": 0,
+    "timescale": "MILLISECONDS",
+    "old-poi": ["Tenured", "CMS-concurrent-mark", "Allocation-Failure"],
+    "poi": ["ParNew", "CMS"],
+    "GC": {
+        "identifiers": ["GC"],
+        "lapsedtimefield": "real=",
+        "sla": 0
+    },
+    "CMS": {
+        "old-identifiers": ["CMS-concurrent-mark:"],
+        "identifiers": ["CMS", "Times"],
+        "lapsedtimefield": "real=",
+        "sla": 0
+    },
+    "ParNew": {
+        "identifiers": ["ParNew", "Times"],
+        "lapsedtimefield": "real=",
+        "sla": 0
+    },
+    "Allocation-Failure": {
+        "identifiers": ["Allocation Failure"],
+        "lapsedtimefield": "real=",
+        "sla": 0
+    }
+}

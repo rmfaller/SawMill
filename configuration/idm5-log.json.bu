@@ -6,14 +6,9 @@
     "timestampfield": "timestamp",
     "timescale": "elapsedTimeUnits",
     "allpoi": ["SEARCH-FAILED", "SEARCH-one", "SEARCH-sub", "SEARCH-base", "SEARCH", "MODIFY", "BIND", "DELETE", "ADD", "MODIFYDN", "ABANDON", "GET-query", "GET", "PATCH", "POST-create", "POST-action", "POST", "PUT-create", "PUT-update", "PUT"],
-    "poi": ["POST-FAILED", "GET-FAILED", "POST", "GET", "DELETE", "ADD"],
-    "POST-FAILED": {
-        "identifiers": ["\"method\":\"POST\",", "\"status\":\"FAILED\","],
-        "lapsedtimefield": "elapsedTime",
-        "sla": 100
-    },
-    "GET-FAILED": {
-        "identifiers": ["\"method\":\"GET\",", "\"status\":\"FAILED\","],
+    "poi": ["PUT-create"],
+    "SEARCH-FAILED": {
+        "identifiers": ["\"operation\":\"SEARCH\",", "\"status\":\"FAILED\","],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
     },
@@ -68,6 +63,11 @@
     },
     "ABANDON": {
         "identifiers": ["\"operation\":\"ABANDON\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PUT-create": {
+        "identifiers": ["\"method\":\"PUT\"", "\"status\":\"SUCCESSFUL\"", "\"operation\":\"CREATE\""],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
     },
