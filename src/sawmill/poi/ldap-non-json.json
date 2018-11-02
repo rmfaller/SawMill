@@ -1,0 +1,53 @@
+{
+  "timestampformat": "dd/MMM/yyyy:HH:mm:ss Z",
+  "options-fielddelimiter": "JSON, COMMA, SPACE, TAB",
+  "fielddelimiter": "SPACE",
+  "timestampfield": 0,
+  "timescale": "MILLISECONDS",
+  "csv-fielddelimiter": ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)",
+  "poi": [
+    "ABANDON",
+    "ADD",
+    "BIND",
+    "DELETE",
+    "MODIFY",
+    "MODIFYDN",
+    "SEARCH"
+  ],
+    "ABANDON": {
+        "identifiers": [" ABANDON ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "ADD": {
+        "identifiers": [" ADD ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "BIND": {
+        "identifiers": [" BIND ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 10
+    },
+    "DELETE": {
+        "identifiers": [" DELETE ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 100
+    },
+    "MODIFY": {
+        "identifiers": [" MODIFY ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "MODIFYDN": {
+        "identifiers": [" MODIFYDN ", " etime="],
+        "lapsedtimefield": "etime=",
+        "sla": 20
+    },
+    "SEARCH": {
+        "identifiers": [" SEARCH ", " etime="],
+        "lapsedtimefield": "etime=",
+        "results": "nentries",
+        "sla": 100
+    }
+}
