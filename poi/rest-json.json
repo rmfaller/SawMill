@@ -9,9 +9,12 @@
     "GET-query-s",
     "GET-query-f",
     "GET-s",
+    "GET-d",
     "GET-f",
     "PATCH-s",
     "PATCH-f",
+    "POST-realm-authenticate-s",
+    "POST-realm-authenticate-f",
     "POST-authenticate-s",
     "POST-authenticate-f",
     "POST-action-s",
@@ -46,6 +49,11 @@
         "lapsedtimefield": "elapsedTime",
         "sla": 400
     },
+    "GET-d": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"DENIED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 500
+    },
     "GET-f": {
         "identifiers": ["\"method\":\"GET\"", "\"status\":\"FAILED\""],
         "lapsedtimefield": "elapsedTime",
@@ -58,6 +66,16 @@
     },
     "PATCH-f": {
         "identifiers": ["\"method\":\"PATCH\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-realm-authenticate-s": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"SUCCESSFUL\"", "/authenticate\"", "/json/realms/root/realms/"],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-realm-authenticate-f": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"FAILED\"", "/authenticate\"", "/json/realms/root/realms/"],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
     },

@@ -1,0 +1,108 @@
+{
+  "timestampformat": "yyyy-MM-dd'T'HH:mm:ss",
+  "fielddelimiter": "JSON",
+  "timestampfield": "timestamp",
+  "timescale": "elapsedTimeUnits",
+  "poi": [
+    "GET-s",
+    "GET-f",
+    "POST-realm-authenticate-s",
+    "POST-s",
+    "POST-f"
+  ],
+    "DELETE-s": {
+        "identifiers": ["\"method\":\"DELETE\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-f": {
+        "identifiers": ["\"method\":\"DELETE\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "GET-query-s": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"SUCCESSFUL\"", "_queryFilter="],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 400
+    },
+    "GET-query-f": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"FAILED\"", "_queryFilter="],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 500
+    },
+    "GET-s": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 400
+    },
+    "GET-d": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"DENIED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 500
+    },
+    "GET-f": {
+        "identifiers": ["\"method\":\"GET\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 500
+    },
+    "PATCH-s": {
+        "identifiers": ["\"method\":\"PATCH\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PATCH-f": {
+        "identifiers": ["\"method\":\"PATCH\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-realm-authenticate-s": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"SUCCESSFUL\"", "/authenticate\"", "/json/realms/root/realms/"],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-realm-authenticate-f": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"FAILED\"", "/authenticate\"", "/json/realms/root/realms/"],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-authenticate-s": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"SUCCESSFUL\"", "/json/realms/root/authenticate\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-authenticate-f": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"FAILED\"", "/json/realms/root/authenticate\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-action-s": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"SUCCESSFUL\"", "_action="],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-action-f": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"FAILED\"", "_action="],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-s": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "POST-f": {
+        "identifiers": ["\"method\":\"POST\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PUT-s": {
+        "identifiers": ["\"method\":\"PUT\"", "\"status\":\"SUCCESSFUL\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "PUT-f": {
+        "identifiers": ["\"method\":\"PUT\"", "\"status\":\"FAILED\""],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    }
+}
