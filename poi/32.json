@@ -4,16 +4,9 @@
     "timestampfield": "timestamp",
     "timescale": "elapsedTimeUnits",
     "poi": [
-        "ADD-s",
-        "BIND-s",
-        "DELETE-s",
-        "DELETE-f",
-        "MODIFY-s",
-        "SEARCH-sub-s",
-        "SEARCH-base-s",
-        "SEARCH-base-f-32",
-        "SEARCH-s",
-        "SEARCH-f"
+        "SEARCH-one-f-32",
+        "SEARCH-sub-f-32",
+        "SEARCH-base-f-32"
     ],
     "ABANDON": {
         "identifiers": [
@@ -22,10 +15,27 @@
         "lapsedtimefield": "elapsedTime",
         "sla": 100
     },
+    "ADD-sync-s": {
+        "identifiers": [
+            "\"operation\":\"ADD\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"optype\":\"sync\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "ADD-sync-f": {
+        "identifiers": [
+            "\"operation\":\"ADD\"",
+            "\"status\":\"FAILED\"",
+            "\"optype\":\"sync\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
     "ADD-s": {
         "identifiers": [
             "\"operation\":\"ADD\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -34,7 +44,6 @@
     "ADD-f": {
         "identifiers": [
             "\"operation\":\"ADD\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -43,7 +52,6 @@
     "BIND-s": {
         "identifiers": [
             "\"operation\":\"BIND\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -52,8 +60,25 @@
     "BIND-f": {
         "identifiers": [
             "\"operation\":\"BIND\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-sync-s": {
+        "identifiers": [
+            "\"operation\":\"DELETE\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"optype\":\"sync\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 100
+    },
+    "DELETE-sync-f": {
+        "identifiers": [
+            "\"operation\":\"DELETE\"",
+            "\"status\":\"FAILED\"",
+            "\"optype\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
@@ -61,7 +86,6 @@
     "DELETE-s": {
         "identifiers": [
             "\"operation\":\"DELETE\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -70,16 +94,32 @@
     "DELETE-f": {
         "identifiers": [
             "\"operation\":\"DELETE\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
     },
+    "MODIFY-sync-s": {
+        "identifiers": [
+            "\"operation\":\"MODIFY\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"optype\":\"sync\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "MODIFY-sync-f": {
+        "identifiers": [
+            "\"operation\":\"MODIFY\"",
+            "\"status\":\"FAILED\"",
+            "\"optype\":\"sync\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
     "MODIFY-s": {
         "identifiers": [
             "\"operation\":\"MODIFY\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -88,7 +128,6 @@
     "MODIFY-f": {
         "identifiers": [
             "\"operation\":\"MODIFY\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -115,7 +154,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"one\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -126,7 +164,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"one\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\"",
             "\"statusCode\":\"32\""
         ],
@@ -138,7 +175,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"one\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -149,7 +185,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"sub\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -161,7 +196,6 @@
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"sub\"",
             "\"status\":\"FAILED\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"statusCode\":\"32\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -172,7 +206,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"sub\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -183,7 +216,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"base\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -193,7 +225,6 @@
     "SEARCH-base-f-32": {
         "identifiers": [
             "\"operation\":\"SEARCH\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"scope\":\"base\"",
             "\"status\":\"FAILED\"",
             "\"statusCode\":\"32\""
@@ -206,7 +237,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"base\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -216,7 +246,6 @@
     "SEARCH-s": {
         "identifiers": [
             "\"operation\":\"SEARCH\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -226,7 +255,6 @@
     "SEARCH-f": {
         "identifiers": [
             "\"operation\":\"SEARCH\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",

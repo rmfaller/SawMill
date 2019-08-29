@@ -26,7 +26,7 @@ class Condenser {
     Condenser(JSONObject config, BufferedReader br) {
     }
 
-    void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla) {
+    void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla, boolean showheader) {
         String timestampformat = config.get("timestampformat").toString();
         SimpleDateFormat sdf = new SimpleDateFormat(timestampformat);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -170,7 +170,9 @@ class Condenser {
                         if (oldtime == 0) {
                             oldtime = epochtime;
                             starttime = epochtime;
-                            printHeader(poi, sla);
+                            if (showheader) {
+                                printHeader(poi, sla);
+                            }
                         }
                         stats[index][OPCNT]++;
                         stats[index][TOTALOPCNT]++;

@@ -57,6 +57,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
+    },
     "ADD-s": {
         "identifiers": [
             "\"operation\":\"ADD\"",

@@ -50,6 +50,7 @@ public class SawMill {
         boolean runlaminate = false;
         boolean runlocate = false;
         boolean showtotals = false;
+        boolean showheader = true;
         boolean sla = false;
         long cut = 1;
         int y = 0;
@@ -108,6 +109,10 @@ public class SawMill {
                 case "--totals":
                     showtotals = true;
                     break;
+                case "-n":
+                case "--noheader":
+                    showheader = false;
+                    break;
                 case "-s":
                 case "--sla":
                     sla = true;
@@ -117,7 +122,7 @@ public class SawMill {
             }
         }
         if (runcondense && (cfn != null)) {
-            cdr.condense(config, br, cut, cfn, showtotals, lf, sla);
+            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader);
         }
         if (runlaminate) {
             lmnt.laminate(lbra);
