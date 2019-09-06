@@ -26,7 +26,7 @@ class Condenser {
     Condenser(JSONObject config, BufferedReader br) {
     }
 
-    void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla, boolean showheader) {
+    void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla, boolean showheader, boolean filltimegap) {
         String timestampformat = config.get("timestampformat").toString();
         SimpleDateFormat sdf = new SimpleDateFormat(timestampformat);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -142,7 +142,7 @@ class Condenser {
 //                        System.out.println("timestamp ->" + timestamp + "<-");
                         try {
                             operationtime = sdf.parse(timestamp.replaceAll("\\[", "").replaceAll("\\]", ""));
-                            operationtime = sdf.parse(timestamp);
+//                            operationtime = sdf.parse(timestamp);
                         } catch (java.text.ParseException ex) {
                             Logger.getLogger(Condenser.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -188,10 +188,31 @@ class Condenser {
                         stats[index][TIMEOP] = stats[index][TIMEOP] + etime;
                         stats[index][TOTALTIMEOP] = stats[index][TOTALTIMEOP] + etime;
                         if (epochtime >= (oldtime + cut)) {
+                            int x = 1;
+                            if (filltimegap && (epochtime > (oldtime + cut))) {
+                                while ((oldtime + (cut * x)) < epochtime) {
+                                    System.out.print(oldtime + (cut * x));
+                                    System.out.print("," + timestamp + ",");
+                                    System.out.print(lf + ",");
+                                    System.out.print(cut + ",");
+                                    for (int i = 0; i < stats.length; i++) {
+                                        System.out.print("0,0,");
+                                        if (sla) {
+                                            System.out.print("0,0,0,0,");
+                                        }
+                                    }
+                                    System.out.println();
+                                    x++;
+                                }
+                            }
                             System.out.print(epochtime);
                             System.out.print("," + timestamp + ",");
                             System.out.print(lf + ",");
-                            System.out.print((epochtime - oldtime) + ",");
+                            if (filltimegap) {
+                                System.out.print((epochtime - (oldtime + (cut * (x - 1)))) + ",");
+                            } else {
+                                System.out.print((epochtime - oldtime) + ",");
+                            }
                             oldtime = epochtime;
                             for (int i = 0; i < stats.length; i++) {
                                 System.out.format("%.0f%s", stats[i][OPCNT], ",");
@@ -311,7 +332,7 @@ class Condenser {
             System.out.print((String) (poi.get(i)) + ".ops,");
             System.out.print((String) (poi.get(i)) + ".time-op,");
             if (sla) {
-                System.out.print((String) (poi.get(i)) + ".thld,");
+                System.out.print((String) (poi.get(i)) + ".sla,");
                 System.out.print((String) (poi.get(i)) + ".under,");
                 System.out.print((String) (poi.get(i)) + ".over,");
                 System.out.print((String) (poi.get(i)) + ".percent,");

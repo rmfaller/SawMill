@@ -40,7 +40,6 @@
     "BIND-s": {
         "identifiers": [
             "\"operation\":\"BIND\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -73,7 +72,6 @@
     "MODIFY-s": {
         "identifiers": [
             "\"operation\":\"MODIFY\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -108,7 +106,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"one\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -119,7 +116,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"one\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\"",
             "\"statusCode\":\"32\""
         ],
@@ -131,7 +127,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"one\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -142,7 +137,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"sub\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -154,7 +148,6 @@
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"sub\"",
             "\"status\":\"FAILED\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"statusCode\":\"32\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -165,7 +158,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"sub\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -176,7 +168,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"base\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -188,7 +179,6 @@
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"base\"",
             "\"status\":\"FAILED\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"statusCode\":\"32\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -199,7 +189,6 @@
         "identifiers": [
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"base\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -209,7 +198,6 @@
     "SEARCH-s": {
         "identifiers": [
             "\"operation\":\"SEARCH\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -219,7 +207,6 @@
     "SEARCH-f": {
         "identifiers": [
             "\"operation\":\"SEARCH\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",

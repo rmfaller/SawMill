@@ -6,7 +6,7 @@
     "poi": [
         "SEARCH-one-f-32",
         "SEARCH-sub-f-32",
-        "SEARCH-base-f-32"
+        "SEARCH-base-f-32",
     ],
     "ABANDON": {
         "identifiers": [
@@ -238,6 +238,14 @@
             "\"operation\":\"SEARCH\"",
             "\"scope\":\"base\"",
             "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "results": "nentries",
+        "sla": 100
+    },
+    "SEARCH": {
+        "identifiers": [
+            "\"operation\":\"SEARCH\""
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",

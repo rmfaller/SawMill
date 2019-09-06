@@ -47,7 +47,6 @@
     "GET-s": {
         "identifiers": [
             "\"method\":\"GET\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -64,7 +63,6 @@
     "GET-f": {
         "identifiers": [
             "\"method\":\"GET\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -91,7 +89,6 @@
             "\"method\":\"POST\"",
             "\"status\":\"SUCCESSFUL\"",
             "/authenticate\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "/json/realms/root/realms/"
         ],
         "lapsedtimefield": "elapsedTime",
@@ -146,7 +143,6 @@
     "POST-s": {
         "identifiers": [
             "\"method\":\"POST\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -155,7 +151,6 @@
     "POST-f": {
         "identifiers": [
             "\"method\":\"POST\"",
-            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",

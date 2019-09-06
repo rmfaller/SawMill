@@ -4,29 +4,11 @@
     "timestampfield": "timestamp",
     "timescale": "elapsedTimeUnits",
     "poi": [
-        "DELETE-s",
-        "DELETE-f",
-        "GET-oauth2-s",
-        "GET-oauth2-f",
-        "GET-query-s",
-        "GET-query-f",
         "GET-s",
-        "GET-d",
         "GET-f",
-        "PATCH-s",
-        "PATCH-f",
         "POST-realm-authenticate-s",
-        "POST-realm-authenticate-f",
-        "POST-oauth2-s",
-        "POST-oauth2-f",
-        "POST-authenticate-s",
-        "POST-authenticate-f",
-        "POST-action-s",
-        "POST-action-f",
         "POST-s",
-        "POST-f",
-        "PUT-s",
-        "PUT-f"
+        "POST-f"
     ],
     "DELETE-s": {
         "identifiers": [
@@ -43,24 +25,6 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
-    },
-    "GET-oauth2-s": {
-        "identifiers": [
-            "\"method\":\"GET\"",
-            "\"status\":\"SUCCESSFUL\"",
-            "/authn/oauth2/"
-        ],
-        "lapsedtimefield": "elapsedTime",
-        "sla": 400
-    },
-    "GET-oauth2-f": {
-        "identifiers": [
-            "\"method\":\"GET\"",
-            "\"status\":\"FAILED\"",
-            "/authn/oauth2/"
-        ],
-        "lapsedtimefield": "elapsedTime",
-        "sla": 500
     },
     "GET-query-s": {
         "identifiers": [
@@ -83,6 +47,7 @@
     "GET-s": {
         "identifiers": [
             "\"method\":\"GET\"",
+            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -99,6 +64,7 @@
     "GET-f": {
         "identifiers": [
             "\"method\":\"GET\"",
+            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -125,6 +91,7 @@
             "\"method\":\"POST\"",
             "\"status\":\"SUCCESSFUL\"",
             "/authenticate\"",
+            "\"timestamp\":\"2019-08-16T03:4",
             "/json/realms/root/realms/"
         ],
         "lapsedtimefield": "elapsedTime",
@@ -136,24 +103,6 @@
             "\"status\":\"FAILED\"",
             "/authenticate\"",
             "/json/realms/root/realms/"
-        ],
-        "lapsedtimefield": "elapsedTime",
-        "sla": 100
-    },
-    "POST-oauth2-s": {
-        "identifiers": [
-            "\"method\":\"POST\"",
-            "\"status\":\"SUCCESSFUL\"",
-            "/authn/oauth2/"
-        ],
-        "lapsedtimefield": "elapsedTime",
-        "sla": 100
-    },
-    "POST-oauth2-f": {
-        "identifiers": [
-            "\"method\":\"POST\"",
-            "\"status\":\"FAILED\"",
-            "/authn/oauth2/"
         ],
         "lapsedtimefield": "elapsedTime",
         "sla": 100
@@ -197,6 +146,7 @@
     "POST-s": {
         "identifiers": [
             "\"method\":\"POST\"",
+            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
@@ -205,6 +155,7 @@
     "POST-f": {
         "identifiers": [
             "\"method\":\"POST\"",
+            "\"timestamp\":\"2019-08-16T03:4",
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
