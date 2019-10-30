@@ -26,7 +26,7 @@ class Condenser {
     Condenser(JSONObject config, BufferedReader br) {
     }
 
-    void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla, boolean showheader, boolean filltimegap) {
+    void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf, boolean sla, boolean showheader, boolean filltimegap, boolean totalsonly, boolean html) {
         String timestampformat = config.get("timestampformat").toString();
         SimpleDateFormat sdf = new SimpleDateFormat(timestampformat);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -173,6 +173,9 @@ class Condenser {
                             if (showheader) {
                                 printHeader(poi, sla);
                             }
+                            if (html) {
+                                printHTMLHeader(poi, sla);
+                            }
                         }
                         stats[index][OPCNT]++;
                         stats[index][TOTALOPCNT]++;
@@ -187,7 +190,7 @@ class Condenser {
                         }
                         stats[index][TIMEOP] = stats[index][TIMEOP] + etime;
                         stats[index][TOTALTIMEOP] = stats[index][TOTALTIMEOP] + etime;
-                        if (epochtime >= (oldtime + cut)) {
+                        if ((epochtime >= (oldtime + cut)) && (!totalsonly)) {
                             int x = 1;
                             if (filltimegap && (epochtime > (oldtime + cut))) {
                                 while ((oldtime + (cut * x)) < epochtime) {
@@ -243,7 +246,7 @@ class Condenser {
                         }
                     }
                 }
-                if ((epochtime - oldtime) > 0) {
+                if (((epochtime - oldtime) > 0) && (!totalsonly)) {
                     System.out.print(epochtime);
                     System.out.print("," + timestamp + ",");
                     System.out.print(lf + ",");
@@ -270,29 +273,33 @@ class Condenser {
                     }
                     System.out.println();
                 }
-                if (showtotals) {
-                    System.out.print("Totals,,,");
-                    System.out.print((epochtime - starttime) + ",");
-                    for (int i = 0; i < stats.length; i++) {
-                        System.out.format("%.0f%s", stats[i][TOTALOPCNT], ",");
-                        if (stats[i][TOTALOPCNT] > 0) {
-                            System.out.format("%.2f%s", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), ",");
-                        } else {
-                            System.out.print("0,");
-                        }
-                        if (sla) {
-                            System.out.print(slatime[i] + ",");
-                            System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], ",");
-                            System.out.format("%.0f%s", stats[i][TOTALOPSOVER], ",");
-                            if (stats[i][TOTALOPSOVER] > 0) {
-                                System.out.format("%3.1f%s", ((stats[i][TOTALOPSUNDER] / stats[i][TOTALOPCNT]) * 100), "%");
+                if (showtotals || totalsonly) {
+                    if (!html) {
+                        System.out.print("Totals,,,");
+                        System.out.print((epochtime - starttime) + ",");
+                        for (int i = 0; i < stats.length; i++) {
+                            System.out.format("%.0f%s", stats[i][TOTALOPCNT], ",");
+                            if (stats[i][TOTALOPCNT] > 0) {
+                                System.out.format("%.2f%s", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), ",");
                             } else {
-                                System.out.print("100.0%");
+                                System.out.print("0,");
                             }
-                            System.out.print(",");
+                            if (sla) {
+                                System.out.print(slatime[i] + ",");
+                                System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], ",");
+                                System.out.format("%.0f%s", stats[i][TOTALOPSOVER], ",");
+                                if (stats[i][TOTALOPSOVER] > 0) {
+                                    System.out.format("%3.1f%s", ((stats[i][TOTALOPSUNDER] / stats[i][TOTALOPCNT]) * 100), "%");
+                                } else {
+                                    System.out.print("100.0%");
+                                }
+                                System.out.print(",");
+                            }
                         }
+                        System.out.println();
+                    } else {
+                        printHTML(sla, epochtime, starttime, stats, slatime, TOTALOPCNT, TOTALOPSOVER, TOTALOPSUNDER, TOTALTIMEOP, poi);
                     }
-                    System.out.println();
                 }
             } catch (IOException ex) {
                 Logger.getLogger(Condenser.class.getName()).log(Level.SEVERE, null, ex);
@@ -339,6 +346,53 @@ class Condenser {
             }
         }
         System.out.println();
+    }
+
+    private void printHTMLHeader(JSONArray poi, boolean sla) {
+        System.out.println("clock");
+        System.out.println("Timestamp");
+        System.out.println("Logfile");
+        System.out.println("Timespan(ms)");
+        System.out.println("<table cellpadding=\"4\" border=\"1\">");
+        System.out.println("<tbody>");
+        System.out.println("<tr><font face=\"Consolas\">");
+        System.out.println("<td align=\"center\">Operation Type</td>");
+        System.out.println("<td align=\"center\">Operations</td>");
+        System.out.println("<td align=\"center\">Average Time per Operation</td>");
+        System.out.println("<td align=\"center\">Under threshold</td>");
+        System.out.println("<td align=\"center\">Over threshold</td>");
+        System.out.println("<td align=\"center\">Threshold</td>");
+        System.out.println("<td align=\"center\">Percentage under threshold</td>");
+        System.out.println("</font></tr>");
+    }
+
+    private void printHTML(boolean sla, long epochtime, long starttime, float[][] stats, long[] slatime, int TOTALOPCNT, int TOTALOPSOVER, int TOTALOPSUNDER, int TOTALTIMEOP, JSONArray poi) {
+        for (int i = 0; i < stats.length; i++) {
+            System.out.println("<pre><tr>");
+            System.out.println("<td>" + poi.get(i) + "</td>");
+            System.out.format("%s%.0f%s", "<td>", stats[i][TOTALOPCNT], "</td>");
+            if (stats[i][TOTALOPCNT] > 0) {
+                System.out.format("%s%.2f%s", "<td>", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), "</td>");
+            } else {
+                System.out.print("<td>0</td>");
+            }
+            if (sla) {
+                System.out.println("<td>");
+                System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], "</td>");
+                System.out.println("<td>");
+                System.out.format("%.0f%s", stats[i][TOTALOPSOVER], "</td>");
+                System.out.print("<td>" + slatime[i] + "</td>");
+                if (stats[i][TOTALOPSOVER] > 0) {
+                    System.out.format("%s%3.1f%s", "<td>", ((stats[i][TOTALOPSUNDER] / stats[i][TOTALOPCNT]) * 100), "%</td>");
+                } else {
+                    System.out.print("<td>100.0%</td>");
+                }
+            }
+            System.out.println("</tr></pre>");
+        }
+        System.out.println("</tbody>");
+        System.out.println("</table>");
+        System.out.println("<p>Time span = " + (epochtime - starttime) + "</p>");
     }
 
 }

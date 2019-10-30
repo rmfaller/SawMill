@@ -4,11 +4,14 @@
     "timestampfield": "timestamp",
     "timescale": "elapsedTimeUnits",
     "poi": [
+        "GET-oauth2-s",
+        "GET-oauth2-f",
         "GET-s",
-        "GET-f",
         "POST-realm-authenticate-s",
+        "POST-oauth2-s",
+        "POST-authenticate-s",
         "POST-s",
-        "POST-f"
+        "POST-f",
     ],
     "DELETE-s": {
         "identifiers": [
@@ -16,7 +19,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "DELETE-f": {
         "identifiers": [
@@ -24,7 +27,25 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
+    },
+    "GET-oauth2-s": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "/authn/oauth2/"
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 2000
+    },
+    "GET-oauth2-f": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"FAILED\"",
+            "/authn/oauth2/"
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 2000
     },
     "GET-query-s": {
         "identifiers": [
@@ -33,7 +54,7 @@
             "_queryFilter="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 400
+        "sla": 2000
     },
     "GET-query-f": {
         "identifiers": [
@@ -42,7 +63,7 @@
             "_queryFilter="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 500
+        "sla": 2000
     },
     "GET-s": {
         "identifiers": [
@@ -58,7 +79,7 @@
             "\"status\":\"DENIED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 500
+        "sla": 2000
     },
     "GET-f": {
         "identifiers": [
@@ -74,7 +95,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "PATCH-f": {
         "identifiers": [
@@ -82,7 +103,7 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-realm-authenticate-s": {
         "identifiers": [
@@ -102,7 +123,25 @@
             "/json/realms/root/realms/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
+    },
+    "POST-oauth2-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "/authn/oauth2/"
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 2000
+    },
+    "POST-oauth2-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "/authn/oauth2/"
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 2000
     },
     "POST-authenticate-s": {
         "identifiers": [
@@ -111,7 +150,7 @@
             "/json/realms/root/authenticate\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-authenticate-f": {
         "identifiers": [
@@ -120,7 +159,7 @@
             "/json/realms/root/authenticate\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-action-s": {
         "identifiers": [
@@ -129,7 +168,7 @@
             "_action="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-action-f": {
         "identifiers": [
@@ -138,7 +177,7 @@
             "_action="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-s": {
         "identifiers": [
@@ -162,7 +201,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "PUT-f": {
         "identifiers": [
@@ -170,6 +209,6 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     }
 }

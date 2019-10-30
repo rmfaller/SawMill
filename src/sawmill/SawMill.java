@@ -49,6 +49,8 @@ public class SawMill {
         boolean runcondense = false;
         boolean runlaminate = false;
         boolean runlocate = false;
+        boolean totalsonly = false;
+        boolean html = false;
         boolean showtotals = false;
         boolean showheader = true;
         boolean sla = false;
@@ -72,7 +74,6 @@ public class SawMill {
                     cut = Long.parseLong(args[i + 1]);
                     break;
                 case "-?":
-                case "-h":
                 case "--help":
                     help();
                     break;
@@ -110,6 +111,14 @@ public class SawMill {
                 case "--totals":
                     showtotals = true;
                     break;
+                case "-h":
+                case "--html":
+                    html = true;
+                    break;
+                case "-o":
+                case "--totalsonly":
+                    totalsonly = true;
+                    break;
                 case "-f":
                 case "--filltimegap":
                     filltimegap = true;
@@ -127,7 +136,7 @@ public class SawMill {
             }
         }
         if (runcondense && (cfn != null)) {
-            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap);
+            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap, totalsonly, html);
         }
         if (runlaminate) {
             lmnt.laminate(lbra);

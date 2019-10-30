@@ -34,7 +34,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "DELETE-f": {
         "identifiers": [
@@ -42,7 +42,7 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "GET-oauth2-s": {
         "identifiers": [
@@ -51,7 +51,7 @@
             "/authn/oauth2/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 400
+        "sla": 2000
     },
     "GET-oauth2-f": {
         "identifiers": [
@@ -60,7 +60,7 @@
             "/authn/oauth2/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 500
+        "sla": 2000
     },
     "GET-query-s": {
         "identifiers": [
@@ -69,7 +69,7 @@
             "_queryFilter="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 400
+        "sla": 2000
     },
     "GET-query-f": {
         "identifiers": [
@@ -78,7 +78,7 @@
             "_queryFilter="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 500
+        "sla": 2000
     },
     "GET-s": {
         "identifiers": [
@@ -86,7 +86,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 400
+        "sla": 2000
     },
     "GET-d": {
         "identifiers": [
@@ -94,7 +94,7 @@
             "\"status\":\"DENIED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 500
+        "sla": 2000
     },
     "GET-f": {
         "identifiers": [
@@ -102,7 +102,7 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 500
+        "sla": 2000
     },
     "PATCH-s": {
         "identifiers": [
@@ -110,7 +110,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "PATCH-f": {
         "identifiers": [
@@ -118,7 +118,7 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-realm-authenticate-s": {
         "identifiers": [
@@ -128,7 +128,7 @@
             "/json/realms/root/realms/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-realm-authenticate-f": {
         "identifiers": [
@@ -138,7 +138,7 @@
             "/json/realms/root/realms/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-oauth2-s": {
         "identifiers": [
@@ -147,7 +147,7 @@
             "/authn/oauth2/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-oauth2-f": {
         "identifiers": [
@@ -156,7 +156,7 @@
             "/authn/oauth2/"
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-authenticate-s": {
         "identifiers": [
@@ -165,7 +165,7 @@
             "/json/realms/root/authenticate\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-authenticate-f": {
         "identifiers": [
@@ -174,7 +174,7 @@
             "/json/realms/root/authenticate\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-action-s": {
         "identifiers": [
@@ -183,7 +183,7 @@
             "_action="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-action-f": {
         "identifiers": [
@@ -192,7 +192,7 @@
             "_action="
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-s": {
         "identifiers": [
@@ -200,7 +200,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "POST-f": {
         "identifiers": [
@@ -208,7 +208,7 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "PUT-s": {
         "identifiers": [
@@ -216,7 +216,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     },
     "PUT-f": {
         "identifiers": [
@@ -224,6 +224,6 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 100
+        "sla": 2000
     }
 }
