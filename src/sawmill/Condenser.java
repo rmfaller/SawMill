@@ -170,10 +170,10 @@ class Condenser {
                         if (oldtime == 0) {
                             oldtime = epochtime;
                             starttime = epochtime;
-                            if (showheader) {
+                            if (showheader && !html) {
                                 printHeader(poi, sla);
                             }
-                            if (html) {
+                            if (showheader && html) {
                                 printHTMLHeader(poi, sla);
                             }
                         }
@@ -390,9 +390,9 @@ class Condenser {
             }
             System.out.println("</tr></pre>");
         }
-        System.out.println("</tbody>");
+        System.out.println("<tr bgcolor=\"#ffff99\"><td>Time span</td><td>=</td><td>" + (epochtime - starttime) + "ms</td><td>(" + ((epochtime - starttime) / 1000) + " seconds)</td><td>("+ (((epochtime - starttime) / 1000) / 60) + " minutes)</td>");
+        System.out.println("</tr></tbody>");
         System.out.println("</table>");
-        System.out.println("<p>Time span = " + (epochtime - starttime) + "</p>");
     }
 
 }
