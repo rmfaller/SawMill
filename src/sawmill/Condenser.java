@@ -357,8 +357,9 @@ class Condenser {
         System.out.println("<tbody>");
         System.out.println("<tr><font face=\"Consolas\">");
         System.out.println("<td align=\"center\">Operation Type</td>");
-        System.out.println("<td align=\"center\">Operations</td>");
+        System.out.println("<td align=\"center\">Operation count</td>");
         System.out.println("<td align=\"center\">Average Time per Operation</td>");
+        System.out.println("<td align=\"center\">Total time consumed (ms)</td>");
         System.out.println("<td align=\"center\">Under threshold</td>");
         System.out.println("<td align=\"center\">Over threshold</td>");
         System.out.println("<td align=\"center\">Threshold</td>");
@@ -373,8 +374,9 @@ class Condenser {
             System.out.format("%s%.0f%s", "<td>", stats[i][TOTALOPCNT], "</td>");
             if (stats[i][TOTALOPCNT] > 0) {
                 System.out.format("%s%.2f%s", "<td>", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), "</td>");
+                System.out.format("%s%.2f%s", "<td>", stats[i][TOTALTIMEOP], "</td>");
             } else {
-                System.out.print("<td>0</td>");
+                System.out.print("<td>0</td><td>0</td>");
             }
             if (sla) {
                 System.out.println("<td>");
@@ -390,9 +392,9 @@ class Condenser {
             }
             System.out.println("</tr></pre>");
         }
-        System.out.println("<tr bgcolor=\"#ffff99\"><td>Time span</td><td>=</td><td>" + (epochtime - starttime) + "ms</td><td>(" + ((epochtime - starttime) / 1000) + " seconds)</td><td>("+ (((epochtime - starttime) / 1000) / 60) + " minutes)</td>");
         System.out.println("</tr></tbody>");
         System.out.println("</table>");
+        System.out.println("<p>Time span = " + (epochtime - starttime) + "ms (" + ((epochtime - starttime) / 1000) + " seconds or " + (((epochtime - starttime) / 1000) / 60) + " minutes)</p>");
     }
 
 }
