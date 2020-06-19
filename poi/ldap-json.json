@@ -38,25 +38,25 @@
             "\"operation\":\"ABANDON\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "ADD-sync-s": {
         "identifiers": [
             "\"operation\":\"ADD\"",
             "\"status\":\"SUCCESSFUL\"",
-            "\"optype\":\"sync\""
+            "\"opType\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "ADD-sync-f": {
         "identifiers": [
             "\"operation\":\"ADD\"",
             "\"status\":\"FAILED\"",
-            "\"optype\":\"sync\""
+            "\"opType\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "ADD-s": {
         "identifiers": [
@@ -64,7 +64,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "ADD-f": {
         "identifiers": [
@@ -72,7 +72,7 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "BIND-s": {
         "identifiers": [
@@ -80,7 +80,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "BIND-f": {
         "identifiers": [
@@ -88,25 +88,25 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "DELETE-sync-s": {
         "identifiers": [
             "\"operation\":\"DELETE\"",
             "\"status\":\"SUCCESSFUL\"",
-            "\"optype\":\"sync\""
+            "\"opType\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "DELETE-sync-f": {
         "identifiers": [
             "\"operation\":\"DELETE\"",
             "\"status\":\"FAILED\"",
-            "\"optype\":\"sync\""
+            "\"opType\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "DELETE-s": {
         "identifiers": [
@@ -114,7 +114,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "DELETE-f": {
         "identifiers": [
@@ -122,25 +122,25 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "MODIFY-sync-s": {
         "identifiers": [
             "\"operation\":\"MODIFY\"",
             "\"status\":\"SUCCESSFUL\"",
-            "\"optype\":\"sync\""
+            "\"opType\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "MODIFY-sync-f": {
         "identifiers": [
             "\"operation\":\"MODIFY\"",
             "\"status\":\"FAILED\"",
-            "\"optype\":\"sync\""
+            "\"opType\":\"sync\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "MODIFY-s": {
         "identifiers": [
@@ -148,7 +148,7 @@
             "\"status\":\"SUCCESSFUL\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "MODIFY-f": {
         "identifiers": [
@@ -156,14 +156,14 @@
             "\"status\":\"FAILED\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "MODIFYDN": {
         "identifiers": [
             "\"operation\":\"MODIFYDN\""
         ],
         "lapsedtimefield": "elapsedTime",
-        "sla": 2000
+        "sla": 200
     },
     "PERSISTENT-SEARCH": {
         "identifiers": [
@@ -173,7 +173,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-one-s": {
         "identifiers": [
@@ -183,7 +183,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-one-f-32": {
         "identifiers": [
@@ -194,7 +194,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-one-f": {
         "identifiers": [
@@ -204,7 +204,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-sub-s": {
         "identifiers": [
@@ -214,7 +214,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-sub-f-32": {
         "identifiers": [
@@ -225,7 +225,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-sub-f": {
         "identifiers": [
@@ -235,7 +235,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-base-s": {
         "identifiers": [
@@ -245,7 +245,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-base-f-32": {
         "identifiers": [
@@ -256,7 +256,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-base-f": {
         "identifiers": [
@@ -266,7 +266,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-s": {
         "identifiers": [
@@ -275,7 +275,7 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     },
     "SEARCH-f": {
         "identifiers": [
@@ -284,6 +284,6 @@
         ],
         "lapsedtimefield": "elapsedTime",
         "results": "nentries",
-        "sla": 2000
+        "sla": 200
     }
 }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {'packages': ['corechart', 'line']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+
+                var ops = new google.visualization.DataTable();
+                ops.addColumn('number', 'clock');
+                ops.addColumn('number', 'succ');
+                ops.addColumn('number', 'fail');
+                ops.addColumn('number', 'mod');
+
+                ops.addRows([
+                    [1592063210000, 5235, 741, 235],
+                    [1592063211000, 5758, 816, 219],
+                    [1592063212000, 5519, 771, 224],
+                    [1592063213000, 5043, 704, 250],
+                    [1592063214000, 5295, 758, 238],
+                    [1592063215000, 5591, 796, 246],
+                    [1592063216000, 5061, 723, 243],
+                    [1592063217000, 5576, 799, 217],
+                    [1592063218000, 5549, 798, 225],
+                    [1592063219000, 5499, 783, 231],
+                    [1592063220000, 5424, 782, 213],
+                    [1592063221000, 5231, 725, 216],
+                    [1592063222000, 5438, 789, 264],
+                    [1592063223000, 5161, 749, 248]
+                ]);
+
+                var lapsedtime = new google.visualization.DataTable();
+                lapsedtime.addColumn('number', 'clock');
+                lapsedtime.addColumn('number', 'succ');
+                lapsedtime.addColumn('number', 'fail');
+                lapsedtime.addColumn('number', 'mod');
+
+                lapsedtime.addRows([
+                    [1592063210000, 0.17, 0.34, 0.10],
+                    [1592063211000, 0.18, 0.37, 0.10],
+                    [1592063212000, 0.18, 0.35, 0.10],
+                    [1592063213000, 0.66, 0.38, 0.15],
+                    [1592063214000, 0.20, 0.45, 0.22],
+                    [1592063215000, 0.18, 0.38, 0.11],
+                    [1592063216000, 0.16, 0.34, 0.16],
+                    [1592063217000, 0.18, 0.34, 0.27],
+                    [1592063218000, 0.17, 0.36, 0.11],
+                    [1592063219000, 0.17, 0.34, 0.15],
+                    [1592063220000, 0.19, 0.35, 0.11],
+                    [1592063221000, 0.17, 0.34, 0.13],
+                    [1592063222000, 0.18, 0.35, 0.15],
+                    [1592063223000, 0.19, 0.46, 0.18]
+                ]);
+                var options = {
+                    width: 1600,
+                    height: 500,
+                    chartArea: {'width': '80%', 'height': '86%'},
+                    hAxis: {
+                        textPosition: 'none'
+                    },
+                    vAxis: {
+                        title: 'Transactions'
+                    }
+                };
+                var options2 = {
+                    width: 1600,
+                    height: 500,
+                    chartArea: {'width': '80%', 'height': '70%'},
+                    hAxis: {
+                        title: 'Time',
+                        slantedText:true, 
+                        slantedTextAngle:45,
+                        textStyle: {
+                            fontSize: 8
+                        }
+                    },
+                    vAxis: {
+                        title: 'Average elapsedTime (ms)'
+                    }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('line_top_x'));
+                var chart2 = new google.visualization.LineChart(document.getElementById('chart2'));
+
+                chart.draw(ops, google.charts.Line.convertOptions(options));
+                chart2.draw(lapsedtime, google.charts.Line.convertOptions(options2));
+            }
+        </script>
+    </head>
+    <body>
+        <div id="line_top_x"></div>
+        <div id="chart2"></div>
+    </body>
+</html>

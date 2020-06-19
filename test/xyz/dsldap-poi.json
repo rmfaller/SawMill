@@ -1,0 +1,79 @@
+{ "timestampformat":"yyyy-MM-dd'T'HH:mm:ss","fielddelimiter":"JSON","timestampfield":"timestamp","timescale":"elapsedTimeUnits","poi":
+[
+  "SEARCH~null~SUCCESSFUL",
+  "SEARCH~null~FAILED",
+  "MODIFY~sync~SUCCESSFUL",
+  "MODIFY~sync~FAILED",
+  "MODIFY~null~SUCCESSFUL",
+  "DISCONNECT~null~SUCCESSFUL",
+  "CONNECT~null~SUCCESSFUL",
+  "BIND~null~SUCCESSFUL",
+  "ADD~sync~SUCCESSFUL",
+  "ADD~null~SUCCESSFUL"
+]
+,
+"SEARCH~null~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"SEARCH\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"SEARCH~null~FAILED": { "identifiers": [ 
+"\"operation\":\"SEARCH\"",
+"\"status\":\"FAILED\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"MODIFY~sync~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"MODIFY\"",
+"\"opType\":\"sync\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"MODIFY~sync~FAILED": { "identifiers": [ 
+"\"operation\":\"MODIFY\"",
+"\"opType\":\"sync\"",
+"\"status\":\"FAILED\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"MODIFY~null~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"MODIFY\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"DISCONNECT~null~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"DISCONNECT\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"CONNECT~null~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"CONNECT\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"BIND~null~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"BIND\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"ADD~sync~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"ADD\"",
+"\"opType\":\"sync\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"ADD~null~SUCCESSFUL": { "identifiers": [ 
+"\"operation\":\"ADD\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"end":{}
+         }

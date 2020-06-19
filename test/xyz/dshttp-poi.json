@@ -1,0 +1,14 @@
+{ "timestampformat":"yyyy-MM-dd'T'HH:mm:ss","fielddelimiter":"JSON","timestampfield":"timestamp","timescale":"elapsedTimeUnits","poi":
+[
+  "GET~200~SUCCESSFUL"
+]
+,
+"GET~200~SUCCESSFUL": { "identifiers": [ 
+"\"method\":\"GET\"",
+"\"statusCode\":\"200\"",
+"\"status\":\"SUCCESSFUL\""
+],"lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+"end":{}
+         }

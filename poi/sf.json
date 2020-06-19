@@ -1,0 +1,326 @@
+{
+    "timestampformat": "yyyy-MM-dd'T'HH:mm:ss",
+    "fielddelimiter": "JSON",
+    "timestampfield": "timestamp",
+    "timescale": "elapsedTimeUnits",
+    "poi": [
+        "GET-oauth-s",
+        "GET-oauth-f",
+        "GET-saml2-s",
+        "GET-saml2-f",
+        "GET-users-s",
+        "GET-users-f",
+        "GET-server-info",
+        "GET-s",
+        "GET-f",
+        "POST-authentication-s",
+        "POST-authentication-f",
+        "POST-oauth-s",
+        "POST-oauth-f",
+        "POST-policy-s",
+        "POST-policy-f",
+        "POST-saml2-s",
+        "POST-saml2-f",
+        "POST-session-s",
+        "POST-session-f",
+        "POST-users-s",
+        "POST-users-f",
+        "POST-s",
+        "POST-f"
+    ],
+    "DELETE-s": {
+        "identifiers": [
+            "\"method\":\"DELETE\"",
+            "\"status\":\"SUCCESSFUL\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "DELETE-f": {
+        "identifiers": [
+            "\"method\":\"DELETE\"",
+            "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-oauth-s": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"OAuth\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-oauth-f": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"OAuth\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-saml2-s": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"SAML2\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-saml2-f": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"SAML2\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-users-s": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"Users\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-users-f": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"Users\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-server-info": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"Server Info\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-query-s": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "_queryFilter="
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-query-f": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"FAILED\"",
+            "_queryFilter="
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-s": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"SUCCESSFUL\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-d": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"DENIED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "GET-f": {
+        "identifiers": [
+            "\"method\":\"GET\"",
+            "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "PATCH-s": {
+        "identifiers": [
+            "\"method\":\"PATCH\"",
+            "\"status\":\"SUCCESSFUL\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "PATCH-f": {
+        "identifiers": [
+            "\"method\":\"PATCH\"",
+            "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-authentication-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"Authentication\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-authentication-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"Authentication\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-oauth-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"OAuth\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-oauth-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"OAuth\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-policy-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"Policy\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-policy-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"Policy\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-saml2-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"SAML2\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-saml2-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"SAML2\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-session-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"Session\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-session-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"Session\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-users-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "\"component\":\"Users\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-users-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "\"component\":\"Users\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+   "POST-action-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\"",
+            "_action="
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-action-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\"",
+            "_action="
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-s": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"SUCCESSFUL\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "POST-f": {
+        "identifiers": [
+            "\"method\":\"POST\"",
+            "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "PUT-s": {
+        "identifiers": [
+            "\"method\":\"PUT\"",
+            "\"status\":\"SUCCESSFUL\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    },
+    "PUT-f": {
+        "identifiers": [
+            "\"method\":\"PUT\"",
+            "\"status\":\"FAILED\""
+        ],
+        "lapsedtimefield": "elapsedTime",
+        "sla": 200
+    }
+}

@@ -17,15 +17,26 @@ or
 combine (laminate) multiple condensed files into a single file based on timestamp.
 
 ```
-SawMill usage:
-java -jar SawMill.jar --condense file_to_condense --configuration configuration/log_file_configuration.json
-	options when condensing:
-		--totals : prints a total for each column. Do not use this option when condensing a file to be laminated.
-		--cut x  : where is x an integer and specifies the number of milliseconds used to condense the file by.
-		--sla    : includes the number of operations the meet SLAs, exceeded SLAs, and a percentage of operations that met SLAs.
-		           SLAs are assigned within the log_file_configuration.
+SawMill usage when analyzing a log:
+	required for ripping/analyzing:
+		--rip         | -r path and filename of log file to analyze
+		--poi         | -p path and filename of json configuration file on how to handle the log file to analyze
+	Example:
+	java -jar ./dist/SawMill.jar --rip /path/to/file_to_analyze --poi /path/to/log_file_configuration.json
+	options for ripping:
+		--totals      | -t prints a total for each column. Do not use this option when condensing a file to be laminated
+		--cut x       | -u where is x an integer and specifies the number of milliseconds used to condense the file by
+		--sla         | -s Lists the percentage of times the operation completed within the configured threshold
+		                SLAs are assigned within the log_file_configuration.json file
+		--filltimegap | -f do not compress time
+SawMill usage when laminating together more than one ripped log file:
+	required for laminating:
+		--laminate    | -l path(s) and filename(s) of log files to laminate
+	Example:
+	java -jar ./dist/SawMill.jar --laminate /path/to/rippedfile-0 /path/to/rippedfile-1 /path/to/rippedfile-n
 
-or
-
-java -jar SawMill.jar --laminate condensedfile0 condensedfile1 condensedfilen...
+	Example of analyzing two log files and then laminating those files together:
+		java -jar ./dist/SawMill.jar --rip $HOME/openidm/audit/access.audit.json-1of2 --poi $HOME/SawMill/poi/idm5-log.json > /tmp/idm-1of2.csv
+		java -jar ./dist/SawMill.jar --rip $HOME/openidm/audit/access.audit.json-2of2 --poi $HOME/SawMill/poi/idm5-log.json > /tmp/idm-2of2.csv
+		java -jar ./dist/SawMill.jar --laminate /tmp/idm-1of2.csv /tmp/idm-2of2.csv > /tmp/idm-combined.csv
 ```

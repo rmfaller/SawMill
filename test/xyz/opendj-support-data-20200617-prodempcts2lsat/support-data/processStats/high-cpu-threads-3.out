@@ -1,0 +1,18 @@
+CPU = 6.7 % (nid=0x4d71)
+"LDAPS 0.0.0.0 port 2636(1) SelectorRunner" #53 daemon prio=5 os_prio=0 tid=0x00007fc6698e9000 nid=0x4d71 runnable [0x00007fc5cd6c9000]
+   java.lang.Thread.State: RUNNABLE
+	at sun.nio.ch.EPollArrayWrapper.epollWait(Native Method)
+	at sun.nio.ch.EPollArrayWrapper.poll(EPollArrayWrapper.java:269)
+	at sun.nio.ch.EPollSelectorImpl.doSelect(EPollSelectorImpl.java:93)
+	at sun.nio.ch.SelectorImpl.lockAndDoSelect(SelectorImpl.java:86)
+	- locked <0x00000006e1a02880> (a sun.nio.ch.Util$3)
+	- locked <0x00000006e1a02868> (a java.util.Collections$UnmodifiableSet)
+	- locked <0x00000006e1a68bb8> (a sun.nio.ch.EPollSelectorImpl)
+	at sun.nio.ch.SelectorImpl.select(SelectorImpl.java:97)
+	at org.glassfish.grizzly.nio.DefaultSelectorHandler.select(DefaultSelectorHandler.java:114)
+	at org.glassfish.grizzly.nio.SelectorRunner.doSelect(SelectorRunner.java:339)
+	at org.glassfish.grizzly.nio.SelectorRunner.run(SelectorRunner.java:279)
+	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:593)
+	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.run(AbstractThreadPool.java:573)
+	at java.lang.Thread.run(Thread.java:748)
+

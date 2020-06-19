@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>                                               
+<HEAD>                                                        
+<TITLE>Extract Report version 2.2</TITLE>                     
+</HEAD>                                                       
+<BODY BGCOLOR="#D3D3D3">                                      
+<HR WIDTH="1000" ALIGN="LEFT">                                
+<TABLE BORDER=0 WIDTH="1000">                                 
+<TR>                                                          
+<TD COLSPAN="100" ALIGN="LEFT"><H4>ForgeRock Extractor 2.2</H4></TD>
+<TD COLSPAN="100" ALIGN="RIGHT"><H4>Extract Report</H4></TD>  
+</TR>                                                         
+</TABLE>                                                      
+<HR WIDTH="1000" ALIGN="LEFT">                                
+<PRE>
+	Extract version:		3.0-java 
+	Extract date:			2020-05-29 16:11:39
+	Data check:			profiles.version not available
+	Data check:			data.version not available
+</PRE>
+
+
+<H4>SERVER INFORMATION:</H4>
+
+Basic server information including Connection Handlers, Ports and Current Connection counts.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+	Install FQDN (Hostname): 	prodempcts2lsat.usaa.com
+	Runtime IP (Hostname):   	10.15.145.53 (prodempcts2lsat)
+
+	Admin Port (enabled) 		5444 	conns:1    
+	LDAP Port  (disabled)		-    	conns:NA   	psearch:    	starttls:
+	LDAPS Port (enabled) 		2636 	conns:80   	psearch:0   	starttls:false
+	HTTP Port  (disabled)		-    	conns:NA   			starttls:false
+	HTTPS Port (enabled) 		9443 	conns:0    			starttls:false
+	JMX Port   (disabled)		---- 	conns:NA	
+	                         	     	--------   	            	
+	                         	     	total:81   	            	
+
+	Base version:            	6.5.3+OPENDJ-7016,OPENDJ-5775,OPENDJ-7107,OPENDJ-7047  		
+	Full version:            	ForgeRock Directory Services 6.5.3+OPENDJ-7016,OPENDJ-5775,OPENDJ-7107,OPENDJ-7047		
+	Installation Directory:  	/forgerock/6.5.3/opendj		
+	Instance Directory:      	/forgerock/6.5.3/opendj		
+	Directory Type:          	External DJ Instance		
+	                         	                    		
+	Start time:              	20200612232552.824Z 		
+	Current time:            	20200617191706.554Z 		
+	Size Limit:              	1000                		
+	Time Limit:              	60 seconds          		
+	Look Through Limit:      	5000                		
+	Writability Mode:        	enabled             		
+	Cursor Limit:            	100000              		
+	Idle Time Limit:         	0 seconds           		
+	Etime Resolution:        	milliseconds        		
+	Max Client Connections:  	0                   		
+	Max Persistent Searches: 	-1                  		
+	Backend Shared Cache:    	true                		
+	Trust Txn IDs:           	NA                  		
+	Work Queue:              	1000                		
+	                         	                    		
+</PRE>
+
+
+<H4>BACKEND INFORMATION:</H4>
+
+Displays all backends and the most relevant configuration. Also displays alerts when bad configuration is encountered.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+BackendID	BaseDN               	Db-Cache%	Enabled	iLimit	LG-Cache	Type	Encryption	Cmprs	Entries
+---------	---------------------	---------	-------	------	--------	----	----------	-----	-------
+amCts    	dc=cts,dc=usaa,dc=com	50		true	4000	200		JE	true		false	470225 	
+---------	---------------------	---------	-------	------	--------	----	----------	-----	-------
+         	                     	50% Total	       	      	        	    	          	     	470225
+
+Key (Backend config)
+
+BackendID:  	See: backend-id
+BaseDN:  	See: base-dn
+Db-Cache:  	See: db-cache-percent
+Enabled:  	See: enabled
+iLimit:  	See: index-entry-limit
+LG-Cache:  	See: db-log-filecache-size
+Type:  		See: java-class aka Backend Type [JE|PDB|local]
+Encryption: 	See: confidentiality-enabled
+Cmprs: 		See: ds-cfg-entries-compressed
+
+</PRE>
+
+
+
+<H4>INDEX INFORMATION:</H4>
+
+Displays all index definitions, types and alerts when Excessive Index Limits are found and whether the index is default, system, custom or a cts index.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+Note:	Excessive index-entry-limit's flagged at 50,000+
+
+Backend: amCts           : index-type    : index-entry-limit   : index-extensible-matching-rule   : confidentiality-enabled : Index type 
+-------------------------:---------------:---------------------:----------------------------------:-------------------------:---------- 
+aci                      : presence      : 4000                : -                                : false                    : default    
+coreTokenDate01          : ordering      : 4000                : -                                : false                    : am-cts     
+coreTokenDate02          : ordering      : 4000                : -                                : false                    : am-cts     
+coreTokenDate03          : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenDate04          : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenDate05          : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenExpirationDate  : ordering ttl  : 4000                : -                                : false                    : am-cts     
+coreTokenInteger01       : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenInteger02       : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenInteger03       : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenInteger04       : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenInteger05       : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenMultiString01   : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenMultiString02   : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString01        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString02        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString03        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString08        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString09        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString10        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString14        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenString15        : equality      : 4000                : -                                : false                    : am-cts     
+coreTokenUserId          : equality      : 4000                : -                                : false                    : am-cts     
+ds-sync-conflict         : equality      : 4000                : -                                : false                    : system     
+ds-sync-hist             : ordering      : 4000                : -                                : false                    : system     
+entryUUID                : equality      : 4000                : -                                : false                    : system     
+member                   : equality      : 4000                : -                                : true                     : default    
+objectClass              : equality      : 4000                : -                                : false                    : default    
+uid                      : equality      : 4000                : -                                : true                     : default    
+uniqueMember             : equality      : 4000                : -                                : true                     : default    
+
+	Total indexes:                  	31
+	Total am-cfg indexes:           	0	(expected 2 -  for an AM Config Store)
+	Total am-cts indexes:           	22	(expected 22 - for an AM CTS Store)
+	Total am-identity-store indexes: 	0	(expected 2 - for an AM Identity Store)
+	Total idm-repo indexes:         	0	(expected 15 - for an IDM Repository)
+	Total Custom indexes:           	0
+	Total TTL indexes:              	1	(coreTokenExpirationDate)
+
+	Total System indexes:           	3	(expected 3)
+
+</PRE>
+
+
+<H4>REPLICATION INFORMATION:</H4>
+
+Displays replica type, replication domain and configured RS's. Also displays connected DS's and RS's.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+	Replica type:	Directory Server (DS only)
+
+Directory Server Config:	
+
+Replication Domain   	DS ID		Replication Server(s)           	Conflict Purge						
+---------------------	-----		--------------------------------	--------------						
+dc=cts,dc=usaa,dc=com	23948		prodempctsrep1ldfw.usaa.com:9989	1 d				
+                     	     		prodempctsrep1lsat.usaa.com:9989	1 d				
+                     	     		prodempctsrep2ldfw.usaa.com:9989	1 d				
+                     	     		prodempctsrep2lsat.usaa.com:9989	1 d				
+cn=admin data        	25087		prodempctsrep1ldfw.usaa.com:9989	1 d				
+                     	     		prodempctsrep1lsat.usaa.com:9989	1 d				
+                     	     		prodempctsrep2ldfw.usaa.com:9989	1 d				
+                     	     		prodempctsrep2lsat.usaa.com:9989	1 d				
+cn=schema            	19148		prodempctsrep1ldfw.usaa.com:9989	1 d				
+                     	     		prodempctsrep1lsat.usaa.com:9989	1 d				
+                     	     		prodempctsrep2ldfw.usaa.com:9989	1 d				
+                     	     		prodempctsrep2lsat.usaa.com:9989	1 d				
+
+Admin Data Config:	
+
+	<font color="#FF8C00">Warning: Missing admin-backend.ldif file.</font>
+
+Connected Servers:	
+
+	Server is a Directory Server (DS only) - No connected servers
+
+</PRE>
+
+
+<H4>ACI CONTROL INFORMATION:</H4>
+
+Displays a basic summary of all ACI's
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+    	Description                                  	Perms                              	Subject
+     	---------------------------------------------	-----------------------------------	--------------------------------						
+[1] 	ACI is Base64 encoded                        	-                                  	-                             
+[2] 	ACI is Base64 encoded                        	-                                  	-                             
+[3] 	ACI is Base64 encoded                        	-                                  	-                             
+[4] 	ACI is Base64 encoded                        	-                                  	-                             
+[5] 	ACI is Base64 encoded                        	-                                  	-                             
+[6] 	Anonymous extended operation access          	allow(read)                        	userdn(anyone)                
+[7] 	Authenticated users extended operation access	allow(read)                        	userdn(all)                   
+[8] 	User-Visible Root DSE Operational Attributes 	allow(read,search,compare)         	userdn(anyone)                
+[9] 	Monitor User access                          	allow(read,search)                 	userdn(uid=EmployeeMonitorUserA)
+[10]	User-Visible Schema Operational Attributes   	allow(read,search,compare)         	userdn(all)                   
+[11]	REST to LDAP control access                  	allow(read)                        	userdn(all)                   
+[12]	Transaction ID control access                	allow(read)                        	userdn(all)                   
+</PRE>
+
+	<font color="#FF8C00">Alert: One or more ACI's are base64 encoded</font>
+
+
+<H4>PASSWORD POLICY INFORMATION:</H4>
+
+Displays all password policies, password attributes, storage schemes and alerts when heavy weight policies are found.
+<HR WIDTH="1000" ALIGN="LEFT">
+Note:	Password Policies other than "Root Password Policy" using Bcrypt, PBKDF2 or PKCS5S2 are flagged
+<PRE>
+
+Password Policy          : Password Attr     : Default Storage Scheme  : Deprecated Storage Scheme : Cost  
+-------------------------:-------------------:-------------------------:---------------------------:------
+Default Password Policy  : userPassword      : Salted SHA-512          : -                         : -     
+Root Password Policy     : userPassword      : PBKDF2 *                : -                         : 10000 
+
+	<font color="#FF8C00">Alert: Heavy impact Password Storage Scheme in use - PBKDF2</font>
+	<font color="#FF8C00">Warning: DS 5.0 and higher uses PBKDF2 for the "Root Password Policy", beware of applications using Root DNs.</font>
+
+
+</PRE>
+
+
+<H4>CERTIFICATE INFORMATION:</H4>
+
+Displays each connection handlers certificate and their expiration date. Warns of expiring certificates.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+Crypto Manager
+		Certificate 	ads-certificate
+		            	Keystore (./security/ads-truststore-list) is empty or not available, skipping this certificate
+
+Administration Connector
+		Certificate 	server-cert
+		            	Keystore (./security/keystore-list) is empty or not available, skipping this certificate
+
+HTTP Connection Handler
+		Certificate 	Cert info not available, skipping this certificate
+
+cn=LDAP Connection Handler
+		Certificate 	Cert info not available, skipping this certificate
+
+cn=LDAPS Connection Handler
+		Certificate 	Cert info not available, skipping this certificate
+
+</PRE>
+
+
+<H4>JVM ARGS & SYSTEM INFORMATION:</H4>
+
+Displays Java version, memory used, cpu's and all JVM based parameters. Alerts when tuning is needed
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>	javaVersion       1.8.0_222
+	javaVendor        Oracle Corporation
+	usedMemory        2011506384 (1.87336 GB)
+	maxMemory         4241293311 (3.95001 GB)
+	avail disk space  2033397760 (1.89375 GB)
+	available CPUs    8
+
+	Operating System  3.10.0-1062.18.1.el7.x86_64
+
+java.properties (start-ds.java-args) 
+
+	-server                      
+	-Xms4G                       
+	-Xmx4G                       <-- <font color="green">-Xmx is the same as the -Xms value (good)</font>
+	-Xmn512M                     
+	-XX:+UseConcMarkSweepGC      <-- <font color="green">-XX:UseConcMarkSweepGC used!</font>
+	-XX:+UseCompressedOops       <-- <font color="green">-XX:+UseCompressedOops used!</font>
+	-XX:MaxTenuringThreshold=1   <-- <font color="green">-XX:MaxTenuringThreshold used!</font>
+	-XX:+PrintGCDetails          
+	-XX:+PrintGCTimeStamps       
+	-Xloggc:/forgerock/logs/6.5.3/gc.log
+
+cn=monitor - (jvmArguments)	
+
+	jvmArchitecture - 64-bit
+	ds-mon-jvm-arguments:        
+	"-Xms4G"                     
+	"-Xmx4G"                     
+	"-Xmn512M"                   
+	"-XX:+UseConcMarkSweepGC"    <-- <font color="green">-XX:UseConcMarkSweepGC used!</font>
+	"-XX:+UseCompressedOops"     <-- <font color="green">-XX:+UseCompressedOops used!</font>
+	"-XX:MaxTenuringThreshold=1" <-- <font color="green">-XX:MaxTenuringThreshold used!</font>
+	"-XX:+PrintGCDetails"        
+	"-XX:+PrintGCTimeStamps"     
+	"-Xloggc:/forgerock/logs/6.5.3/gc.log"
+	"-Dorg.opends.server.scriptName=start-ds"
+
+server.out log - (JVM Arguments)	
+
+	"-Xms4G",                    
+	"-Xmx4G",                    
+	"-Xmn512M",                  
+	"-XX:+UseConcMarkSweepGC",   <-- <font color="green">-XX:UseConcMarkSweepGC used!</font>
+	"-XX:+UseCompressedOops",    <-- <font color="green">-XX:+UseCompressedOops used!</font>
+	"-XX:MaxTenuringThreshold=1",<-- <font color="green">-XX:MaxTenuringThreshold used!</font>
+	"-XX:+PrintGCDetails",       
+	"-XX:+PrintGCTimeStamps",    
+	"-Xloggc:/forgerock/logs/6.5.3/gc.log",
+	"-Dorg.opends.server.scriptName=start-ds"
+
+
+Results:                  	
+
+	<font color="green">No JVM issues found</font>                            	*
+</PRE>
+
+
+<H4>CPU USAGE INFORMATION:</H4>
+
+Displays a range of CPU % for all threads used per stack as well as the overall total CPU % used.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE> * Stack+top files found 	Creating high-cpu-thread reports (in ../processStats)
+ * Top files found		Showing CPU usage range
+
+   - Sample 1: 	CPU Range: 6.7% to 6.7% 	Total Process CPU: 12%
+   - Sample 2: 	CPU Range: 6.7% to 13.3% 	Total Process CPU: 37%
+   - Sample 3: 	CPU Range: 6.7% to 6.7% 	Total Process CPU: 6%
+   - Sample 4: 	CPU Range: 6.7% to 6.7% 	Total Process CPU: 24%
+   - Sample 5: 	CPU Range: 6.7% to 6.7% 	Total Process CPU: 12%
+   - Sample 6: 	CPU Range: 6.2% to 6.2% 	Total Process CPU: 12%
+   - Sample 7: 	CPU Range: 6.2% to 6.2% 	Total Process CPU: 6%
+   - Sample 8: 	CPU Range: 6.7% to 6.7% 	Total Process CPU: 12%
+   - Sample 9: 	CPU Range: 6.7% to 6.7% 	Total Process CPU: 18%
+   - Sample 10:	CPU Range: 6.7% to 6.7% 	Total Process CPU: 18%
+
+   * Total Process CPU = total cpu used by all threads in that stack sample
+
+   <font color="#FF8C00">Alert: Compiler Thread's with high CPU found (6.7 %).</font>	
+    - <font color="#FF8C00">Test using -XX:ReservedCodeCacheSize= and -XX:+UseCodeCacheFlushing in your JVM arguments.</font>	
+</PRE>
+
+
+<H4>PROCESS DIFFERENCE INFORMATION:</H4>
+
+Displays if the process is changing over time, based on the jstacks captured.
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+ * Diffing ../processStats/jstackdump* files	Creating jstackdiff.* reports (in ../processStats)
+   - Sample 021706-1 vs Sample 021708-2 	
+process changing
+   - Sample 021708-2 vs Sample 021709-3 	
+process changing
+   - Sample 021709-3 vs Sample 021711-4 	
+process changing
+   - Sample 021711-4 vs Sample 021712-5 	
+process changing
+   - Sample 021712-5 vs Sample 021713-6 	
+process changing
+   - Sample 021713-6 vs Sample 021714-7 	
+process changing
+   - Sample 021714-7 vs Sample 021716-8 	
+process changing
+   - Sample 021716-8 vs Sample 021717-9 	
+no change
+   - Sample 021717-9 vs Sample 021718-10	
+no change
+
+ * Process is changing (not hung) 
+</PRE>
+
+
+<H4>OTHER INFORMATION:</H4>
+
+Displays miscellaneous information found
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+ * Production Mode		Not enabled. 
+ * AM CTS Instance		am-cts indexes found.
+ * Global ACI Count    		12 total.
+</PRE>
+
+
+<H4>ALERTS ENCOUNTERED:</H4>
+<HR WIDTH="1000" ALIGN="LEFT">
+<OL>
+ <LI>	Indexes:     TTL Indexes found (amCts/coreTokenExpirationDate).</LI>
+ <LI>	ACIs:        <font color="orange">One or more ACI's are base64 encoded.</font></LI>
+ <LI>	Policies:    <font color="#FF0000">Password Policy using PBKDF2 found (Root Password Policy).</font> See KB Article: Password-Storage-Warning.</LI>
+ <LI>	Policies:    <font color="orange">DS 5.0 and higher uses PBKDF2 for the "Root Password Policy", beware of applications using Root DNs.</font></LI>
+ <LI>	JVM:         <font color="orange">Compiler Thread's with high CPU found (6.7 %)</font>. See KB Article: JVM-Codecache-Tuning.</LI>
+
+<P>See all reported values with an asterisk (*)</P>
+</OL>
+
+
+<H4>FATAL ERRORS:</H4>
+<HR WIDTH="1000" ALIGN="LEFT">
+<OL>
+ <LI>	Config:      Control-H (^H) characters found in the config.ldif file. Can cause issues.</LI>
+
+<P>See all reported values with an asterisk (*)</P>
+</OL>
+
+
+<H4>KNOWLEDGE ARTICLES:</H4>
+<HR WIDTH="1000" ALIGN="LEFT">
+<OL>
+ <LI>	<A TARGET="_blank" HREF="https://backstage.forgerock.com/docs/ds/6.5/reference/index.html#base64-1">Encode and Decode Base64 Strings</A>	</LI>
+ <LI>	<A TARGET="_blank" HREF="https://backstage.forgerock.com/docs/ds/6.5/admin-guide/#configure-pwd-storage">Password Storage Warning.</A>	</LI>
+ <LI>	<A TARGET="_blank" HREF="https://docs.oracle.com/javase/8/embedded/develop-apps-platforms/codecache.htm">JVM Codecache Tuning.</A>	</LI>
+</OL>
+
+
+<H4>HEALTH STATUS:</H4>
+
+Displays basic health which may indicate if elements within a section need addressing (experimental)
+<HR WIDTH="1000" ALIGN="LEFT">
+<PRE>
+ [1]	Extract             		(<font color="green">GREEN</font>)
+ [2]	ServerInfo          		(<font color="green">GREEN</font>)
+ [3]	Backends            		(<font color="green">GREEN</font>)
+ [4]	Indexes             		(<font color="green">GREEN</font>)
+ [5]	Replication         		(<font color="green">GREEN</font>)
+ [6]	AccessControls      		(<font color="#FF8C00">YELLOW</font>)
+ [7]	PasswordPolicy      		(<font color="#FF8C00">YELLOW</font>)
+ [8]	Certificates        		(<font color="green">GREEN</font>)
+ [9]	JVMTuning           		(<font color="green">GREEN</font>)
+ [10]	JVMTuning           		(<font color="#FF8C00">YELLOW</font>)
+ [11]	CPUUsage            		(<font color="green">GREEN</font>)
+ [12]	OtherInfo           		(<font color="green">GREEN</font>)
+
+Key (Health status)
+
+ <font color="green">GREEN</font>		No issues
+ <font color="#FF8C00">YELLOW</font>		Minor issues, attention recommended
+ <font color="#FF0000">RED</font>		Major issues, attention required
+</PRE>
+
+
+
+<footer>
+<HR WIDTH="1000" ALIGN="LEFT">                                
+<TABLE BORDER=0 WIDTH="1000" CELLPADDING="0">                 
+<TR>                                                          
+<TD COLSPAN="100" ALIGN="LEFT"><H4>ForgeRock Extractor 2.2</H4></TD>
+<TD COLSPAN="100" ALIGN="RIGHT"><H4>Copyright 2018-2020 ForgeRock AS.</H4></TD>
+</TR>                                                         
+</TABLE>                                                      
+
+</footer>
+</BODY>
+</HTML>

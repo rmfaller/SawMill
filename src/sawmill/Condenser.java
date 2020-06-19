@@ -6,9 +6,11 @@
 package sawmill;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,6 +103,7 @@ class Condenser {
                                 logresponse = (JSONObject) logentry.get("response");
                                 timestamp = (String) logentry.get(config.get("timestampfield"));
                                 Long letime = (Long) logresponse.get(pois[index].get("lapsedtimefield"));
+//                                Long letime = (Long) logresponse.get(config.get("lapsedtimefield"));
                                 etime = letime.floatValue();
                                 timescale = (String) logresponse.get(config.get("timescale"));
                             } catch (ParseException ex) {
@@ -173,9 +176,9 @@ class Condenser {
                             if (showheader && !html) {
                                 printHeader(poi, sla);
                             }
-                            if (showheader && html) {
-                                printHTMLHeader(poi, sla);
-                            }
+//                            if (showheader && html) {
+//                                printHTMLHeader(poi, sla);
+//                            }
                         }
                         stats[index][OPCNT]++;
                         stats[index][TOTALOPCNT]++;
@@ -275,7 +278,7 @@ class Condenser {
                 }
                 if (showtotals || totalsonly) {
                     if (!html) {
-                        System.out.print("Totals,,,");
+                        System.out.print("Totals,," + new File(lf).getName() + ",");
                         System.out.print((epochtime - starttime) + ",");
                         for (int i = 0; i < stats.length; i++) {
                             System.out.format("%.0f%s", stats[i][TOTALOPCNT], ",");
@@ -349,52 +352,70 @@ class Condenser {
     }
 
     private void printHTMLHeader(JSONArray poi, boolean sla) {
-        System.out.println("clock");
-        System.out.println("Timestamp");
-        System.out.println("Logfile");
-        System.out.println("Timespan(ms)");
+//        System.out.println("clock");
+//        System.out.println("Timestamp");
+//        System.out.println("Logfile");
+//        System.out.println("Timespan(ms)");
         System.out.println("<table cellpadding=\"4\" border=\"1\">");
         System.out.println("<tbody>");
         System.out.println("<tr><font face=\"Consolas\">");
         System.out.println("<td align=\"center\">Operation Type</td>");
         System.out.println("<td align=\"center\">Operation count</td>");
-        System.out.println("<td align=\"center\">Average Time per Operation</td>");
+        System.out.println("<td align=\"center\">Average Time per Operation (ms)</td>");
         System.out.println("<td align=\"center\">Total time consumed (ms)</td>");
-        System.out.println("<td align=\"center\">Under threshold</td>");
-        System.out.println("<td align=\"center\">Over threshold</td>");
-        System.out.println("<td align=\"center\">Threshold</td>");
+        System.out.println("<td align=\"center\">Under threshold count</td>");
+        System.out.println("<td align=\"center\">Over threshold count</td>");
+        System.out.println("<td align=\"center\">Threshold (ms)</td>");
         System.out.println("<td align=\"center\">Percentage under threshold</td>");
         System.out.println("</font></tr>");
     }
 
     private void printHTML(boolean sla, long epochtime, long starttime, float[][] stats, long[] slatime, int TOTALOPCNT, int TOTALOPSOVER, int TOTALOPSUNDER, int TOTALTIMEOP, JSONArray poi) {
+        Date st = new Date(starttime);
+        Date et = new Date(epochtime);
+        SimpleDateFormat tf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
+        System.out.println("<pre>Logs started " + tf.format(st) + "  Ended on  " + tf.format(et) + " ");
+        System.out.println("Time span = " + (epochtime - starttime) + "ms (" + ((epochtime - starttime) / 1000) + " seconds or " + (((epochtime - starttime) / 1000) / 60) + " minutes)");
+        System.out.println("<table cellpadding=\"4\" border=\"1\">");
+        System.out.println("<tbody>");
+        System.out.println("<tr>");
+        System.out.println("<td align=\"center\"><pre>Operation Type</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Operation count</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Average Time per Operation (ms)</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Total time consumed (ms)</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Under threshold count</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Over threshold count</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Percentage under threshold</pre></td>");
+        System.out.println("<td align=\"center\"><pre>Threshold (ms)</pre></td>");
+        System.out.println("</tr>");
         for (int i = 0; i < stats.length; i++) {
-            System.out.println("<pre><tr>");
-            System.out.println("<td>" + poi.get(i) + "</td>");
-            System.out.format("%s%.0f%s", "<td>", stats[i][TOTALOPCNT], "</td>");
+            System.out.println("<tr>");
+            System.out.println("<td><pre>" + poi.get(i) + "</pre></td>");
+            System.out.format("%s%.0f%s", "<td><pre>", stats[i][TOTALOPCNT], "</pre></td>");
             if (stats[i][TOTALOPCNT] > 0) {
-                System.out.format("%s%.2f%s", "<td>", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), "</td>");
-                System.out.format("%s%.2f%s", "<td>", stats[i][TOTALTIMEOP], "</td>");
+                System.out.format("%s%.2f%s", "<td><pre>", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), "</pre></td>");
+                System.out.format("%s%.2f%s", "<td><pre>", stats[i][TOTALTIMEOP], "</pre></td>");
             } else {
-                System.out.print("<td>0</td><td>0</td>");
+                System.out.print("<td><pre>0</pre></td><td><pre>0</pre></td>");
             }
             if (sla) {
-                System.out.println("<td>");
-                System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], "</td>");
-                System.out.println("<td>");
-                System.out.format("%.0f%s", stats[i][TOTALOPSOVER], "</td>");
-                System.out.print("<td>" + slatime[i] + "</td>");
+                System.out.println("<td><pre>");
+                System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], "</pre></td>");
                 if (stats[i][TOTALOPSOVER] > 0) {
-                    System.out.format("%s%3.1f%s", "<td>", ((stats[i][TOTALOPSUNDER] / stats[i][TOTALOPCNT]) * 100), "%</td>");
+                    System.out.println("<td bgcolor=\"#ff6666\"><pre><b>");
+                    System.out.format("%.0f%s", stats[i][TOTALOPSOVER], "</b></pre></td>");
+                    System.out.format("%s%3.1f%s", "<td bgcolor=\"#ff6666\"><pre><b>", ((stats[i][TOTALOPSUNDER] / stats[i][TOTALOPCNT]) * 100), "%</b></pre></td>");
                 } else {
-                    System.out.print("<td>100.0%</td>");
+                    System.out.print("<td><pre>0</pre></td>");
+                    System.out.print("<td><pre>100.0%</pre></td>");
                 }
+                System.out.print("<td><pre>" + slatime[i] + "</pre></td>");
             }
-            System.out.println("</tr></pre>");
+            System.out.println("</tr>");
         }
         System.out.println("</tr></tbody>");
-        System.out.println("</table>");
-        System.out.println("<p>Time span = " + (epochtime - starttime) + "ms (" + ((epochtime - starttime) / 1000) + " seconds or " + (((epochtime - starttime) / 1000) / 60) + " minutes)</p>");
+        System.out.println("</table><br>NOTE: -s postfix = successful and -f postfix = failed</pre>");
+
     }
 
 }

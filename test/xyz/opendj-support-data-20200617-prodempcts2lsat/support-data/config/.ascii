@@ -1,0 +1,1023 @@
+dn: cn=monitor
+ds-mon-product-name: ForgeRock Directory Services
+ds-mon-short-name: OpenDJ
+ds-mon-vendor-name: ForgeRock AS.
+ds-mon-full-version: ForgeRock Directory Services 6.5.3+OPENDJ-7016,OPENDJ-5775,OPENDJ-7107,OPENDJ-7047
+ds-mon-compact-version: OpenDJ-6.5.3
+ds-mon-major-version: 6
+ds-mon-minor-version: 5
+ds-mon-point-version: 3
+ds-mon-revision: 76fcf21d8cd80e15f1cf5de9cd275e2536c58553
+ds-mon-build-time: 20200530163553
+ds-mon-version-qualifier: 
+ds-mon-build-number: 0
+ds-mon-fix-ids: OPENDJ-7016,OPENDJ-5775,OPENDJ-7107,OPENDJ-7047
+ds-mon-working-directory: /
+ds-mon-os-name: Linux
+ds-mon-os-version: 3.10.0-1062.18.1.el7.x86_64
+ds-mon-os-architecture: amd64
+ds-mon-system-name: prodempcts2lsat
+ds-mon-install-path: /forgerock/6.5.3/opendj
+ds-mon-instance-path: /forgerock/6.5.3/opendj
+ds-mon-start-time: 20200612232552.824Z
+ds-mon-current-time: 20200617191706.554Z
+ds-mon-current-connections: 81
+ds-mon-max-connections: 153
+ds-mon-total-connections: 30742
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-server
+objectClass: extensibleObject
+cn: monitor
+
+dn: cn=Administration Connector,cn=monitor
+ds-mon-config-dn: cn=Administration Connector,cn=config
+ds-mon-protocol: LDAPS
+ds-mon-listen-address: 0.0.0.0:5444
+ds-mon-connection: {"connID":30741,"connectTime":"20200617191706Z","source":"127.0.0.1:51700","destination":"127.0.0.1:5444","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":128,"opsInProgress":1,"persistentSearches":0}
+ds-mon-active-connections-count: 1
+ds-mon-connections: {"count":1391,"total":1391.000,"mean_rate":0.003,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003}
+ds-mon-bytes-read: {"count":151514,"total":27070694.000,"mean_rate":64.907,"m1_rate":42.433,"m5_rate":68.269,"m15_rate":66.622}
+ds-mon-bytes-written: {"count":389204,"total":157383069.000,"mean_rate":377.353,"m1_rate":271.785,"m5_rate":437.266,"m15_rate":426.716}
+ds-mon-active-persistent-searches: 0
+ds-mon-abandoned-requests: 0
+ds-mon-requests-abandon: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-add: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-bind: {"count":1391,"total":20786.000,"mean_rate":0.003,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003,"mean":14.941,"min":12.976,"max":30.015,"stddev":2.601,"p50":14.025,"p75":15.008,"p95":21.103,"p98":22.020,"p99":22.020,"p999":23.069,"p9999":30.015,"p99999":30.015}
+ds-mon-requests-compare: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-delete: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-extended: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-modify: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-modify-dn: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-search-base: {"count":141780,"total":32861.000,"mean_rate":0.340,"m1_rate":0.222,"m5_rate":0.358,"m15_rate":0.349,"mean":0.232,"min":0.000,"max":13.042,"stddev":0.435,"p50":0.000,"p75":0.000,"p95":1.004,"p98":1.004,"p99":1.004,"p999":1.004,"p9999":4.014,"p99999":13.042}
+ds-mon-requests-search-one: {"count":2780,"total":1669.000,"mean_rate":0.007,"m1_rate":0.004,"m5_rate":0.007,"m15_rate":0.007,"mean":0.601,"min":0.000,"max":27.001,"stddev":0.712,"p50":1.004,"p75":1.004,"p95":1.004,"p98":1.004,"p99":1.004,"p999":2.007,"p9999":27.001,"p99999":27.001}
+ds-mon-requests-search-sub: {"count":1390,"total":26925.000,"mean_rate":0.003,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003,"mean":19.364,"min":12.976,"max":101.188,"stddev":5.627,"p50":18.088,"p75":22.020,"p95":29.098,"p98":34.079,"p99":37.224,"p999":78.119,"p9999":101.188,"p99999":101.188}
+ds-mon-requests-unbind: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-uncategorized: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-invalid-request: {"count":1390,"total":702.000,"mean_rate":0.003,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003,"mean":0.506,"min":0.000,"max":3.015,"stddev":0.515,"p50":0.000,"p75":1.004,"p95":1.004,"p98":1.004,"p99":1.004,"p999":2.007,"p9999":3.015,"p99999":3.015}
+ds-mon-requests-failure-client-security: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-resource-limit: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-referral: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-server: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-uncategorized: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-connection-handler
+objectClass: ds-monitor-ldap-connection-handler
+cn: Administration Connector
+
+dn: cn=backends,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: backends
+
+dn: ds-cfg-backend-id=__config.ldif__,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 205
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: __config.ldif__
+
+dn: ds-mon-base-dn=cn=config,ds-cfg-backend-id=__config.ldif__,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 205
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=config
+
+dn: ds-cfg-backend-id=adminRoot,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 27
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: adminRoot
+
+dn: ds-mon-base-dn=cn=admin data,ds-cfg-backend-id=adminRoot,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 27
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=admin data
+
+dn: ds-cfg-backend-id=ads-truststore,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 10
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: ads-truststore
+
+dn: ds-mon-base-dn=cn=ads-truststore,ds-cfg-backend-id=ads-truststore,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 10
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=ads-truststore
+
+dn: ds-cfg-backend-id=amCts,cn=backends,cn=monitor
+ds-mon-backend-is-private: false
+ds-mon-backend-entry-count: 470225
+ds-mon-backend-writability-mode: enabled
+ds-mon-backend-degraded-index-count: 0
+ds-mon-backend-ttl-is-running: false
+ds-mon-backend-ttl-last-run-time: 20200617191704.776Z
+ds-mon-backend-ttl-thread-count: 0
+ds-mon-backend-ttl-queue-size: 0
+ds-mon-backend-ttl-entries-deleted: {"count":7169637,"total":7169637.000,"mean_rate":17.190,"m1_rate":102.633,"m5_rate":105.155,"m15_rate":106.964}
+ds-mon-backend-filter-use-start-time: 19700101000000Z
+ds-mon-backend-filter-use-indexed: 0
+ds-mon-backend-filter-use-unindexed: 0
+ds-mon-db-version: 7.5.11
+ds-mon-db-cache-evict-internal-nodes-count: 0
+ds-mon-db-cache-evict-leaf-nodes-count: 0
+ds-mon-db-cache-total-tries-internal-nodes: 808308904
+ds-mon-db-cache-total-tries-leaf-nodes: 68236911
+ds-mon-db-cache-misses-internal-nodes: 13
+ds-mon-db-cache-misses-leaf-nodes: 957
+ds-mon-db-cache-size-active: 1167592250
+ds-mon-db-log-size-active: 1879454367
+ds-mon-db-log-cleaner-file-deletion-count: 178
+ds-mon-db-log-utilization-min: 57
+ds-mon-db-log-utilization-max: 57
+ds-mon-db-log-size-total: 1879454367
+ds-mon-db-log-files-open: 2
+ds-mon-db-log-files-opened: 542
+ds-mon-db-checkpoint-count: 359
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+objectClass: ds-monitor-backend-pluggable
+objectClass: ds-monitor-backend-db
+ds-cfg-backend-id: amCts
+
+dn: cn=raw JE database statistics,ds-cfg-backend-id=amCts,cn=backends,cn=monitor
+ds-mon-je-environment-active-log-size: 1879454367
+ds-mon-je-environment-admin-bytes: 681858
+ds-mon-je-environment-available-log-size: 138393731072
+ds-mon-je-environment-buffer-bytes: 3145728
+ds-mon-je-environment-cache-total-bytes: 1167592250
+ds-mon-je-environment-current-max-utilization: 57
+ds-mon-je-environment-current-min-utilization: 57
+ds-mon-je-environment-cursors-bins: 52
+ds-mon-je-environment-dosbytes: 0
+ds-mon-je-environment-data-admin-bytes: 9120
+ds-mon-je-environment-data-bytes: 1163761704
+ds-mon-je-environment-db-closed-bins: 0
+ds-mon-je-environment-dirty-lrusize: 0
+ds-mon-je-environment-end-of-log: 769781419806
+ds-mon-je-environment-environment-creation-time: 1592004354327
+ds-mon-je-environment-fsync-max-time: 4964
+ds-mon-je-environment-fsync-time: 198216
+ds-mon-je-environment-in-comp-queue-size: 12536
+ds-mon-je-environment-last-checkpoint-end: 769429767788
+ds-mon-je-environment-last-checkpoint-id: 363
+ds-mon-je-environment-last-checkpoint-interval: 500134265
+ds-mon-je-environment-last-checkpoint-start: 769407850386
+ds-mon-je-environment-lock-bytes: 2960
+ds-mon-je-environment-mixed-lrusize: 43283
+ds-mon-je-environment-nacquires-no-wait-successful: 0
+ds-mon-je-environment-nacquires-no-wait-un-successful: 0
+ds-mon-je-environment-nacquires-no-waiters: 0
+ds-mon-je-environment-nacquires-self-owned: 0
+ds-mon-je-environment-nacquires-with-contention: 0
+ds-mon-je-environment-nbindelta-blind-ops: 0
+ds-mon-je-environment-nbindeltas-cleaned: 11800
+ds-mon-je-environment-nbindeltas-dead: 8191
+ds-mon-je-environment-nbindeltas-fetch-miss: 1
+ds-mon-je-environment-nbindeltas-migrated: 3609
+ds-mon-je-environment-nbindeltas-obsolete: 2374591
+ds-mon-je-environment-nbins-fetch: 420883874
+ds-mon-je-environment-nbins-fetch-miss: 13
+ds-mon-je-environment-nbin-delta-delete-ops: 0
+ds-mon-je-environment-nbin-delta-get-ops: 0
+ds-mon-je-environment-nbin-delta-insert-ops: 0
+ds-mon-je-environment-nbin-delta-update-ops: 0
+ds-mon-je-environment-nbytes-evicted-cache-mode: 0
+ds-mon-je-environment-nbytes-evicted-critical: 0
+ds-mon-je-environment-nbytes-evicted-deamon: 0
+ds-mon-je-environment-nbytes-evicted-evictor-thread: 0
+ds-mon-je-environment-nbytes-evicted-manual: 0
+ds-mon-je-environment-nbytes-read-from-write-queue: 0
+ds-mon-je-environment-nbytes-written-from-write-queue: 143698946
+ds-mon-je-environment-ncache-miss: 984
+ds-mon-je-environment-ncached-bindeltas: 0
+ds-mon-je-environment-ncached-bins: 43283
+ds-mon-je-environment-ncached-upper-ins: 1438
+ds-mon-je-environment-ncheckpoints: 359
+ds-mon-je-environment-ncleaner-deletions: 178
+ds-mon-je-environment-ncleaner-disk-read: 81178
+ds-mon-je-environment-ncleaner-entries-read: 146323492
+ds-mon-je-environment-ncleaner-revisal-runs: 0
+ds-mon-je-environment-ncleaner-runs: 178
+ds-mon-je-environment-ncleaner-two-pass-runs: 0
+ds-mon-je-environment-ncluster-lns-processed: 0
+ds-mon-je-environment-ndelta-inflush: 2420683
+ds-mon-je-environment-ndirty-nodes-evicted: 0
+ds-mon-je-environment-neviction-runs: 2
+ds-mon-je-environment-nfsync-requests: 359
+ds-mon-je-environment-nfsync-timeouts: 21
+ds-mon-je-environment-nfsyncs: 362
+ds-mon-je-environment-nfile-opens: 542
+ds-mon-je-environment-nfull-binflush: 3241955
+ds-mon-je-environment-nfull-bins-miss: 1
+ds-mon-je-environment-nfull-inflush: 3438445
+ds-mon-je-environment-nincompact-key-in: 33520
+ds-mon-je-environment-ninno-target: 35870
+ds-mon-je-environment-ninsparse-target: 1174
+ds-mon-je-environment-nins-cleaned: 1986035
+ds-mon-je-environment-nins-dead: 199501
+ds-mon-je-environment-nins-migrated: 1786534
+ds-mon-je-environment-nins-obsolete: 2777931
+ds-mon-je-environment-nlnqueue-hits: 27299761
+ds-mon-je-environment-nlns-cleaned: 28006345
+ds-mon-je-environment-nlns-dead: 10321
+ds-mon-je-environment-nlns-evicted: 0
+ds-mon-je-environment-nlns-expired: 0
+ds-mon-je-environment-nlns-fetch: 68236911
+ds-mon-je-environment-nlns-fetch-miss: 957
+ds-mon-je-environment-nlns-locked: 1
+ds-mon-je-environment-nlns-marked: 0
+ds-mon-je-environment-nlns-migrated: 27994353
+ds-mon-je-environment-nlns-obsolete: 111165787
+ds-mon-je-environment-nlog-buffers: 3
+ds-mon-je-environment-nlog-fsyncs: 8185
+ds-mon-je-environment-nmarked-lns-processed: 0
+ds-mon-je-environment-nnodes-evicted: 0
+ds-mon-je-environment-nnodes-moved-to-dirty-lru: 0
+ds-mon-je-environment-nnodes-mutated: 0
+ds-mon-je-environment-nnodes-put-back: 3
+ds-mon-je-environment-nnodes-skipped: 0
+ds-mon-je-environment-nnodes-stripped: 0
+ds-mon-je-environment-nnodes-targeted: 0
+ds-mon-je-environment-nnot-resident: 986
+ds-mon-je-environment-nopen-files: 2
+ds-mon-je-environment-nowners: 37
+ds-mon-je-environment-npending-lns-locked: 0
+ds-mon-je-environment-npending-lns-processed: 1
+ds-mon-je-environment-nrandom-read-bytes: 90651055330
+ds-mon-je-environment-nrandom-reads: 41771
+ds-mon-je-environment-nrandom-write-bytes: 31661393541
+ds-mon-je-environment-nrandom-writes: 42054
+ds-mon-je-environment-nread-locks: 37
+ds-mon-je-environment-nreads-from-write-queue: 0
+ds-mon-je-environment-nreleases: 0
+ds-mon-je-environment-nrepeat-fault-reads: 0
+ds-mon-je-environment-nrepeat-iterator-reads: 0
+ds-mon-je-environment-nrequests: 475358541
+ds-mon-je-environment-nroot-nodes-evicted: 0
+ds-mon-je-environment-nsequential-read-bytes: 87518317963
+ds-mon-je-environment-nsequential-reads: 40763
+ds-mon-je-environment-nsequential-write-bytes: 148255444552
+ds-mon-je-environment-nsequential-writes: 15331981
+ds-mon-je-environment-nshared-cache-environments: 1
+ds-mon-je-environment-ntemp-buffer-writes: 16209
+ds-mon-je-environment-nthread-unavailable: 0
+ds-mon-je-environment-nto-be-cleaned-lns-processed: 0
+ds-mon-je-environment-ntotal-locks: 37
+ds-mon-je-environment-nupper-ins-fetch: 387425030
+ds-mon-je-environment-nupper-ins-fetch-miss: 0
+ds-mon-je-environment-nwaiters: 0
+ds-mon-je-environment-nwaits: 85651
+ds-mon-je-environment-nwrite-locks: 0
+ds-mon-je-environment-nwrite-queue-overflow: 34
+ds-mon-je-environment-nwrite-queue-overflow-failures: 9
+ds-mon-je-environment-nwrites-from-write-queue: 148
+ds-mon-je-environment-non-empty-bins: 0
+ds-mon-je-environment-off-heap-alloc-failures: 0
+ds-mon-je-environment-off-heap-alloc-overflows: 0
+ds-mon-je-environment-off-heap-bins-loaded: 0
+ds-mon-je-environment-off-heap-bins-stored: 0
+ds-mon-je-environment-off-heap-cached-bindeltas: 0
+ds-mon-je-environment-off-heap-cached-bins: 0
+ds-mon-je-environment-off-heap-cached-lns: 0
+ds-mon-je-environment-off-heap-critical-nodes-targeted: 0
+ds-mon-je-environment-off-heap-dirty-nodes-evicted: 0
+ds-mon-je-environment-off-heap-lns-evicted: 0
+ds-mon-je-environment-off-heap-lns-loaded: 0
+ds-mon-je-environment-off-heap-lns-stored: 0
+ds-mon-je-environment-off-heap-lrusize: 0
+ds-mon-je-environment-off-heap-nodes-evicted: 0
+ds-mon-je-environment-off-heap-nodes-mutated: 0
+ds-mon-je-environment-off-heap-nodes-skipped: 0
+ds-mon-je-environment-off-heap-nodes-stripped: 0
+ds-mon-je-environment-off-heap-nodes-targeted: 0
+ds-mon-je-environment-off-heap-thread-unavailable: 0
+ds-mon-je-environment-off-heap-total-blocks: 0
+ds-mon-je-environment-off-heap-total-bytes: 0
+ds-mon-je-environment-pending-lnqueue-size: 0
+ds-mon-je-environment-pri-delete-fail-ops: 0
+ds-mon-je-environment-pri-delete-ops: 36502451
+ds-mon-je-environment-pri-insert-fail-ops: 645
+ds-mon-je-environment-pri-insert-ops: 38882318
+ds-mon-je-environment-pri-position-ops: 14745183
+ds-mon-je-environment-pri-search-fail-ops: 69503772
+ds-mon-je-environment-pri-search-ops: 238521756
+ds-mon-je-environment-pri-update-ops: 38523023
+ds-mon-je-environment-processed-bins: 269526
+ds-mon-je-environment-protected-log-size: 0
+ds-mon-je-environment-relatches-required: 0
+ds-mon-je-environment-reserved-log-size: 0
+ds-mon-je-environment-sec-delete-ops: 0
+ds-mon-je-environment-sec-insert-ops: 0
+ds-mon-je-environment-sec-position-ops: 0
+ds-mon-je-environment-sec-search-fail-ops: 0
+ds-mon-je-environment-sec-search-ops: 0
+ds-mon-je-environment-sec-update-ops: 0
+ds-mon-je-environment-shared-cache-total-bytes: 1167592250
+ds-mon-je-environment-split-bins: 40
+ds-mon-je-environment-total-log-size: 1879454367
+ds-mon-je-transaction-naborts: 0
+ds-mon-je-transaction-nactive: 0
+ds-mon-je-transaction-nbegins: 15422263
+ds-mon-je-transaction-ncommits: 15423738
+ds-mon-je-transaction-nxaaborts: 0
+ds-mon-je-transaction-nxacommits: 0
+ds-mon-je-transaction-nxaprepares: 0
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-raw-je-database-statistics
+objectClass: extensibleObject
+cn: raw JE database statistics
+
+dn: ds-mon-base-dn=dc=cts\,dc=usaa\,dc=com,ds-cfg-backend-id=amCts,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 470225
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: dc=cts,dc=usaa,dc=com
+
+dn: ds-cfg-backend-id=backup,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 1
+ds-mon-backend-writability-mode: disabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: backup
+
+dn: ds-mon-base-dn=cn=backups,ds-cfg-backend-id=backup,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 1
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=backups
+
+dn: ds-cfg-backend-id=monitor,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 59
+ds-mon-backend-writability-mode: disabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: monitor
+
+dn: ds-mon-base-dn=cn=monitor,ds-cfg-backend-id=monitor,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 59
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=monitor
+
+dn: ds-cfg-backend-id=monitorUser,cn=backends,cn=monitor
+ds-mon-backend-is-private: false
+ds-mon-backend-entry-count: 1
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: monitorUser
+
+dn: ds-mon-base-dn=uid=EmployeeMonitorUserA,ds-cfg-backend-id=monitorUser,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 1
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: uid=EmployeeMonitorUserA
+
+dn: ds-cfg-backend-id=rootUser,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 1
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: rootUser
+
+dn: ds-mon-base-dn=cn=Employee CTS Admin,ds-cfg-backend-id=rootUser,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 1
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=Employee CTS Admin
+
+dn: ds-cfg-backend-id=schema,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 1
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: schema
+
+dn: ds-mon-base-dn=cn=schema,ds-cfg-backend-id=schema,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 1
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=schema
+
+dn: ds-cfg-backend-id=tasks,cn=backends,cn=monitor
+ds-mon-backend-is-private: true
+ds-mon-backend-entry-count: 3
+ds-mon-backend-writability-mode: enabled
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-backend
+ds-cfg-backend-id: tasks
+
+dn: ds-mon-base-dn=cn=tasks,ds-cfg-backend-id=tasks,cn=backends,cn=monitor
+ds-mon-base-dn-entry-count: 3
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-base-dn
+ds-mon-base-dn: cn=tasks
+
+dn: cn=Certificates,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: Certificates
+
+dn: cn=Default Key Manager,cn=Certificates,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: Default Key Manager
+
+dn: ds-mon-alias=prod-cert-exp-2022-05,cn=Default Key Manager,cn=Certificates,cn=monitor
+ds-mon-certificate-issuer-dn: CN=USAA-PRODSSL6-G2-CA,DC=eagle,DC=usaa,DC=com
+ds-mon-certificate-subject-dn: CN=prodempds.usaa.com,OU=USAA,O=USAA,L=San Antonio,ST=Texas,C=US
+ds-mon-certificate-serial-number: 1382646237144857061932784584796394889303562805
+ds-mon-certificate-expires-at: 20220529191026Z
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-certificate
+ds-mon-alias: prod-cert-exp-2022-05
+
+dn: ds-mon-alias=server-cert,cn=Default Key Manager,cn=Certificates,cn=monitor
+ds-mon-certificate-issuer-dn: CN=prodempcts2lsat.usaa.com,O=OpenDJ RSA Self-Signed Certificate
+ds-mon-certificate-subject-dn: CN=prodempcts2lsat.usaa.com,O=OpenDJ RSA Self-Signed Certificate
+ds-mon-certificate-serial-number: 382539011
+ds-mon-certificate-expires-at: 20400607231237Z
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-certificate
+ds-mon-alias: server-cert
+
+dn: cn=connection handlers,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: connection handlers
+
+dn: cn=HTTPS,cn=connection handlers,cn=monitor
+ds-mon-config-dn: cn=HTTPS,cn=connection handlers,cn=config
+ds-mon-protocol: HTTPS
+ds-mon-listen-address: 0.0.0.0:9443
+ds-mon-active-connections-count: 0
+ds-mon-bytes-read: {"count":27805,"total":9231260.000,"mean_rate":22.134,"m1_rate":22.082,"m5_rate":22.131,"m15_rate":22.133}
+ds-mon-bytes-written: {"count":222439,"total":3411814051.000,"mean_rate":8180.413,"m1_rate":8180.018,"m5_rate":8198.396,"m15_rate":8198.529}
+ds-mon-requests-delete: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-get: {"count":27805,"total":382037.000,"mean_rate":0.067,"m1_rate":0.067,"m5_rate":0.067,"m15_rate":0.067,"mean":13.739,"min":8.978,"max":3036.676,"stddev":47.844,"p50":12.059,"p75":14.025,"p95":18.088,"p98":21.103,"p99":23.069,"p999":80.216,"p9999":3019.899,"p99999":3036.676}
+ds-mon-requests-patch: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-post: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-put: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-uncategorized: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-invalid-request: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-redirect: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-security: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-server: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-uncategorized: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-connection-handler
+objectClass: ds-monitor-http-connection-handler
+cn: HTTPS
+
+dn: cn=LDAPS,cn=connection handlers,cn=monitor
+ds-mon-config-dn: cn=LDAPS,cn=connection handlers,cn=config
+ds-mon-protocol: LDAPS
+ds-mon-listen-address: 0.0.0.0:2636
+ds-mon-connection: {"connID":19687,"connectTime":"20200616013604Z","source":"10.23.52.12:48624","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19736,"connectTime":"20200616013835Z","source":"10.23.52.12:33076","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19627,"connectTime":"20200616012852Z","source":"10.23.48.19:46442","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19639,"connectTime":"20200616012954Z","source":"10.23.128.36:35700","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19696,"connectTime":"20200616013633Z","source":"10.23.48.19:41552","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19646,"connectTime":"20200616013029Z","source":"10.23.128.36:42932","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19733,"connectTime":"20200616013829Z","source":"10.23.48.13:49046","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19690,"connectTime":"20200616013606Z","source":"10.23.48.19:38578","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19702,"connectTime":"20200616013707Z","source":"10.23.48.13:40722","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19617,"connectTime":"20200616012704Z","source":"10.23.128.36:53696","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19711,"connectTime":"20200616013744Z","source":"10.23.48.19:49376","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19721,"connectTime":"20200616013821Z","source":"10.23.48.19:54910","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19732,"connectTime":"20200616013829Z","source":"10.23.48.19:56060","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19638,"connectTime":"20200616012950Z","source":"10.23.128.36:34874","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19662,"connectTime":"20200616013301Z","source":"10.23.52.12:33534","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19735,"connectTime":"20200616013832Z","source":"10.23.128.36:43452","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19731,"connectTime":"20200616013827Z","source":"10.23.128.36:42164","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19741,"connectTime":"20200616013849Z","source":"10.23.48.19:59114","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19698,"connectTime":"20200616013646Z","source":"10.23.52.12:52178","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19737,"connectTime":"20200616013835Z","source":"10.23.48.13:49730","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19647,"connectTime":"20200616013034Z","source":"10.23.128.36:43894","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19745,"connectTime":"20200616013920Z","source":"10.23.52.12:36852","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19619,"connectTime":"20200616012710Z","source":"10.23.128.36:55144","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19635,"connectTime":"20200616012939Z","source":"10.23.128.36:32844","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19703,"connectTime":"20200616013707Z","source":"10.23.48.13:40724","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19688,"connectTime":"20200616013604Z","source":"10.23.52.12:48642","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19740,"connectTime":"20200616013844Z","source":"10.23.48.19:58296","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19637,"connectTime":"20200616012946Z","source":"10.23.128.36:34284","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19700,"connectTime":"20200616013704Z","source":"10.23.48.13:40494","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19685,"connectTime":"20200616013601Z","source":"10.23.52.12:48400","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19742,"connectTime":"20200616013852Z","source":"10.23.48.13:51418","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19716,"connectTime":"20200616013819Z","source":"10.23.48.13:47956","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19707,"connectTime":"20200616013735Z","source":"10.23.52.12:56306","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19650,"connectTime":"20200616013052Z","source":"10.23.128.36:47520","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19693,"connectTime":"20200616013610Z","source":"10.23.52.12:49136","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19692,"connectTime":"20200616013608Z","source":"10.23.52.12:48982","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19629,"connectTime":"20200616012858Z","source":"10.23.48.19:47084","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19680,"connectTime":"20200616013515Z","source":"10.23.48.19:60900","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19714,"connectTime":"20200616013814Z","source":"10.23.52.12:59592","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19715,"connectTime":"20200616013814Z","source":"10.23.128.36:39152","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19633,"connectTime":"20200616012938Z","source":"10.23.128.36:32816","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19722,"connectTime":"20200616013821Z","source":"10.23.48.13:48144","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19728,"connectTime":"20200616013825Z","source":"10.23.48.19:55430","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19719,"connectTime":"20200616013820Z","source":"10.23.128.36:40628","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19723,"connectTime":"20200616013822Z","source":"10.23.48.19:55166","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":24441,"connectTime":"20200616192610Z","source":"10.23.128.36:59950","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19670,"connectTime":"20200616013421Z","source":"10.23.48.13:52578","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19653,"connectTime":"20200616013117Z","source":"10.23.48.19:34570","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19634,"connectTime":"20200616012939Z","source":"10.23.128.36:32834","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19630,"connectTime":"20200616012858Z","source":"10.23.48.19:47085","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19717,"connectTime":"20200616013819Z","source":"10.23.48.19:54598","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19689,"connectTime":"20200616013605Z","source":"10.23.48.19:38418","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19644,"connectTime":"20200616013016Z","source":"10.23.128.36:40010","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19729,"connectTime":"20200616013826Z","source":"10.23.48.19:55546","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19618,"connectTime":"20200616012710Z","source":"10.23.128.36:55124","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19673,"connectTime":"20200616013427Z","source":"10.23.48.13:53241","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19725,"connectTime":"20200616013823Z","source":"10.23.48.19:55218","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":25307,"connectTime":"20200616224255Z","source":"10.23.48.13:52320","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19720,"connectTime":"20200616013821Z","source":"10.23.48.13:48136","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":27703,"connectTime":"20200617074648Z","source":"10.23.48.13:59978","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19718,"connectTime":"20200616013820Z","source":"10.23.52.12:60068","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19686,"connectTime":"20200616013603Z","source":"10.23.52.12:48552","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19710,"connectTime":"20200616013743Z","source":"10.23.52.12:57006","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19726,"connectTime":"20200616013823Z","source":"10.23.48.13:48336","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":26467,"connectTime":"20200617030559Z","source":"10.23.128.36:52272","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19701,"connectTime":"20200616013705Z","source":"10.23.48.13:40526","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19691,"connectTime":"20200616013607Z","source":"10.23.52.12:48920","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19658,"connectTime":"20200616013222Z","source":"10.23.128.36:39210","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19672,"connectTime":"20200616013427Z","source":"10.23.48.13:53240","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19704,"connectTime":"20200616013710Z","source":"10.23.48.13:41086","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19664,"connectTime":"20200616013306Z","source":"10.23.52.12:34032","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19709,"connectTime":"20200616013742Z","source":"10.23.48.13:44354","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19679,"connectTime":"20200616013515Z","source":"10.23.48.19:60896","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19683,"connectTime":"20200616013552Z","source":"10.23.52.12:47604","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19727,"connectTime":"20200616013823Z","source":"10.23.48.13:48354","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19649,"connectTime":"20200616013050Z","source":"10.23.128.36:47198","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19738,"connectTime":"20200616013838Z","source":"10.23.52.12:33378","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19724,"connectTime":"20200616013822Z","source":"10.23.48.13:48266","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19663,"connectTime":"20200616013306Z","source":"10.23.52.12:34033","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-connection: {"connID":19734,"connectTime":"20200616013832Z","source":"10.23.48.13:49374","destination":"10.15.145.53:2636","ldapVersion":3,"authDN":"cn=Employee CTS Admin","ssf":256,"opsInProgress":0,"persistentSearches":0}
+ds-mon-active-connections-count: 80
+ds-mon-connections: {"count":1546,"total":1546.000,"mean_rate":0.004,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003}
+ds-mon-bytes-read: {"count":4130182,"total":3398812750.000,"mean_rate":8149.247,"m1_rate":51845.467,"m5_rate":51038.529,"m15_rate":50767.866}
+ds-mon-bytes-written: {"count":5139030,"total":16463682823.000,"mean_rate":39474.553,"m1_rate":33905.881,"m5_rate":45457.391,"m15_rate":68190.801}
+ds-mon-active-persistent-searches: 0
+ds-mon-abandoned-requests: 0
+ds-mon-requests-abandon: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-add: {"count":1784691,"total":1827418.000,"mean_rate":4.279,"m1_rate":27.993,"m5_rate":27.436,"m15_rate":27.206,"mean":1.025,"min":0.000,"max":4999.610,"stddev":19.544,"p50":1.004,"p75":1.004,"p95":1.004,"p98":2.007,"p99":2.007,"p999":22.020,"p9999":295.698,"p99999":4143.972}
+ds-mon-requests-bind: {"count":1546,"total":23797.000,"mean_rate":0.004,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003,"mean":15.387,"min":12.976,"max":47.186,"stddev":3.275,"p50":14.025,"p75":16.056,"p95":22.020,"p98":23.069,"p99":27.001,"p999":39.059,"p9999":47.186,"p99999":47.186}
+ds-mon-requests-compare: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-delete: {"count":3,"total":5.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":1.669,"min":0.999,"max":2.007,"stddev":0.472,"p50":2.007,"p75":2.007,"p95":2.007,"p98":2.007,"p99":2.007,"p999":2.007,"p9999":2.007,"p99999":2.007}
+ds-mon-requests-extended: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-modify: {"count":130263,"total":939063.000,"mean_rate":0.312,"m1_rate":0.806,"m5_rate":0.998,"m15_rate":0.968,"mean":7.210,"min":0.000,"max":4999.610,"stddev":17.373,"p50":4.014,"p75":9.044,"p95":25.035,"p98":37.224,"p99":46.137,"p999":94.372,"p9999":232.784,"p99999":662.700}
+ds-mon-requests-modify-dn: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-search-base: {"count":2161780,"total":1466612.000,"mean_rate":5.183,"m1_rate":18.917,"m5_rate":19.458,"m15_rate":19.863,"mean":0.679,"min":0.000,"max":4898.947,"stddev":11.533,"p50":0.000,"p75":1.004,"p95":3.015,"p98":5.014,"p99":8.028,"p999":16.056,"p9999":59.245,"p99999":801.112}
+ds-mon-requests-search-one: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-search-sub: {"count":1390,"total":18590.000,"mean_rate":0.003,"m1_rate":0.002,"m5_rate":0.004,"m15_rate":0.003,"mean":13.371,"min":8.978,"max":41.157,"stddev":4.028,"p50":12.059,"p75":15.008,"p95":20.054,"p98":25.035,"p99":31.064,"p999":38.011,"p9999":41.157,"p99999":41.157}
+ds-mon-requests-unbind: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-uncategorized: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-invalid-request: {"count":1106905,"total":320348.000,"mean_rate":2.654,"m1_rate":14.081,"m5_rate":14.302,"m15_rate":14.434,"mean":0.290,"min":0.000,"max":4898.947,"stddev":12.714,"p50":0.000,"p75":0.000,"p95":1.004,"p98":1.004,"p99":1.004,"p999":2.007,"p9999":82.313,"p99999":1644.167}
+ds-mon-requests-failure-client-security: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-resource-limit: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-client-referral: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-server: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+ds-mon-requests-failure-uncategorized: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":0.000,"min":0.000,"max":0.000,"stddev":0.000,"p50":0.000,"p75":0.000,"p95":0.000,"p98":0.000,"p99":0.000,"p999":0.000,"p9999":0.000,"p99999":0.000}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-connection-handler
+objectClass: ds-monitor-ldap-connection-handler
+cn: LDAPS
+
+dn: cn=disk space monitor,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: disk space monitor
+
+dn: ds-mon-disk-root=/forgerock,cn=disk space monitor,cn=monitor
+ds-mon-disk-free: 138460213248
+ds-mon-disk-low-threshold: 15731965849
+ds-mon-disk-full-threshold: 11731965849
+ds-mon-disk-state: normal
+ds-mon-disk-dir: /forgerock/6.5.3/opendj/db/amCts
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-disk-space
+ds-mon-disk-root: /forgerock
+
+dn: cn=entry cache,cn=monitor
+ds-mon-cache-misses: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000}
+ds-mon-cache-total-tries: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000}
+ds-mon-cache-entry-count: 0
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-entry-cache
+cn: entry cache
+
+dn: cn=health status,cn=monitor
+ds-mon-alive: true
+ds-mon-healthy: true
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-health-status
+cn: health status
+
+dn: cn=jvm,cn=monitor
+ds-mon-jvm-java-version: 1.8.0_222
+ds-mon-jvm-java-vendor: Oracle Corporation
+ds-mon-jvm-java-home: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.222.b10-1.el7_7.x86_64/jre
+ds-mon-jvm-version: 25.222-b10
+ds-mon-jvm-vendor: Oracle Corporation
+ds-mon-jvm-architecture: 64-bit
+ds-mon-jvm-arguments: "-Xms4G" "-Xmx4G" "-Xmn512M" "-XX:+UseConcMarkSweepGC" "-XX:+UseCompressedOops" "-XX:MaxTenuringThreshold=1" "-XX:+PrintGCDetails" "-XX:+PrintGCTimeStamps" "-Xloggc:/forgerock/logs/6.5.3/gc.log" "-Dorg.opends.server.scriptName=start-ds"
+ds-mon-jvm-supported-tls-protocols: SSLv2Hello
+ds-mon-jvm-supported-tls-protocols: SSLv3
+ds-mon-jvm-supported-tls-protocols: TLSv1
+ds-mon-jvm-supported-tls-protocols: TLSv1.1
+ds-mon-jvm-supported-tls-protocols: TLSv1.2
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_RSA_WITH_AES_256_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_RSA_WITH_AES_256_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_DSS_WITH_AES_256_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_RSA_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_RSA_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_RSA_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_RSA_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_DSS_WITH_AES_128_CBC_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_RSA_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_RSA_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_RSA_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_RSA_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_DSS_WITH_AES_256_GCM_SHA384
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_RSA_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_RSA_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_DHE_DSS_WITH_AES_128_GCM_SHA256
+ds-mon-jvm-supported-tls-ciphers: TLS_EMPTY_RENEGOTIATION_INFO_SCSV
+ds-mon-jvm-class-path: /forgerock/6.5.3/opendj/classes:/forgerock/6.5.3/opendj/lib/bootstrap.jar
+ds-mon-jvm-available-cpus: 8
+ds-mon-jvm-classes-loaded: 8218
+ds-mon-jvm-classes-unloaded: 20
+ds-mon-jvm-garbage-collector-par-new-count: 18116
+ds-mon-jvm-garbage-collector-par-new-time: 132673
+ds-mon-jvm-garbage-collector-concurrent-mark-sweep-count: 11
+ds-mon-jvm-garbage-collector-concurrent-mark-sweep-time: 2854
+ds-mon-jvm-memory-init: 4297523200
+ds-mon-jvm-memory-used: 2011506384
+ds-mon-jvm-memory-max: 4241293311
+ds-mon-jvm-memory-reserved: 4360425472
+ds-mon-jvm-memory-heap-init: 4294967296
+ds-mon-jvm-memory-heap-used: 1896063320
+ds-mon-jvm-memory-heap-max: 4241293312
+ds-mon-jvm-memory-heap-reserved: 4241293312
+ds-mon-jvm-memory-non-heap-init: 2555904
+ds-mon-jvm-memory-non-heap-used: 115443064
+ds-mon-jvm-memory-non-heap-max: -1
+ds-mon-jvm-memory-non-heap-reserved: 119132160
+ds-mon-jvm-memory-pools-code-cache-max: 251658240
+ds-mon-jvm-memory-pools-code-cache-used: 53766848
+ds-mon-jvm-memory-pools-code-cache-reserved: 54525952
+ds-mon-jvm-memory-pools-code-cache-init: 2555904
+ds-mon-jvm-memory-pools-metaspace-max: -1
+ds-mon-jvm-memory-pools-metaspace-used: 56348240
+ds-mon-jvm-memory-pools-metaspace-reserved: 58777600
+ds-mon-jvm-memory-pools-metaspace-init: 0
+ds-mon-jvm-memory-pools-compressed-class-space-max: 1073741824
+ds-mon-jvm-memory-pools-compressed-class-space-used: 5327976
+ds-mon-jvm-memory-pools-compressed-class-space-reserved: 5828608
+ds-mon-jvm-memory-pools-compressed-class-space-init: 0
+ds-mon-jvm-memory-pools-par-eden-space-max: 429522944
+ds-mon-jvm-memory-pools-par-eden-space-used: 188984800
+ds-mon-jvm-memory-pools-par-eden-space-reserved: 429522944
+ds-mon-jvm-memory-pools-par-eden-space-used-after-gc: 0
+ds-mon-jvm-memory-pools-par-eden-space-init: 429522944
+ds-mon-jvm-memory-pools-par-survivor-space-max: 53673984
+ds-mon-jvm-memory-pools-par-survivor-space-used: 1731328
+ds-mon-jvm-memory-pools-par-survivor-space-reserved: 53673984
+ds-mon-jvm-memory-pools-par-survivor-space-used-after-gc: 1731328
+ds-mon-jvm-memory-pools-par-survivor-space-init: 53673984
+ds-mon-jvm-memory-pools-cms-old-gen-max: 3758096384
+ds-mon-jvm-memory-pools-cms-old-gen-used: 1705347192
+ds-mon-jvm-memory-pools-cms-old-gen-reserved: 3758096384
+ds-mon-jvm-memory-pools-cms-old-gen-used-after-gc: 1230671984
+ds-mon-jvm-memory-pools-cms-old-gen-init: 3758096384
+ds-mon-jvm-threads-new-count: 0
+ds-mon-jvm-threads-runnable-count: 13
+ds-mon-jvm-threads-blocked-count: 0
+ds-mon-jvm-threads-waiting-count: 4
+ds-mon-jvm-threads-timed-waiting-count: 41
+ds-mon-jvm-threads-terminated-count: 0
+ds-mon-jvm-threads-count: 58
+ds-mon-jvm-threads-daemon-count: 30
+ds-mon-jvm-threads-deadlock-count: 0
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-jvm
+objectClass: extensibleObject
+cn: jvm
+
+dn: cn=replication,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: replication
+
+dn: cn=replicas,cn=replication,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: replicas
+
+dn: ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-server-id: 25087
+ds-mon-domain-generation-id: 117225
+ds-mon-server-state: 01050172aadad0b4000000e321184
+ds-mon-server-state: 01050172aadb1f180000029519230
+ds-mon-server-state: 01050172aadad102000000b323354
+ds-mon-server-state: 01050172aad86cb3000000c417402
+ds-mon-server-state: 01050172aadb555e000000de18994
+ds-mon-server-state: 01050172aad86c480000010d21917
+ds-mon-server-state: 01050172aadaf771000000e728796
+ds-mon-server-state: 01050172aad8684c000000ca25087
+ds-mon-sent-updates: 0
+ds-mon-replayed-updates: {"count":13,"total":1202108.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":92525.550,"min":51.905,"max":163208.757,"stddev":73641.988,"p50":130459.632,"p75":157840.048,"p95":158913.790,"p98":163208.757,"p99":163208.757,"p999":163208.757,"p9999":163208.757,"p99999":163208.757}
+ds-mon-current-delay: 0
+ds-mon-connected-to-server-id: 11654
+ds-mon-connected-to-server-hostport: 10.229.17.48:9989
+ds-mon-lost-connections: 0
+ds-mon-current-receive-window: 2147483642
+ds-mon-ssl-encryption: true
+ds-mon-updates-outbound-queue: 0
+ds-mon-replayed-updates-conflicts-resolved: 0
+ds-mon-replayed-updates-conflicts-unresolved: 0
+ds-mon-entries-awaiting-updates-count: 0
+ds-mon-updates-inbound-queue: 0
+ds-mon-ds-mon-updates-totals-per-replay-thread: [1557751, 1540171, 1548731, 1540238]
+ds-mon-status-last-changed: 20200612182556.056-0500
+ds-mon-status: Normal
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-replica
+ds-mon-domain-name: cn=admin data
+
+dn: cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: remote replicas
+
+dn: ds-mon-server-id=17402,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":1,"total":156952.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":157303.177,"min":156766.306,"max":157840.048,"stddev":0.000,"p50":157840.048,"p75":157840.048,"p95":157840.048,"p98":157840.048,"p99":157840.048,"p999":157840.048,"p9999":157840.048,"p99999":157840.048}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 17402
+
+dn: ds-mon-server-id=18994,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2,"total":162377.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":81382.998,"min":93.848,"max":163208.757,"stddev":81288.888,"p50":94.372,"p75":163208.757,"p95":163208.757,"p98":163208.757,"p99":163208.757,"p999":163208.757,"p9999":163208.757,"p99999":163208.757}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 18994
+
+dn: ds-mon-server-id=19230,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2,"total":149131.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":74382.639,"min":51.905,"max":149250.114,"stddev":74330.604,"p50":52.167,"p75":149250.114,"p95":149250.114,"p98":149250.114,"p99":149250.114,"p999":149250.114,"p9999":149250.114,"p99999":149250.114}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 19230
+
+dn: ds-mon-server-id=21184,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2,"total":130314.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":65249.214,"min":306.184,"max":130459.632,"stddev":64941.982,"p50":308.281,"p75":130459.632,"p95":130459.632,"p98":130459.632,"p99":130459.632,"p999":130459.632,"p9999":130459.632,"p99999":130459.632}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 21184
+
+dn: ds-mon-server-id=21917,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":1,"total":157059.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":157303.177,"min":156766.306,"max":157840.048,"stddev":0.000,"p50":157840.048,"p75":157840.048,"p95":157840.048,"p98":157840.048,"p99":157840.048,"p999":157840.048,"p9999":157840.048,"p99999":157840.048}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 21917
+
+dn: ds-mon-server-id=23354,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2,"total":158081.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":78774.534,"min":245.367,"max":157840.048,"stddev":78528.643,"p50":246.415,"p75":157840.048,"p95":157840.048,"p98":157840.048,"p99":157840.048,"p999":157840.048,"p9999":157840.048,"p99999":157840.048}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 23354
+
+dn: ds-mon-server-id=28796,cn=remote replicas,ds-mon-domain-name=cn=admin data,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=admin data
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2,"total":130117.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":65135.051,"min":78.643,"max":130459.632,"stddev":65056.145,"p50":79.167,"p75":130459.632,"p95":130459.632,"p98":130459.632,"p99":130459.632,"p999":130459.632,"p9999":130459.632,"p99999":130459.632}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 28796
+
+dn: ds-mon-domain-name=cn=schema,cn=replicas,cn=replication,cn=monitor
+ds-mon-server-id: 19148
+ds-mon-domain-generation-id: 8408
+ds-mon-server-state: 01050172aad86cb3000000c425939
+ds-mon-server-state: 01050172aad8693f000000b328318
+ds-mon-server-state: 01050172aad8684c000000c619148
+ds-mon-server-state: 01050172aad86c48000000e910366
+ds-mon-sent-updates: 0
+ds-mon-replayed-updates: {"count":4,"total":630332.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":157840.048,"min":156766.306,"max":158913.790,"stddev":536.871,"p50":157840.048,"p75":158913.790,"p95":158913.790,"p98":158913.790,"p99":158913.790,"p999":158913.790,"p9999":158913.790,"p99999":158913.790}
+ds-mon-current-delay: 0
+ds-mon-connected-to-server-id: 1857
+ds-mon-connected-to-server-hostport: 10.229.145.26:9989
+ds-mon-lost-connections: 1
+ds-mon-current-receive-window: 2147483647
+ds-mon-ssl-encryption: true
+ds-mon-updates-outbound-queue: 0
+ds-mon-replayed-updates-conflicts-resolved: 0
+ds-mon-replayed-updates-conflicts-unresolved: 0
+ds-mon-entries-awaiting-updates-count: 0
+ds-mon-updates-inbound-queue: 0
+ds-mon-ds-mon-updates-totals-per-replay-thread: [1557751, 1540171, 1548731, 1540238]
+ds-mon-status-last-changed: 20200612182806.669-0500
+ds-mon-status: Normal
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-replica
+ds-mon-domain-name: cn=schema
+
+dn: cn=remote replicas,ds-mon-domain-name=cn=schema,cn=replicas,cn=replication,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: remote replicas
+
+dn: ds-mon-server-id=10366,cn=remote replicas,ds-mon-domain-name=cn=schema,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=schema
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":1,"total":157161.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":157303.177,"min":156766.306,"max":157840.048,"stddev":0.000,"p50":157840.048,"p75":157840.048,"p95":157840.048,"p98":157840.048,"p99":157840.048,"p999":157840.048,"p9999":157840.048,"p99999":157840.048}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 10366
+
+dn: ds-mon-server-id=25939,cn=remote replicas,ds-mon-domain-name=cn=schema,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=schema
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":1,"total":157055.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":157303.177,"min":156766.306,"max":157840.048,"stddev":0.000,"p50":157840.048,"p75":157840.048,"p95":157840.048,"p98":157840.048,"p99":157840.048,"p999":157840.048,"p9999":157840.048,"p99999":157840.048}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 25939
+
+dn: ds-mon-server-id=28318,cn=remote replicas,ds-mon-domain-name=cn=schema,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: cn=schema
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":1,"total":157937.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000,"mean":158376.919,"min":157840.048,"max":158913.790,"stddev":0.000,"p50":158913.790,"p75":158913.790,"p95":158913.790,"p98":158913.790,"p99":158913.790,"p999":158913.790,"p9999":158913.790,"p99999":158913.790}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 28318
+
+dn: ds-mon-domain-name=dc=cts\,dc=usaa\,dc=com,cn=replicas,cn=replication,cn=monitor
+ds-mon-server-id: 23948
+ds-mon-domain-generation-id: 84725
+ds-mon-server-state: 01050172c3b6a5ec001f845923948
+ds-mon-server-state: 01040172c3b6a5c90022b1752752
+ds-mon-server-state: 01040172c3b6a5dd001f9fe04512
+ds-mon-server-state: 01040172c3b6a57f0022e3719670
+ds-mon-sent-updates: 1914958
+ds-mon-replayed-updates: {"count":6186890,"total":459294190.000,"mean_rate":14.834,"m1_rate":82.902,"m5_rate":80.438,"m15_rate":81.127,"mean":74.234,"min":3.998,"max":158913.790,"stddev":136.545,"p50":66.060,"p75":100.139,"p95":156.238,"p98":180.355,"p99":195.035,"p999":310.378,"p9999":754.975,"p99999":4143.972}
+ds-mon-current-delay: 152
+ds-mon-connected-to-server-id: 11654
+ds-mon-connected-to-server-hostport: 10.229.17.48:9989
+ds-mon-lost-connections: 0
+ds-mon-current-receive-window: 2141296761
+ds-mon-ssl-encryption: true
+ds-mon-updates-outbound-queue: 0
+ds-mon-replayed-updates-conflicts-resolved: 514
+ds-mon-replayed-updates-conflicts-unresolved: 0
+ds-mon-entries-awaiting-updates-count: 1
+ds-mon-updates-inbound-queue: 1
+ds-mon-ds-mon-updates-totals-per-replay-thread: [1557751, 1540171, 1548731, 1540238]
+ds-mon-status-last-changed: 20200612182556.079-0500
+ds-mon-status: Normal
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-replica
+ds-mon-domain-name: dc=cts,dc=usaa,dc=com
+
+dn: cn=remote replicas,ds-mon-domain-name=dc=cts\,dc=usaa\,dc=com,cn=replicas,cn=replication,cn=monitor
+objectclass: top
+objectclass: ds-monitor
+objectclass: ds-monitor-branch
+cn: remote replicas
+
+dn: ds-mon-server-id=2752,cn=remote replicas,ds-mon-domain-name=dc=cts\,dc=usaa\,dc=com,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: dc=cts,dc=usaa,dc=com
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2124324,"total":153112178.000,"mean_rate":5.094,"m1_rate":26.729,"m5_rate":26.114,"m15_rate":26.438,"mean":72.073,"min":3.998,"max":157840.048,"stddev":119.170,"p50":64.225,"p75":97.518,"p95":153.092,"p98":177.209,"p99":191.889,"p999":278.921,"p9999":864.027,"p99999":4362.076}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 2752
+
+dn: ds-mon-server-id=4512,cn=remote replicas,ds-mon-domain-name=dc=cts\,dc=usaa\,dc=com,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: dc=cts,dc=usaa,dc=com
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":1923470,"total":152490842.000,"mean_rate":4.612,"m1_rate":29.808,"m5_rate":28.277,"m15_rate":28.101,"mean":79.277,"min":8.978,"max":157840.048,"stddev":124.952,"p50":71.303,"p75":104.333,"p95":164.626,"p98":190.841,"p99":207.618,"p999":358.613,"p9999":767.558,"p99999":4143.972}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 4512
+
+dn: ds-mon-server-id=9670,cn=remote replicas,ds-mon-domain-name=dc=cts\,dc=usaa\,dc=com,cn=replicas,cn=replication,cn=monitor
+ds-mon-domain-name: dc=cts,dc=usaa,dc=com
+ds-mon-current-delay: 0
+ds-mon-replayed-updates: {"count":2139095,"total":153558802.000,"mean_rate":5.129,"m1_rate":26.549,"m5_rate":26.063,"m15_rate":26.597,"mean":71.785,"min":3.998,"max":158913.790,"stddev":118.467,"p50":64.225,"p75":98.042,"p95":153.092,"p98":175.112,"p99":188.744,"p999":251.658,"p9999":662.700,"p99999":3909.091}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-remote-replica
+ds-mon-server-id: 9670
+
+dn: cn=work queue,cn=monitor
+ds-mon-requests-in-queue: 0
+ds-mon-requests-submitted: {"count":4107479,"total":4107479.000,"mean_rate":9.848,"m1_rate":47.723,"m5_rate":47.952,"m15_rate":48.106}
+ds-mon-requests-rejected-queue-full: {"count":0,"total":0.000,"mean_rate":0.000,"m1_rate":0.000,"m5_rate":0.000,"m15_rate":0.000}
+objectClass: top
+objectClass: ds-monitor
+objectClass: ds-monitor-work-queue
+cn: work queue
+

@@ -63,7 +63,9 @@ public class SawMill {
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-c":
+                case "-r":
                 case "--condense":
+                case "--rip":
                     br = new BufferedReader(new FileReader(args[i + 1]));
                     lf = args[i + 1];
                     cdr = new Condenser(config, br);
@@ -148,26 +150,26 @@ public class SawMill {
     }
 
     private static void help() {
-        String help = "\nSawMill usage when condensing a log:"
-                + "\n\trequired for condensing:"
-                + "\n\t\t--condense    | -c path and filename of log file to condense"
-                + "\n\t\t--poi         | -p path and filename of json configuration file on how to handle the log file to be condensed"
+        String help = "\nSawMill usage when analyzing a log:"
+                + "\n\trequired for ripping/analyzing:"
+                + "\n\t\t--rip         | -r path and filename of log file to analyze"
+                + "\n\t\t--poi         | -p path and filename of json configuration file on how to handle the log file to analyze"
                 + "\n\tExample:"
-                + "\n\tjava -jar ./dist/SawMill.jar --condense /path/to/file_to_condense --poi /path/to/log_file_configuration.json"
-                + "\n\toptions for condensing:"
+                + "\n\tjava -jar ./dist/SawMill.jar --rip /path/to/file_to_analyze --poi /path/to/log_file_configuration.json"
+                + "\n\toptions for ripping:"
                 + "\n\t\t--totals      | -t prints a total for each column. Do not use this option when condensing a file to be laminated"
                 + "\n\t\t--cut x       | -u where is x an integer and specifies the number of milliseconds used to condense the file by"
-                + "\n\t\t--cut x       | -u where is x an integer and specifies the number of milliseconds used to condense the file by"
-                + "\n\t\t--filltimegap | -f do not compress time"
+                + "\n\t\t--sla         | -s Lists the percentage of times the operation completed within the configured threshold"
                 + "\n\t\t                SLAs are assigned within the log_file_configuration.json file"
-                + "\nSawMill usage when laminating together more than one condensed log file:"
+                + "\n\t\t--filltimegap | -f do not compress time"
+                + "\nSawMill usage when laminating together more than one ripped log file:"
                 + "\n\trequired for laminating:"
                 + "\n\t\t--laminate    | -l path(s) and filename(s) of log files to laminate"
                 + "\n\tExample:"
-                + "\n\tjava -jar ./dist/SawMill.jar --laminate /path/to/condensedfile-0 /path/to/condensedfile-1 /path/to/condensedfile-n"
-                + "\n\n\tExample of condensing two log files and then laminating those files together:"
-                + "\n\t\tjava -jar ./dist/SawMill.jar --condense $HOME/openidm/audit/access.audit.json-1of2 --poi $HOME/SawMill/poi/idm5-log.json > /tmp/idm-1of2.csv"
-                + "\n\t\tjava -jar ./dist/SawMill.jar --condense $HOME/openidm/audit/access.audit.json-2of2 --poi $HOME/SawMill/poi/idm5-log.json > /tmp/idm-2of2.csv"
+                + "\n\tjava -jar ./dist/SawMill.jar --laminate /path/to/rippedfile-0 /path/to/rippedfile-1 /path/to/rippedfile-n"
+                + "\n\n\tExample of analyzing two log files and then laminating those files together:"
+                + "\n\t\tjava -jar ./dist/SawMill.jar --rip $HOME/openidm/audit/access.audit.json-1of2 --poi $HOME/SawMill/poi/idm5-log.json > /tmp/idm-1of2.csv"
+                + "\n\t\tjava -jar ./dist/SawMill.jar --rip $HOME/openidm/audit/access.audit.json-2of2 --poi $HOME/SawMill/poi/idm5-log.json > /tmp/idm-2of2.csv"
                 + "\n\t\tjava -jar ./dist/SawMill.jar --laminate /tmp/idm-1of2.csv /tmp/idm-2of2.csv > /tmp/idm-combined.csv"
                 + "\n";
         System.out.println(help);
