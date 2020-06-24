@@ -27,7 +27,7 @@ SawMill usage when analyzing a log:
 		--totals      | -t prints a total for each column. Do not use this option when condensing a file to be laminated
 		--cut x       | -u where is x an integer and specifies the number of milliseconds used to condense the file by
 		--sla         | -s Lists the percentage of times the operation completed within the configured threshold
-		                SLAs are assigned within the log_file_configuration.json file
+		                   SLAs are assigned within the log_file_configuration.json file
 		--filltimegap | -f do not compress time
 SawMill usage when laminating together more than one ripped log file:
 	required for laminating:
