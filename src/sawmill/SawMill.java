@@ -160,7 +160,7 @@ public class SawMill {
                 + "\n\t\t--totals      | -t prints a total for each column. Do not use this option when condensing a file to be laminated"
                 + "\n\t\t--cut x       | -u where is x an integer and specifies the number of milliseconds used to condense the file by"
                 + "\n\t\t--sla         | -s Lists the percentage of times the operation completed within the configured threshold"
-                + "\n\t\t                SLAs are assigned within the log_file_configuration.json file"
+                + "\n\t\t                   SLAs are assigned within the log_file_configuration.json file"
                 + "\n\t\t--filltimegap | -f do not compress time"
                 + "\nSawMill usage when laminating together more than one ripped log file:"
                 + "\n\trequired for laminating:"

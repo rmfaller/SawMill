@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var chart, chartData, dataView;
+
+        var columns = [{
+                type: 'number',
+                label: 'x'
+            },
+            {
+                type: 'number',
+                label: 'y1',
+                color: 'red',
+                disabledColor: '#FFD9D9',
+                visible: true
+            },
+            {
+                type: 'number',
+                label: 'y2',
+                color: 'blue',
+                disabledColor: '#D9D9FF',
+                visible: true,
+            },
+            {
+                type: 'number',
+                label: 'y20',
+                color: 'pink',
+                disabledColor: '#D9D9FF',
+                visible: true,
+            },
+            {
+                type: 'number',
+                label: 'y3',
+                color: 'green',
+                disabledColor: '#C3E6C3',
+                visible: true,
+            }
+        ];
+
+        var nullFunc = function () {
+            return null;
+        };
+
+        google.load("visualization", "1", {
+            packages: ["corechart"]
+        });
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            if (!chart) {
+                chartData = google.visualization.arrayToDataTable([
+                        ['c', 'ss', 'ysf', 'ms', 'mf', 'msf', 'd', 'cn', 'bn', 'as', 'a'],
+                        [1592407603000, 2, 12, 3, 0, 0, 0, 0, 0, 77, 25],
+                        [1592407604000, 1, 22, 7, 0, 0, 0, 0, 0, 91, 34],
+                        [1592407605000, 4, 26, 9, 0, 0, 0, 0, 0, 81, 29],
+                        [1592407606000, 2, 4, 9, 0, 0, 0, 0, 0, 105, 33],
+                        [1592407607000, 2, 20, 7, 0, 0, 0, 0, 0, 93, 36],
+                        [1592407608000, 10, 9, 6, 0, 0, 0, 0, 0, 78, 23],
+                        [1592407609000, 9, 12, 2, 0, 0, 0, 0, 0, 77, 33],
+                        [1592407610000, 14, 21, 4, 0, 1, 0, 0, 0, 91, 32]
+                    ],
+                    false
+                );
+                dataView = new google.visualization.DataView(chartData);
+
+                chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+                // Toggle visibility of data series on click of legend.
+                google.visualization.events.addListener(chart, 'click', function (target) {
+                    if (target.targetID.match(/^legendentry#\d+$/)) {
+                        var index = parseInt(target.targetID.slice(12)) + 1;
+                        columns[index].visible = !columns[index].visible;
+                        drawChart();
+                    }
+                });
+            }
+
+            var visibleColumnIndexes = [0];
+            var colors = [];
+
+            for (var i = 1; i < columns.length; i++) {
+                if (columns[i].visible) {
+                    colors.push(columns[i].color);
+
+                    visibleColumnIndexes.push(i);
+                } else {
+                    colors.push(columns[i].disabledColor);
+
+                    visibleColumnIndexes.push({
+                        calc: nullFunc,
+                        type: columns[i].type,
+                        label: columns[i].label,
+                    });
+                }
+            };
+            dataView.setColumns(visibleColumnIndexes);
+
+            chart.draw(
+                dataView, {
+                    colors: colors
+                }
+            );
+        };
+    </script>
+    <style>
+        #chart {
+            width: 100%;
+            height: 100%;
+            min-height: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="chart"></div>
+</body>
+
+</html>

@@ -26,11 +26,13 @@ class Laminate {
         String[][] data = new String[lbra.length][1];
         String brin;
         int lowvali = 0;
+        int totalcells = 0;
         for (int i = 0; i < lbra.length; i++) {
             filedone[i] = false;
             try {
                 brin = lbra[i].readLine();
                 chdrs[i] = brin.split(",");
+                totalcells = totalcells + chdrs[i].length;
                 data[i] = lbra[i].readLine().split(",");
             } catch (IOException ex) {
                 Logger.getLogger(Laminate.class.getName()).log(Level.SEVERE, null, ex);
@@ -38,24 +40,31 @@ class Laminate {
         }
         printheaders(chdrs);
         int x = 0;
+        int lastcell;
         while (x < filedone.length) {
             lowvali = 0;
+            lastcell = 4;
             for (int i = 1; i < filedone.length; i++) {
                 if (Long.parseLong(data[lowvali][0]) > Long.parseLong(data[i][0])) {
                     lowvali = i;
                 }
             }
-            System.out.print(data[lowvali][0] + ",");
+            System.out.print(data[lowvali][0] + lowvali + ",");
             System.out.print(data[lowvali][1] + ",");
             System.out.print(data[lowvali][2] + ",");
             System.out.print(data[lowvali][3] + ",");
             for (int i = 0; i < lowvali; i++) {
                 for (int j = 4; j < (chdrs[i].length); j++) {
-                    System.out.print(",");
+                    System.out.print(" ,");
+                    lastcell++;
                 }
             }
             for (int i = 4; i < data[lowvali].length; i++) {
-                System.out.print(data[lowvali][i] + ",");
+                System.out.print(" " + data[lowvali][i] + ",");
+                lastcell++;
+            }
+            for (int i = lastcell; i < (totalcells - 4); i++) {
+                System.out.print(" ,");
             }
             System.out.println();
             brin = lbra[lowvali].readLine();

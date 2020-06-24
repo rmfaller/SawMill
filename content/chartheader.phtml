@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        * {
+            font-family: monospace;
+            font-size: 8;
+        }
+        div {
+            padding-top: 0px;
+            padding-right: 0px;
+            padding-bottom: 0px;
+            padding-left: 0px;
+        }
+        div.google-visualization-tooltip { width: 300px; }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var ops, opschart, opschartData, opsdataView;
+        var etimes, etimeschart, etimeschartData, etimesdataView;
+        var nullFunc = function () {
+            return null;
+        };
+        google.charts.load('current', {
+            'packages': ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawChart);

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        * {
+            font-family: monospace;
+            font-size: 8;
+        }
+
+        #opschart {
+            width: 100%;
+            height: 100%;
+            min-height: 550px;
+        }
+    </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var ops, opschart, opschartData, opsdataView;
+        var etimes, etimeschart, etimeschartData, etimesdataView;
+        var nullFunc = function () {
+            return null;
+        };
+        google.charts.load('current', {
+            'packages': ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawChart);
+        //data specific - start of dynamic 
+        var opscolumns = [{
+                type: 'number',
+                label: 'clock'
+            },
+            {
+                type: 'number',
+                label: 'gg',
+                color: 'red',
+                disabledColor: '#FFD9D9',
+                visible: true
+            },
+            {
+                type: 'number',
+                label: 'fail',
+                color: 'blue',
+                disabledColor: '#D9D9FF',
+                visible: true,
+            },
+            {
+                type: 'number',
+                label: 'succ',
+                color: 'green',
+                disabledColor: '#C3E6C3',
+                visible: true,
+            }
+        ];
+        var etimescolumns = [{
+                type: 'number',
+                label: 'eclock'
+            },
+            {
+                type: 'number',
+                label: 'gge',
+                color: 'red',
+                disabledColor: '#FFD9D9',
+                visible: true
+            },
+            {
+                type: 'number',
+                label: 'faile',
+                color: 'blue',
+                disabledColor: '#D9D9FF',
+                visible: true,
+            },
+            {
+                type: 'number',
+                label: 'succe',
+                color: 'green',
+                disabledColor: '#C3E6C3',
+                visible: true,
+            }
+        ];
+
+        function drawChart() {
+            if (!opschart) {
+                ops = new google.visualization.DataTable();
+                ops.addColumn('number', 'clock');
+                ops.addColumn('number', 'gg');
+                ops.addColumn('number', 'fail');
+                ops.addColumn('number', 'succ');
+                ops.addRows([
+                    [1592063210000, 5235, 741, 235],
+                    [1592063211000, 5758, 816, 219],
+                    [1592063212000, 5519, 771, 224],
+                    [1592063213000, 5043, 704, 250],
+                    [1592063214000, 5295, 758, 238],
+                    [1592063215000, 5591, 796, 246],
+                    [1592063216000, 5061, 723, 243],
+                    [1592063217000, 5576, 799, 217],
+                    [1592063218000, 5549, 798, 225],
+                    [1592063219000, 5499, 783, 231],
+                    [1592063220000, 5424, 782, 213],
+                    [1592063221000, 5231, 725, 216],
+                    [1592063222000, 5438, 789, 264],
+                    [1592063223000, 5161, 749, 248]
+                ], false);
+                opsdataView = new google.visualization.DataView(ops);
+                opschart = new google.visualization.LineChart(document.getElementById('opschart'));
+                google.visualization.events.addListener(opschart, 'click', function (target) {
+                    if (target.targetID.match(/^legendentry#\d+$/)) {
+                        var index = parseInt(target.targetID.slice(12)) + 1;
+                        opscolumns[index].visible = !opscolumns[index].visible;
+                        etimescolumns[index].visible = !etimescolumns[index].visible;
+                        drawChart();
+                    }
+                });
+            }
+            if (!etimeschart) {
+                etimes = new google.visualization.DataTable();
+                etimes.addColumn('number', 'eclock');
+                etimes.addColumn('number', 'gge');
+                etimes.addColumn('number', 'faile');
+                etimes.addColumn('number', 'succe');
+                etimes.addRows([
+                    [1592063210000, 535, 71, 25],
+                    [1592063211000, 558, 816, 29],
+                    [1592063212000, 519, 771, 24],
+                    [1592063213000, 503, 704, 250],
+                    [1592063214000, 595, 78, 28],
+                    [1592063215000, 591, 79, 26],
+                    [1592063216000, 561, 73, 243],
+                    [1592063217000, 576, 79, 217],
+                    [1592063218000, 549, 78, 225],
+                    [1592063219000, 549, 73, 231],
+                    [1592063220000, 544, 72, 213],
+                    [1592063221000, 521, 75, 216],
+                    [1592063222000, 5438, 789, 264],
+                    [1592063223000, 5161, 749, 248]
+                ], false);
+                etimesdataView = new google.visualization.DataView(etimes);
+                etimeschart = new google.visualization.LineChart(document.getElementById('etimeschart'));
+                google.visualization.events.addListener(etimeschart, 'click', function (target) {
+                    if (target.targetID.match(/^legendentry#\d+$/)) {
+                        var index = parseInt(target.targetID.slice(12)) + 1;
+                        opscolumns[index].visible = !opscolumns[index].visible;
+                        etimescolumns[index].visible = !etimescolumns[index].visible;
+                        drawChart();
+                    }
+                });
+            }
+            // data specific - end of dynamic
+            // data specific - start of static            
+            var opsvisibleColumnIndexes = [0];
+            var opscolors = [];
+            for (var i = 1; i < opscolumns.length; i++) {
+                if (opscolumns[i].visible) {
+                    opscolors.push(opscolumns[i].color);
+                    opsvisibleColumnIndexes.push(i);
+                } else {
+                    opscolors.push(opscolumns[i].disabledColor);
+                    opsvisibleColumnIndexes.push({
+                        calc: nullFunc,
+                        type: opscolumns[i].type,
+                        label: opscolumns[i].label,
+                    });
+                }
+            };
+            opsdataView.setColumns(opsvisibleColumnIndexes);
+            opschart.draw(opsdataView, {
+                colors: opscolors,
+                width: 1600,
+                height: 500,
+                legend: {
+                    position: 'right',
+                    textStyle: {
+                        fontSize: 8
+                    }
+                },
+                chartArea: {
+                    'width': '80%',
+                    'height': '86%'
+                },
+                hAxis: {
+                    textPosition: 'none'
+                },
+                vAxis: {
+                    textStyle: {
+                        fontSize: 8
+                    },
+                    title: 'Transactions'
+                }
+            });
+            var etimesvisibleColumnIndexes = [0];
+            var etimescolors = [];
+            for (var i = 1; i < etimescolumns.length; i++) {
+                if (etimescolumns[i].visible) {
+                    etimescolors.push(etimescolumns[i].color);
+                    etimesvisibleColumnIndexes.push(i);
+                } else {
+                    etimescolors.push(etimescolumns[i].disabledColor);
+                    etimesvisibleColumnIndexes.push({
+                        calc: nullFunc,
+                        type: etimescolumns[i].type,
+                        label: etimescolumns[i].label,
+                    });
+                }
+            };
+            etimesdataView.setColumns(etimesvisibleColumnIndexes);
+            etimeschart.draw(etimesdataView, {
+                colors: etimescolors,
+                width: 1600,
+                height: 500,
+                legend: {
+                    position: 'right',
+                    textStyle: {
+                        fontSize: 8
+                    }
+                },
+                chartArea: {
+                    'width': '80%',
+                    'height': '70%'
+                },
+                hAxis: {
+                    title: 'Time',
+                    slantedText: true,
+                    slantedTextAngle: 45,
+                    textStyle: {
+                        fontSize: 8
+                    }
+                },
+                vAxis: {
+                    textStyle: {
+                        fontSize: 8
+                    },
+                    title: 'Average elapsedTime'
+                }
+            });
+        };
+        // data specific - end of static        
+    </script>
+</head>
+
+<body>
+    <div id="opschart"></div>
+    ops
+    <div id="etimeschart"></div>
+    etimes
+</body>
+
+</html>

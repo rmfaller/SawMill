@@ -22,7 +22,7 @@ SAWMILLHOME="$BOH/SawMill"
 SCRIPTHOME="$SAWMILLHOME/script"
 HTMLHOME="$SAWMILLHOME/html"
 # SUBSCRIPTION="$BOH/build/web/uploads/$1"
-SUBSCRIPTION=$SAWMILLHOME/test/$1
+SUBSCRIPTION=/Volumes/twoTBdrive/sawmill/$1
 FULLFILENAME=$2
 SOURCETYPE=$3
 ZIPTYPE=$4
@@ -43,7 +43,7 @@ $JAR -xf $2
 # mv ./tmpmetadata.json ./metadata.json
 mkdir tmp
 mkdir report
-$SCRIPTHOME/create-poi.sh $SUBSCRIPTION $FILENAMEONLY $3
+$SCRIPTHOME/createpoi.sh $SUBSCRIPTION $FILENAMEONLY $3
 
 # uploadtype=`cat metadata.json | jq -r '.info.uploadtype'`
 echo "<html> <head> <title>BlueOx</title> </head> <body><a name=\"extract\"></a>Extractor Report<br>" >./report/report.html
@@ -154,25 +154,6 @@ if [ -n "$ldaplogs" ]; then
   # mv ./tmpmetadata.json ./metadata.json
 
   cat ./tmp/*-ops.csv >./tmp/allops.csv
-
-  # ldapheader=`head -1 ./tmp/allldapops.csv | cut -d"," -f1,5-`
-  # chartdata=`tail -n +2 ./tmp/allldapops.csv | cut -d"," -f1,5-`
-  #sed 's/^/[/' gc.log
-  #sed 's/^/[/; s/$/],/g' gc.log
-  filesize=$(wc -l <./tmp/allldapops.csv)
-  linecount=0
-  while read -r line; do
-    if (($linecount == 0)); then
-      echo $line | cut -d"," -f1,5-
-    fi
-    if (($linecount < $filesize)); then
-      echo $line | sed 's/^/[/; s/$/],/g'
-    fi
-    if (($linecount == $filesize)); then
-      echo $line | sed 's/^/[/; s/$/]/g'
-    fi
-    ((linecount++))
-  done <./tmp/allldapops.csv
 
   echo "<hr>" >>./report/report.html
   cat ./tmp/*ldap-ops.csv >./tmp/allldapops.csv

@@ -1,0 +1,49 @@
+                var opsoptions = {
+                    width: 1600,
+                    height: 500,
+                    legend: {position: 'right', textStyle: {fontSize: 8}},
+                    chartArea: {'width': '80%', 'height': '86%'},
+                    hAxis: {
+                        textPosition: 'none'
+                    },
+                    vAxis: {
+                        title: 'Transactions',
+                        textStyle: {
+                            fontSize: 8
+                        },
+                    }
+                };
+                var etimesoptions = {
+                    width: 1600,
+                    height: 500,
+                    legend: {position: 'right', textStyle: {fontSize: 8}},
+                    chartArea: {'width': '80%', 'height': '70%'},
+                    hAxis: {
+                        title: 'Time',
+                        slantedText:true,
+                        slantedTextAngle:45,
+                        textStyle: {
+                            fontSize: 8
+                        }
+                    },
+                    vAxis: {
+                        textStyle: {
+                            fontSize: 8
+                        },
+                        title: 'Average elapsedTime (ms)'
+                    }
+                };
+
+                var opschart = new google.visualization.LineChart(document.getElementById('ops'));
+                var etimeschart = new google.visualization.LineChart(document.getElementById('etimes'));
+
+                opschart.draw(ops, google.charts.Line.convertOptions(opsoptions));
+                etimeschart.draw(etimes, google.charts.Line.convertOptions(etimesoptions));
+            }
+        </script>
+    </head>
+    <body>
+        <div id="ops"></div>
+        <div id="etimes"></div>
+    </body>
+</html>
