@@ -21,7 +21,7 @@ for log in $logs
 do
 
 # Uncomment the following line for analyzing DS-based stores i.e. User store, CTS, config store
-# cat $log | $HOME/bin/jq '.response.elapsedTime, .request.operation, .timestamp, ._id, .transactionId' | paste -d " " - - - - - | grep -v null | awk '$1>2000' | tr -s " " "," > et-$log.txt
+cat $log | $HOME/bin/jq '.response.elapsedTime, .request.operation, .timestamp, ._id, .transactionId' | paste -d " " - - - - - | grep -v null | awk '$1>2000' | tr -s " " "," > et-$log.txt
 
 # Uncomment the following line for analyzing AM
 # cat $log | $HOME/bin/jq '.response.elapsedTime, .http.request.method, .timestamp, ._id, .transactionId' | paste -d " " - - - - - | grep -v null | awk '$1>2000' | tr -s " " ","  > et-$log.txt

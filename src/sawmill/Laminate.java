@@ -17,22 +17,26 @@ import java.util.logging.Logger;
  */
 class Laminate {
 
-    Laminate(FileReader[] fra) {
+    Laminate(FileReader[] fra, boolean usespace) {
     }
 
-    void laminate(BufferedReader[] lbra) throws IOException {
+    void laminate(BufferedReader[] lbra, boolean usespace) throws IOException {
         boolean[] filedone = new boolean[lbra.length];
         String[][] chdrs = new String[lbra.length][];
         String[][] data = new String[lbra.length][1];
         String brin;
         int lowvali = 0;
-        int totalcells = 0;
+        int totalcells = 4;
+        String replace = ",0";
+        if (usespace) {
+            replace = ",";
+        }
         for (int i = 0; i < lbra.length; i++) {
             filedone[i] = false;
             try {
                 brin = lbra[i].readLine();
                 chdrs[i] = brin.split(",");
-                totalcells = totalcells + chdrs[i].length;
+                totalcells = totalcells + (chdrs[i].length - 4);
                 data[i] = lbra[i].readLine().split(",");
             } catch (IOException ex) {
                 Logger.getLogger(Laminate.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,22 +53,23 @@ class Laminate {
                     lowvali = i;
                 }
             }
-            System.out.print(data[lowvali][0] + lowvali + ",");
+            System.out.print(data[lowvali][0] + ",");
+//            System.out.print(data[lowvali][0] + lowvali + ",");
             System.out.print(data[lowvali][1] + ",");
             System.out.print(data[lowvali][2] + ",");
-            System.out.print(data[lowvali][3] + ",");
+            System.out.print(data[lowvali][3]);
             for (int i = 0; i < lowvali; i++) {
-                for (int j = 4; j < (chdrs[i].length); j++) {
-                    System.out.print(" ,");
+                for (int j = 4; j < (data[i].length); j++) {
+                    System.out.print(replace);
                     lastcell++;
                 }
             }
             for (int i = 4; i < data[lowvali].length; i++) {
-                System.out.print(" " + data[lowvali][i] + ",");
+                System.out.print("," + data[lowvali][i]);
                 lastcell++;
             }
-            for (int i = lastcell; i < (totalcells - 4); i++) {
-                System.out.print(" ,");
+            for (; lastcell < totalcells; lastcell++) {
+                System.out.print(replace);
             }
             System.out.println();
             brin = lbra[lowvali].readLine();
@@ -86,7 +91,11 @@ class Laminate {
         System.out.print("Time span(ms),");
         for (int i = 0; i < chdrs.length; i++) {
             for (int j = 4; j < chdrs[i].length; j++) {
-                System.out.print(i + "-" + chdrs[i][j] + ",");
+                if ((j <= (chdrs[i].length - 2)) || (i < (chdrs.length - 1))) {
+                    System.out.print(i + "-" + chdrs[i][j] + ",");
+                } else {
+                    System.out.print(i + "-" + chdrs[i][j]);
+                }
             }
         }
         System.out.println();

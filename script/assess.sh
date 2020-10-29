@@ -26,6 +26,8 @@ SUBSCRIPTION=/Volumes/twoTBdrive/sawmill/$1
 FULLFILENAME=$2
 SOURCETYPE=$3
 ZIPTYPE=$4
+LDAPCUT=1
+HTTPCUT=1
 FILENAME=${FULLFILENAME%.*}
 FILENAMEONLY=${FILENAME##*/}
 SERVICEBASE="/Users/rmfaller/projects/BlueOx/build/web"
@@ -46,22 +48,28 @@ mkdir report
 $SCRIPTHOME/createpoi.sh $SUBSCRIPTION $FILENAMEONLY $3
 
 # uploadtype=`cat metadata.json | jq -r '.info.uploadtype'`
-echo "<html> <head> <title>BlueOx</title> </head> <body><a name=\"extract\"></a>Extractor Report<br>" >./report/report.html
+#echo "<html> <head> <title>BlueOx</title> </head> <body><a name=\"extract\"></a>Extractor Report<br>" >./report/report.html
+echo "<html> <head> <title>BlueOx</title> </head> <body>" >./report/report.html
+echo "<h2><b> <font face=\"Arial Unicode MS\"><font color=\"#3333ff\">BlueOx</font>" >>./report/report.html
+echo "Report for Subscription = $SUBSCRIPTION and File = $FILENAMEONLY</font></b></h2>" >>./report/report.html
+# echo "<hr><a href=./allldapops.html>LDAPOPS</a><hr>" >>./report/report.html
 
 # if [[ "$uploadtype" = "dsextract" ]]; then
-if [[ $ZIPTYPE ]]; then
+if [ "$ZIPTYPE" = "x" ]; then
   #  dd=`date`;
   #  cat ./metadata.json | $JQ --arg dd "$dd" '.extracted.starttime = $dd' > ./tmpmetadata.json;
   #  mv ./tmpmetadata.json ./metadata.json
   cd ./support-data/config
   # $SCRIPT_HOME/extractor2.1b.sh  -r $FILENAME -h -e
   $SCRIPTHOME/extractor.sh -r $FILENAMEONLY -h
-  cp $FILENAMEONLY.html ../../report/.
+  mv $FILENAMEONLY.html ../../report/.
+  # echo "moved $FILENAMEONLY.html"
   cd ../../
-  cat ./report/$FILENAMEONLY.html >>./report/report.html
-#  dd=`date`;
-#  cat ./metadata.json | $JQ --arg dd "$dd" '.extracted.endtime = $dd' > ./tmpmetadata.json;
-#  mv ./tmpmetadata.json ./metadata.json
+  #  cat ./report/$FILENAMEONLY.html >>./report/report.html
+  #  dd=`date`;
+  #  cat ./metadata.json | $JQ --arg dd "$dd" '.extracted.endtime = $dd' > ./tmpmetadata.json;
+  #  mv ./tmpmetadata.json ./metadata.json
+  echo "<hr size=\"2\" width=\"100%\"><font face=\"Arial Unicode MS\"><a href=./$FILENAMEONLY.html>Directory Server Extractor Report</a><br></font>" >>./report/report.html
 fi
 
 # rotatedldaplogs=$(ls ./support-data/logs/ldap-access.audit.json.*)
@@ -75,74 +83,75 @@ if [ -n "$ldaplogs" ]; then
   # dd=`date`
   # cat ./metadata.json | $JQ --arg dd "$dd" '.operationsassessed.starttime = $dd' > ./tmpmetadata.json
   # mv ./tmpmetadata.json ./metadata.json
-
-  logcount=0
+  ldaplogcount=0
   for log in $ldaplogs; do
     if [ -f $log ]; then
       filesize=$(wc -c $log | awk '{print $1}')
       if (($filesize > 0)); then
         filename=$(echo "$log" | sed "s/.*\///")
-        printf -v cnt "%05d" $logcount
-        if (($logcount == 0)); then
+        printf -v cnt "%05d" $ldaplogcount
+        if (($ldaplogcount == 0)); then
           echo "<pre>Operation assessment for $FILENAME</pre>" >./tmp/$cnt-ldap-operations.html
-          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}ldap-poi.json --condense $log >>./tmp/$cnt-ldap-ops.csv
+          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}ldap-poi.json --condense $log >>./tmp/$cnt-ldap-ops.csv
           #        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}ldap-poi.json --filltimegap --condense $log >>./tmp/$cnt-ldap-ops.csv
           cat $log | $JQ '.userId,.response.status' | tr " " ~ | paste -d " " - - | grep -v null >./tmp/$cnt-ldap-ids.txt
         else
-          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}ldap-poi.json --noheader --condense $log >>./tmp/$cnt-ldap-ops.csv
+          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}ldap-poi.json --noheader --condense $log >>./tmp/$cnt-ldap-ops.csv
           #        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}ldap-poi.json --noheader --filltimegap --condense $log >>./tmp/$cnt-ldap-ops.csv
           cat $log | $JQ '.userId,.response.status' | tr " " ~ | paste -d " " - - | grep -v null >>./tmp/$cnt-ldap-ids.txt
         fi
         echo "<pre>Operations from log file $filename</pre>" >>./tmp/$cnt-ldap-operations.html
-        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}ldap-poi.json --totalsonly --condense $log --sla --html >>./tmp/$cnt-ldap-operations.html
+        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}ldap-poi.json --totalsonly --condense $log --sla --html >>./tmp/$cnt-ldap-operations.html
         echo "Cnt | e | operation" >./tmp/$cnt-ldap-ms.txt
         cat $log | $JQ '.response.elapsedTime, .request.operation' | paste -d " " - - | sort -k1 -n | uniq -c | sort -k2 -n >>./tmp/$cnt-ldap-ms.txt
         cat $log | $JQ '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" >>./tmp/$cnt-ldap-ip.txt
         #      cat $log | $HOME/bin/jq '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" | sort -n | uniq -c >>./tmp/$cnt-ldap-ip.txt
         #      echo "<hr><hr>" >> ./tmp/$cnt-ldap-operations.html
         # curl --silent ipinfo.io/40.112.181.172
-        ((logcount++))
+        ((ldaplogcount++))
       fi
     fi
   done
   # wait
 
-  logcount=0
+  httplogcount=0
   for log in $httplogs; do
     if [ -f $log ]; then
       filesize=$(wc -c $log | awk '{print $1}')
       if (($filesize > 0)); then
         filename=$(echo "$log" | sed "s/.*\///")
-        printf -v cnt "%05d" $logcount
-        if (($logcount == 0)); then
+        printf -v cnt "%05d" $httplogcount
+        if (($httplogcount == 0)); then
           echo "<pre>Operation assessment for $FILENAME</pre>" >./tmp/$cnt-rest-operations.html
-          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}http-poi.json --condense $log >>./tmp/$cnt-rest-ops.csv
+          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}http-poi.json --cut 10000 --condense $log >>./tmp/$cnt-rest-ops.csv
           #        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}http-poi.json --filltimegap --condense $log >>./tmp/$cnt-rest-ops.csv
           cat $log | $JQ '.userId,.response.status' | tr " " ~ | paste -d " " - - | grep -v null >./tmp/$cnt-rest-ids.txt
         else
-          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}http-poi.json --noheader --condense $log >>./tmp/$cnt-rest-ops.csv
+          /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}http-poi.json --cut 10000 --noheader --condense $log >>./tmp/$cnt-rest-ops.csv
           #        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}http-poi.json --noheader --filltimegap --condense $log >>./tmp/$cnt-rest-ops.csv
           cat $log | $JQ '.userId,.response.status' | tr " " ~ | paste -d " " - - | grep -v null >>./tmp/$cnt-rest-ids.txt
         fi
         echo "<pre>Operations from log file $filename</pre>" >>./tmp/$cnt-rest-operations.html
-        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/${SOURCETYPE}http-poi.json --totalsonly --condense $log --sla --html >>./tmp/$cnt-rest-operations.html
+        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}http-poi.json --totalsonly --cut 10000 --condense $log --sla --html >>./tmp/$cnt-rest-operations.html
         echo "Cnt | e | operation" >./tmp/$cnt-rest-ms.txt
         cat $log | $JQ '.response.elapsedTime, .request.operation' | paste -d " " - - | sort -k1 -n | uniq -c | sort -k2 -n >>./tmp/$cnt-rest-ms.txt &
         cat $log | $JQ '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" >>./tmp/$cnt-rest-ip.txt
         #      cat $log | $HOME/bin/jq '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" | sort -n | uniq -c >>./tmp/$cnt-rest-ip.txt
         #      echo "<hr><hr>" >> ./tmp/$cnt-rest-operations.html
         # curl --silent ipinfo.io/40.112.181.172
-        ((logcount++))
+        ((httplogcount++))
       fi
     fi
   done
   # wait
 
-  echo "<a name=\"operationassessment\"></a>Operation Assessment<br>" >>./report/report.html
+  # echo "<a name=\"operationassessment\"></a>Operation Assessment<br>" >>./report/report.html
+  echo "<hr size=\"2\" width=\"100%\"><font face=\"Arial Unicode MS\"><a href=./operation-assessment.html>Operation Assessment</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
   logs=$(ls ./tmp/*-operations.html)
+  echo "" >./report/operation-assessment.html
   for log in $logs; do
-    echo "<hr><hr>" >>./report/report.html
-    cat $log >>./report/report.html
+    echo "<hr size=\"2\" width=\"100%\">" >>./report/operation-assessment.html
+    cat $log >>./report/operation-assessment.html
   done
 
   # dd=`date`
@@ -155,32 +164,19 @@ if [ -n "$ldaplogs" ]; then
 
   cat ./tmp/*-ops.csv >./tmp/allops.csv
 
-  echo "<hr>" >>./report/report.html
-  cat ./tmp/*ldap-ops.csv >./tmp/allldapops.csv
-  $SCRIPTHOME/gbuildplot-notime.sh ./tmp/allldapops.csv >./tmp/allldapops.gnp
-  # /usr/bin/gnuplot ./tmp/allrestops.gnp
-  gnuplot ./tmp/allldapops.gnp
-  wait
-  mv ./output.gif ./report/ldapoutput.gif
-  echo "<img src=\"./ldapoutput.gif\" alt=\"\" height=\"800\" width=\"1600\">" >>./report/report.html
-  # dd=`date`
-  # cat ./metadata.json | $JQ --arg dd "$dd" '.activitygraphed.endtime = $dd' > ./tmpmetadata.json
-  # mv ./tmpmetadata.json ./metadata.json
+  if (($ldaplogcount != 0)); then
+    cat ./tmp/*ldap-ops.csv >./tmp/allldapops.csv
+    $SCRIPTHOME/chartprep.sh ./tmp/allldapops.csv
+    cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allldapops.html
+    echo "<font face=\"Arial Unicode MS\"><a href=./allldapops.html>LDAP operations (DS | CTS | Config store)</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
+  fi
 
-  echo "<hr><hr>" >>./report/report.html
-  echo "<hr>" >>./report/report.html
-  cat ./tmp/*rest-ops.csv >./tmp/allrestops.csv
-  $SCRIPTHOME/gbuildplot-notime.sh ./tmp/allrestops.csv >./tmp/allrestops.gnp
-  gnuplot ./tmp/allrestops.gnp
-  # /usr/bin/gnuplot ./tmp/allrestops.gnp
-  wait
-  mv ./output.gif ./report/restoutput.gif
-  echo "<img src=\"./restoutput.gif\" alt=\"\" height=\"800\" width=\"1600\">" >>./report/report.html
-  # dd=`date`
-  # cat ./metadata.json | $JQ --arg dd "$dd" '.activitygraphed.endtime = $dd' > ./tmpmetadata.json
-  # mv ./tmpmetadata.json ./metadata.json
-
-  echo "<hr><hr>" >>./report/report.html
+  if (($httplogcount != 0)); then
+    cat ./tmp/*rest-ops.csv >./tmp/allrestops.csv
+    $SCRIPTHOME/chartprep.sh ./tmp/allrestops.csv
+    cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allrestops.html
+    echo "<font face=\"Arial Unicode MS\"><a href=./allrestops.html>REST operations</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
+  fi
 
   cat ./tmp/*-ip.txt | sed -e s"/SUCCESSFUL//" | sed -e s"/FAILED//" | sort | uniq >./tmp/all-ipsonly.txt
   cat ./tmp/*-ip.txt | sort -n | uniq -c | tr -s " " | sed -e s"/^ //" >./tmp/all-ips-sorted.txt
@@ -230,8 +226,9 @@ if [ -n "$ldaplogs" ]; then
     echo "<tr><td><pre>" >>./report/report.html
     #  echo "<form id=\"dig_$idvaluecount\" name=\"dig_$idvaluecount\" method=\"POST\" action=\"kestreldig\">" >>./report/report.html
     #  echo "<input id=\"submit_$idvaluecount\" type=\"submit\" value=$idvalue></form>" >>./report/report.html
-    idonly=$(echo $idvalue | cut -f1 -d",")
-    echo "$idonly" >>./report/report.html
+    #    idonly=$(echo $idvalue | cut -f1 -d",")
+    #    echo "$idonly" >>./report/report.html
+    echo "$idvalue" >>./report/report.html
     echo "</pre></td>" >>./report/report.html
     ((idvaluecount++))
     if (($failed == 0)); then

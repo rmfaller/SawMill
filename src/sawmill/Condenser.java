@@ -223,11 +223,12 @@ class Condenser {
                             for (int i = 0; i < stats.length; i++) {
                                 System.out.format("%.0f%s", stats[i][OPCNT], ",");
                                 if (stats[i][OPCNT] > 0) {
-                                    System.out.format("%.2f%s", (stats[i][TIMEOP] / stats[i][OPCNT]), ",");
+                                    System.out.format("%.2f", (stats[i][TIMEOP] / stats[i][OPCNT]));
                                 } else {
-                                    System.out.print("0,");
+                                    System.out.print("0");
                                 }
                                 if (sla) {
+                                    System.out.print(",");
                                     System.out.print(slatime[i] + ",");
                                     System.out.format("%.0f%s", stats[i][OPSUNDER], ",");
                                     System.out.format("%.0f%s", stats[i][OPSOVER], ",");
@@ -236,6 +237,9 @@ class Condenser {
                                     } else {
                                         System.out.print("100.0%");
                                     }
+                                    System.out.print(",");
+                                }
+                                if (i < (stats.length - 1)) {
                                     System.out.print(",");
                                 }
                             }
@@ -251,52 +255,52 @@ class Condenser {
                 }
                 if (((epochtime - oldtime) > 0) && (!totalsonly)) {
                     System.out.print(epochtime);
-                    System.out.print("," + timestamp + ",");
+                    System.out.print(", " + timestamp + ", ");
                     System.out.print(lf + ",");
-                    System.out.print((epochtime - oldtime) + ",");
+                    System.out.print((epochtime - oldtime) + ", ");
                     oldtime = epochtime;
                     for (int i = 0; i < stats.length; i++) {
-                        System.out.format("%.0f%s", stats[i][OPCNT], ",");
+                        System.out.format("%.0f%s", stats[i][OPCNT], ", ");
                         if (stats[i][OPCNT] > 0) {
-                            System.out.format("%.2f%s", (stats[i][TIMEOP] / stats[i][OPCNT]), ",");
+                            System.out.format("%.2f%s", (stats[i][TIMEOP] / stats[i][OPCNT]), ", ");
                         } else {
-                            System.out.print("0,");
+                            System.out.print("0, ");
                         }
                         if (sla) {
-                            System.out.print(slatime[i] + ",");
-                            System.out.format("%.0f%s", stats[i][OPSUNDER], ",");
-                            System.out.format("%.0f%s", stats[i][OPSOVER], ",");
+                            System.out.print(slatime[i] + ", ");
+                            System.out.format("%.0f%s", stats[i][OPSUNDER], ", ");
+                            System.out.format("%.0f%s", stats[i][OPSOVER], ", ");
                             if (stats[i][OPSOVER] > 0) {
                                 System.out.format("%3.1f%s", ((stats[i][OPSUNDER] / stats[i][OPCNT]) * 100), "%");
                             } else {
                                 System.out.print("100.0%");
                             }
-                            System.out.print(",");
+                            System.out.print(", ");
                         }
                     }
                     System.out.println();
                 }
                 if (showtotals || totalsonly) {
                     if (!html) {
-                        System.out.print("Totals,," + new File(lf).getName() + ",");
-                        System.out.print((epochtime - starttime) + ",");
+                        System.out.print("Totals, , " + new File(lf).getName() + ", ");
+                        System.out.print((epochtime - starttime) + ", ");
                         for (int i = 0; i < stats.length; i++) {
-                            System.out.format("%.0f%s", stats[i][TOTALOPCNT], ",");
+                            System.out.format("%.0f%s", stats[i][TOTALOPCNT], ", ");
                             if (stats[i][TOTALOPCNT] > 0) {
-                                System.out.format("%.2f%s", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), ",");
+                                System.out.format("%.2f%s", (stats[i][TOTALTIMEOP] / stats[i][TOTALOPCNT]), ", ");
                             } else {
-                                System.out.print("0,");
+                                System.out.print("0, ");
                             }
                             if (sla) {
-                                System.out.print(slatime[i] + ",");
-                                System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], ",");
-                                System.out.format("%.0f%s", stats[i][TOTALOPSOVER], ",");
+                                System.out.print(slatime[i] + ", ");
+                                System.out.format("%.0f%s", stats[i][TOTALOPSUNDER], ", ");
+                                System.out.format("%.0f%s", stats[i][TOTALOPSOVER], ", ");
                                 if (stats[i][TOTALOPSOVER] > 0) {
                                     System.out.format("%3.1f%s", ((stats[i][TOTALOPSUNDER] / stats[i][TOTALOPCNT]) * 100), "%");
                                 } else {
                                     System.out.print("100.0%");
                                 }
-                                System.out.print(",");
+                                System.out.print(", ");
                             }
                         }
                         System.out.println();
@@ -340,12 +344,16 @@ class Condenser {
         System.out.print("Timespan(ms),");
         for (int i = 0; i < poi.size(); i++) {
             System.out.print((String) (poi.get(i)) + ".ops,");
-            System.out.print((String) (poi.get(i)) + ".time-op,");
+            System.out.print((String) (poi.get(i)) + ".time-op");
             if (sla) {
+                System.out.print(",");
                 System.out.print((String) (poi.get(i)) + ".sla,");
                 System.out.print((String) (poi.get(i)) + ".under,");
                 System.out.print((String) (poi.get(i)) + ".over,");
-                System.out.print((String) (poi.get(i)) + ".percent,");
+                System.out.print((String) (poi.get(i)) + ".percent");
+            }
+            if (i < (poi.size() - 1)) {
+                System.out.print(",");
             }
         }
         System.out.println();

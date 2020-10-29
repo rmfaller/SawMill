@@ -17,3 +17,6 @@ $HOME/projects/SawMill/script/assess.sh testsubscription /Users/robert.faller/ac
 java -jar /Users/robert.faller/projects/SawMill/dist/SawMill.jar --laminate ./opendj-support-data-20200617-prodempcts1lsat/tmp/allldapops.csv ./opendj-support-data-20200617-prodempcts2lsat/tmp/allldapops.csv > all.csv
 /Users/robert.faller/projects/SawMill/script/chartprep.sh ./all.csv
 cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml opscolumns.data etimescolumns.data ops.data etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml > all.html
+
+Steps:
+1. Create a support-extract -or- a zip of all .json access logs (DS | CTS = DSHOME/logs/ldap* and DSHOME/logs/http*)

@@ -6,6 +6,9 @@
 #sed 's/^/[/; s/$/],/g' gc.log
 filesize=$(wc -l <$1)
 linecount=1
+hbracket="["
+tcbracket="],"
+tbracket="]"
 while read -r line; do
   if (($linecount == 1)); then
     headers=$(echo $line | cut -d"," -f5-)
@@ -21,7 +24,7 @@ while read -r line; do
     echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>etimescolumns.data
     hc=0
     cc=0
-    colors=(red gold magenta indigo slateblue green olive teal blue navy brown crimson darkred peru maroon cornflowerblue steelblue darkgreen purple orange firebrick salmon deeppink coral tomato voilet lime)
+    colors=(red gold magenta indigo slateblue green olive teal blue navy brown crimson darkred peru maroon cornflowerblue steelblue darkgreen purple orange firebrick salmon deeppink coral tomato violet lime darkcyan darkblue chocolate darkmagenta blueviolet)
     for header in $headers; do
       if (($hc % 2)); then
         echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>etimescolumns.data
@@ -64,32 +67,45 @@ while read -r line; do
   else
     OLDIFS=$IFS
     IFS=" "
-    #    IFS=","
     vc=1
     clock=$(echo $line | cut -d"," -f1)
-#    des=$(echo $line | cut -d"," -f5- | tr -s "," " ,")
-    des=$(echo $line | cut -d"," -f5- )
-#    echo "LINES = $line"
-#   echo "DES = $des"
-    opvalues="$clock, "
-    etimevalues="$clock, "
+    #    des=$(echo $line | cut -d"," -f5- | tr -s "," " ,")
+    des=$(echo $line | cut -d"," -f5-)
+    des="$des ,"
+    #   echo "LINES = $line"
+    #   echo "DES = $des"
+    opvalues="$clock"
+    etimevalues="$clock"
+    IFS=','
+    #    elementcount=$(echo $des | wc -w)
+    #    echo $elementcount
     for de in $des; do
+      #            for de in $(echo $des | sed "s/,/ /g"); do
+      #      echo "DE = -$de-$vc-"
       if (($vc % 2)); then
-        opvalues="$opvalues $de"
+        opvalues="$opvalues, $de"
       else
-        etimevalues="$etimevalues $de"
+        etimevalues="$etimevalues, $de"
       fi
       ((vc++))
     done
-    IFS=$OLDIFS
     if (($linecount < $filesize)); then
-      echo $opvalues | sed 's/^/[/; s/$/],/g' >>ops.data
-      echo $etimevalues | sed 's/^/[/; s/$/],/g' >>etimes.data
+      #      echo $opvalues | sed 's/^/[/; s/$/],/g' >>ops.data
+      #      echo $etimevalues | sed 's/^/[/; s/$/],/g' >>etimes.data
+      #      echo "$hbracket$opvalues$tcbracket" | tr -s "~" "0" >>ops.data
+      #      echo "$hbracket$etimevalues$tcbracket" | tr -s "~" "0" >>etimes.data
+      echo "$hbracket$opvalues$tcbracket" >>ops.data
+      echo "$hbracket$etimevalues$tcbracket" >>etimes.data
     fi
     if (($linecount == $filesize)); then
-      echo $opvalues | sed 's/^/[/; s/$/]/g' >>ops.data
-      echo $etimevalues | sed 's/^/[/; s/$/]/g' >>etimes.data
+      #      echo "$hbracket$opvalues$tbracket" | tr -s "~" "0" >>ops.data
+      #      echo "$hbracket$etimevalues$tbracket" | tr -s "~" "0" >>etimes.data
+      echo "$hbracket$opvalues$tbracket" >>ops.data
+      echo "$hbracket$etimevalues$tbracket" >>etimes.data
+      #      echo $opvalues | sed 's/^/[/; s/$/]/g' >>ops.data
+      #      echo $etimevalues | sed 's/^/[/; s/$/]/g' >>etimes.data
     fi
+    IFS=$OLDIFS
   fi
   ((linecount++))
 done <$1
