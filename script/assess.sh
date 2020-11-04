@@ -61,7 +61,7 @@ if [ "$ZIPTYPE" = "x" ]; then
   #  mv ./tmpmetadata.json ./metadata.json
   cd ./support-data/config
   # $SCRIPT_HOME/extractor2.1b.sh  -r $FILENAME -h -e
-  $SCRIPTHOME/extractor.sh -r $FILENAMEONLY -h
+#  $SCRIPTHOME/extractor.sh -r $FILENAMEONLY -h
   mv $FILENAMEONLY.html ../../report/.
   # echo "moved $FILENAMEONLY.html"
   cd ../../

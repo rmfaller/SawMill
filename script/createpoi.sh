@@ -76,7 +76,7 @@ if [[ $3 ]]; then
     logs=$(find $POIHOME/$POISOURCE -name "$DSLDAPLOGPREFIX*" -print)
     echo -n >$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
     for log in $logs; do
-      cat $log | $HOME/bin/jq '.request.operation,.request.opType,.response.status' | paste -d"," - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
+      cat $log | $HOME/bin/jq '.request.operation,.request.opType,.response.status,.response.statusCode' | paste -d"," - - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
     done
     pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep -v UNBIND | tr -d "\"" | tr "," "~" | sort -r | uniq)
     if [[ $pois ]]; then
@@ -95,6 +95,10 @@ if [[ $3 ]]; then
         if [ "$status" = "null" ]; then
           status=""
         fi
+        statuscode=$(echo $poi | cut -d"~" -f4)
+        if [ "$statuscode" = "null" ]; then
+          statuscode=""
+        fi
         echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
         echo -n '"\"operation\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
         echo -n "$operation\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
@@ -106,10 +110,20 @@ if [[ $3 ]]; then
         if [[ $status ]]; then
           echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
           echo -n '"\"status\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+          echo -n "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+#else
+#                  echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
         fi
-        echo '],"lapsedtimefield": "elapsedTime",
-        "sla": 200
+        if [[ $statuscode ]]; then
+          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+          echo -n '"\"statusCode\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+          echo "$statuscode\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+#        else
+#          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+        fi        
+        echo '],
+  "lapsedtimefield": "elapsedTime",
+  "sla": 200
     },' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
       done
       echo '"end":{}
