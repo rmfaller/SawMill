@@ -24,7 +24,7 @@ while read -r line; do
     echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>etimescolumns.data
     hc=0
     cc=0
-    colors=(red gold magenta indigo slateblue green olive teal blue navy brown crimson darkred peru maroon cornflowerblue steelblue darkgreen purple orange firebrick salmon deeppink coral tomato violet lime darkcyan darkblue chocolate darkmagenta blueviolet)
+    colors=(blueviolet chartreuse darkblue darkgreen darkcyan darkgoldenrod darkmagenta darkorchid darkslateblue deeppink fuchsia goldenrod greenyellow hotpink orangered plum aqua red gold magenta indigo slateblue green olive teal blue navy brown crimson darkred peru maroon cornflowerblue steelblue darkgreen purple orange firebrick salmon deeppink coral tomato violet lime darkcyan darkblue chocolate darkmagenta blueviolet)
     for header in $headers; do
       if (($hc % 2)); then
         echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>etimescolumns.data
