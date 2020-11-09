@@ -1,0 +1,5 @@
+Orange 	#FFA500	 	Shades	Mix
+DarkOrange 	#FF8C00	 	Shades	Mix
+Coral 	#FF7F50	 	Shades	Mix
+Tomato 	#FF6347	 	Shades	Mix
+OrangeRed 	#FF4500	 	Shades	Mix

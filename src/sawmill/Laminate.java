@@ -20,7 +20,7 @@ class Laminate {
     Laminate(FileReader[] fra, boolean usespace) {
     }
 
-    void laminate(BufferedReader[] lbra, boolean usespace) throws IOException {
+    void laminate(BufferedReader[] lbra, boolean usenull) throws IOException {
         boolean[] filedone = new boolean[lbra.length];
         String[][] chdrs = new String[lbra.length][];
         String[][] data = new String[lbra.length][1];
@@ -28,8 +28,8 @@ class Laminate {
         int lowvali = 0;
         int totalcells = 4;
         String replace = ",0";
-        if (usespace) {
-            replace = ",";
+        if (usenull) {
+            replace = ",null";
         }
         for (int i = 0; i < lbra.length; i++) {
             filedone[i] = false;

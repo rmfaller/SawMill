@@ -1,0 +1,6 @@
+Pink 	#FFC0CB	 	Shades	Mix
+LightPink 	#FFB6C1	 	Shades	Mix
+HotPink 	#FF69B4	 	Shades	Mix
+DeepPink 	#FF1493	 	Shades	Mix
+PaleVioletRed 	#DB7093	 	Shades	Mix
+MediumVioletRed 	#C71585	 	Shades	Mix

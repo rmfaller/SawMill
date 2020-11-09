@@ -16,6 +16,7 @@
             opsdataView.setColumns(opsvisibleColumnIndexes);
             opschart.draw(opsdataView, {
                 colors: opscolors,
+                interpolateNulls: true,
                 width: 1800,
                 height: 500,
                 tooltip: { isHtml: true, textStyle: { fontSize: 10 } },       
@@ -58,6 +59,7 @@
             etimesdataView.setColumns(etimesvisibleColumnIndexes);
             etimeschart.draw(etimesdataView, {
                 colors: etimescolors,
+                interpolateNulls: true,
                 width: 1800,
                 height: 500,
                 tooltip: { isHtml: true, textStyle: { fontSize: 10 } },       

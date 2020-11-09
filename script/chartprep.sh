@@ -24,7 +24,26 @@ while read -r line; do
     echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>etimescolumns.data
     hc=0
     cc=0
-    colors=(blueviolet chartreuse darkblue darkgreen darkcyan darkgoldenrod darkmagenta darkorchid darkslateblue deeppink fuchsia goldenrod greenyellow hotpink orangered plum aqua red gold magenta indigo slateblue green olive teal blue navy brown crimson darkred peru maroon cornflowerblue steelblue darkgreen purple orange firebrick salmon deeppink coral tomato violet lime darkcyan darkblue chocolate darkmagenta blueviolet)
+    colors=(Blue Brown Cyan Green Gray Orange Pink Purple Red  \
+CadetBlue Aqua GreenYellow DarkOrange LightPink Gold  \
+SteelBlue Chartreuse Coral HotPink LightSalmon  \
+LightSteelBlue NavajoWhite PaleTurquoise LawnGreen Silver Tomato DeepPink Plum Salmon  \
+LightBlue Wheat Aquamarine Lime DarkGray OrangeRed PaleVioletRed Orchid DarkSalmon  \
+PowderBlue BurlyWood Turquoise LimeGreen MediumVioletRed Violet LightCoral Moccasin  \
+LightSkyBlue Tan MediumTurquoise PaleGreen LightSlateGray Fuchsia IndianRed PeachPuff  \
+SkyBlue RosyBrown DarkTurquoise LightGreen SlateGray Magenta Crimson PaleGoldenRod  \
+CornflowerBlue SandyBrown MediumSpringGreen DarkSlateGray MediumOrchid FireBrick Khaki  \
+DeepSkyBlue GoldenRod SpringGreen Black DarkOrchid DarkRed DarkKhaki  \
+DodgerBlue DarkGoldenRod MediumSeaGreen DarkViolet  \
+RoyalBlue Peru SeaGreen BlueViolet  \
+MediumBlue Chocolate ForestGreen DarkMagenta  \
+DarkBlue Olive DarkGreen MediumPurple  \
+Navy SaddleBrown YellowGreen MediumSlateBlue  \
+MidnightBlue Sienna OliveDrab SlateBlue  \
+Maroon DarkOliveGreen DarkSlateBlue  \
+MediumAquaMarine RebeccaPurple  \
+DarkSeaGreen Indigo LightSeaGreen DarkCyan Teal)
+
     for header in $headers; do
       if (($hc % 2)); then
         echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>etimescolumns.data
