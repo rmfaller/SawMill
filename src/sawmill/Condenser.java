@@ -382,8 +382,9 @@ class Condenser {
         Date st = new Date(starttime);
         Date et = new Date(epochtime);
         SimpleDateFormat tf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
-        System.out.println("<pre>Logs started " + tf.format(st) + "(epoch = " + starttime + ")  Ended on " + tf.format(et) + " (epoch = " + epochtime +") ");
-        System.out.println("Time span = " + (epochtime - starttime) + "ms (" + ((epochtime - starttime) / 1000) + " seconds or " + (((epochtime - starttime) / 1000) / 60) + " minutes)");
+        System.out.println("<pre>Time span: " + tf.format(st) + " --> " + tf.format(et) + "</pre>");
+        System.out.println("<pre>Epoch time: " + starttime + " --> " + epochtime + "</pre>");
+        System.out.println("<pre>Length of time = " + (epochtime - starttime) + "ms (" + ((epochtime - starttime) / 1000) + " seconds or " + (((epochtime - starttime) / 1000) / 60) + " minutes) </pre>");
         System.out.println("<table cellpadding=\"4\" border=\"1\">");
         System.out.println("<tbody>");
         System.out.println("<tr>");
@@ -422,7 +423,7 @@ class Condenser {
             System.out.println("</tr>");
         }
         System.out.println("</tr></tbody>");
-        System.out.println("</table><br>NOTE: -s postfix = successful and -f postfix = failed</pre>");
+        System.out.println("</table><br>");
 
     }
 

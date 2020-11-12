@@ -62,7 +62,7 @@ if [ "$ZIPTYPE" = "x" ]; then
   #  mv ./tmpmetadata.json ./metadata.json
   cd ./support-data/config
   # $SCRIPT_HOME/extractor2.1b.sh  -r $FILENAME -h -e
-#  $SCRIPTHOME/extractor-2.3.3.sh -r $FILENAMEONLY -h
+  #  $SCRIPTHOME/extractor-2.3.3.sh -r $FILENAMEONLY -h
   $SCRIPTHOME/extractor.sh -r $FILENAMEONLY -h
   mv $FILENAMEONLY.html ../../report/.
   # echo "moved $FILENAMEONLY.html"
@@ -169,14 +169,34 @@ if [ -n "$ldaplogs" ]; then
   if (($ldaplogcount != 0)); then
     cat ./tmp/*ldap-ops.csv >./tmp/allldapops.csv
     $SCRIPTHOME/chartprep.sh ./tmp/allldapops.csv
-    cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allldapops.html
+    if (($ldaplogcount > 1)); then
+      echo "<div id=\"note\"></div>" >./report/ldapnote.phtml
+      echo "<h3>Note:</h3>" >>./report/ldapnote.phtml
+      echo "<pre>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/ldapnote.phtml
+      epochs=$(grep -i epoch ./tmp/*-ldap-operations.html | cut -d ":" -f3 | cut -d " " -f2)
+      echo "<pre>$epochs</pre>" >>./report/ldapnote.phtml
+      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/ldapnote.phtml >./report/allldapops.html
+    else
+      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allldapops.html
+    fi
+    echo "</body></html>" >>./report/allldapops.html
     echo "<font face=\"Arial Unicode MS\"><a href=./allldapops.html>LDAP operations (DS | CTS | Config store)</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
   fi
 
   if (($httplogcount != 0)); then
     cat ./tmp/*rest-ops.csv >./tmp/allrestops.csv
     $SCRIPTHOME/chartprep.sh ./tmp/allrestops.csv
-    cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allrestops.html
+    if (($httplogcount > 1)); then
+      echo "<div id=\"note\"></div>" >./report/restnote.phtml
+      echo "<h3>Note:</h3>" >>./report/restnote.phtml
+      echo "<pre>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/restnote.phtml
+      epochs=$(grep -i epoch ./tmp/*-rest-operations.html | cut -d ":" -f3 | cut -d " " -f2)
+      echo "<pre>$epochs</pre>" >>./report/restnote.phtml
+      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/restnote.phtml >./report/allrestops.html
+    else
+      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allrestops.html
+    fi
+    echo "</body></html>" >>./report/allldapops.html
     echo "<font face=\"Arial Unicode MS\"><a href=./allrestops.html>REST operations</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
   fi
 
