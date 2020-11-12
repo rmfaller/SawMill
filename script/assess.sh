@@ -171,8 +171,7 @@ if [ -n "$ldaplogs" ]; then
     $SCRIPTHOME/chartprep.sh ./tmp/allldapops.csv
     if (($ldaplogcount > 1)); then
       echo "<div id=\"note\"></div>" >./report/ldapnote.phtml
-      echo "<h3>Note:</h3>" >>./report/ldapnote.phtml
-      echo "<pre>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/ldapnote.phtml
+      echo "<pre><b>Note: </b>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/ldapnote.phtml
       epochs=$(grep -i epoch ./tmp/*-ldap-operations.html | cut -d ":" -f3 | cut -d " " -f2)
       echo "<pre>$epochs</pre>" >>./report/ldapnote.phtml
       cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/ldapnote.phtml >./report/allldapops.html
@@ -188,8 +187,7 @@ if [ -n "$ldaplogs" ]; then
     $SCRIPTHOME/chartprep.sh ./tmp/allrestops.csv
     if (($httplogcount > 1)); then
       echo "<div id=\"note\"></div>" >./report/restnote.phtml
-      echo "<h3>Note:</h3>" >>./report/restnote.phtml
-      echo "<pre>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/restnote.phtml
+      echo "<pre><b>Note: </b>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/restnote.phtml
       epochs=$(grep -i epoch ./tmp/*-rest-operations.html | cut -d ":" -f3 | cut -d " " -f2)
       echo "<pre>$epochs</pre>" >>./report/restnote.phtml
       cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/restnote.phtml >./report/allrestops.html
