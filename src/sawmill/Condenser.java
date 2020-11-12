@@ -382,7 +382,7 @@ class Condenser {
         Date st = new Date(starttime);
         Date et = new Date(epochtime);
         SimpleDateFormat tf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
-        System.out.println("<pre>Logs started " + tf.format(st) + "  Ended on  " + tf.format(et) + " ");
+        System.out.println("<pre>Logs started " + tf.format(st) + "(epoch = " + starttime + ")  Ended on " + tf.format(et) + " (epoch = " + epochtime +") ");
         System.out.println("Time span = " + (epochtime - starttime) + "ms (" + ((epochtime - starttime) / 1000) + " seconds or " + (((epochtime - starttime) / 1000) / 60) + " minutes)");
         System.out.println("<table cellpadding=\"4\" border=\"1\">");
         System.out.println("<tbody>");

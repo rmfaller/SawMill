@@ -41,8 +41,7 @@ DarkBlue Olive DarkGreen MediumPurple  \
 Navy SaddleBrown YellowGreen MediumSlateBlue  \
 MidnightBlue Sienna OliveDrab SlateBlue  \
 Maroon DarkOliveGreen DarkSlateBlue  \
-MediumAquaMarine RebeccaPurple  \
-DarkSeaGreen Indigo LightSeaGreen DarkCyan Teal)
+MediumAquaMarine DarkSeaGreen Indigo LightSeaGreen DarkCyan Teal)
 
     for header in $headers; do
       if (($hc % 2)); then

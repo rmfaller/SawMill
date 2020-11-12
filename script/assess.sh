@@ -22,7 +22,8 @@ SAWMILLHOME="$BOH/SawMill"
 SCRIPTHOME="$SAWMILLHOME/script"
 HTMLHOME="$SAWMILLHOME/html"
 # SUBSCRIPTION="$BOH/build/web/uploads/$1"
-SUBSCRIPTION=/Volumes/twoTBdrive/sawmill/$1
+SUBSCRIPTIONHOME=/Users/rmfaller
+SUBSCRIPTION=$SUBSCRIPTIONHOME/sawmill/$1
 FULLFILENAME=$2
 SOURCETYPE=$3
 ZIPTYPE=$4
@@ -74,10 +75,10 @@ if [ "$ZIPTYPE" = "x" ]; then
 fi
 
 # rotatedldaplogs=$(ls ./support-data/logs/ldap-access.audit.json.*)
-rotatedldaplogs=$(find . -name "ldap-access.audit.json.*" -print)
+rotatedldaplogs=$(find . -name "ldap-access.audit.json.*" -print | sort)
 # ldaplogs="$(echo $rotatedldaplogs)  $(ls ./support-data/logs/ldap-access.audit.json)"
 ldaplogs="$(echo $rotatedldaplogs)  $(find . -name "ldap-access.audit.json" -print)"
-rotatedhttplogs=$(find . -type f \( -name "access.audit.json-*" -o -name "http-access.audit.json.*" \) -print)
+rotatedhttplogs=$(find . -type f \( -name "access.audit.json-*" -o -name "http-access.audit.json.*" \) -print | sort)
 httplogs="$(echo $rotatedhttplogs) $(find . -type f \( -name "access.audit.json" -o -name "http-access.audit.json" \) -print)"
 
 if [ -n "$ldaplogs" ]; then
