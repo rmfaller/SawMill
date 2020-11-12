@@ -1,5 +1,5 @@
 #!/bin/sh
-# extractor 2.3.3
+# extractor 2.2
 #
 # Created by Lee Trujillo (lee.trujillo@forgerock.com)
 #
@@ -27,15 +27,12 @@
 #
 #       Copyright 2018-2020 ForgeRock AS.
 
-version="2.3.3"
+version="2.2"
 copyright="Copyright 2018-2020 ForgeRock AS."
 tab=0
 btab=0
 printedbackend=0
 totaldbcache=0
-totaldbcachepct=0
-cachePercent=""
-totaldbcachesz=0
 totalentries=0
 totalconnectioncount=0
 currentbase=""
@@ -45,7 +42,6 @@ longestStorageSchemeName=0
 heavySchemeAlertDisplay=""
 entryLimitAlert=0
 highCpuThreadsFound=0
-blockedThreadCheck=0
 debugindex=1
 displayall=$2
 kbas=""
@@ -58,12 +54,10 @@ minimumEoslVersion="3"
 # Index Types
 ctsIndexes='coreToken|ds-certificate-fingerprint|ds-certificate-subject-dn'
 amCfgIndexes='sunxmlkeyvalue|ds-cfg-attribute=ou'
-amIdentityStoreIndexes='sun-fm-saml2-nameid-infokey|iplanet-am-user-federation-info-key|ds-cfg-attribute=memberof,'
+amIdentityStoreIndexes='sun-fm-saml2-nameid-infokey|iplanet-am-user-federation-info-key'
 idmRepoIndexes='fr-idm'
-defaultIndexes='ds-cfg-attribute=aci|ds-cfg-attribute=cn|ds-cfg-attribute=givenName|ds-cfg-attribute=mail,|ds-cfg-attribute=member,|ds-cfg-attribute=objectClass|ds-cfg-attribute=sn|ds-cfg-attribute=telephoneNumber|ds-cfg-attribute=uid|ds-cfg-attribute=uniqueMember'
+defaultIndexes='ds-cfg-attribute=aci|ds-cfg-attribute=cn|ds-cfg-attribute=givenName|ds-cfg-attribute=mail,|ds-cfg-attribute=member,|ds-cfg-attribute=memberof,|ds-cfg-attribute=objectClass|ds-cfg-attribute=sn|ds-cfg-attribute=telephoneNumber|ds-cfg-attribute=uid|ds-cfg-attribute=uniqueMember'
 systemIndexes='ds-sync-conflict|ds-sync-hist|ds-cfg-attribute=entryUUID'
-
-virtAttrIgnore="'entryUUID'|'member'|'uniqueMember'"
 
 # Index Counts based on "type": cts, am-cfg, am-id-repo, idm-repo
 expectedAmCfgIndexes=2
@@ -78,7 +72,6 @@ replicationinfo="Displays replica type, replication domain and configured RS's. 
 accesscontrolinfo="Displays a basic summary of all ACI's"
 passwordpolicyinfo="Displays all password policies, password attributes, storage schemes and alerts when heavy weight policies are found."
 certificateinfo="Displays each connection handlers certificate and their expiration date. Warns of expiring certificates."
-loghandlerinfo="Displays Log Handler information"
 jvminfo="Displays Java version, memory used, cpu's and all JVM based parameters. Alerts when tuning is needed"
 otherinfo="Displays miscellaneous information found"
 cpuusageinfo="Displays a range of CPU % for all threads used per stack as well as the overall total CPU % used."
@@ -93,7 +86,6 @@ jurl='https://bugster.forgerock.org/jira/browse/'
 # SERVER INFO
 KBI000="a84846841 How do I use the Support Extract tool in OpenDJ (All versions) to capture troubleshooting information?"
 KBI001="a18529200#DS DS/OpenDJ release and EOSL dates"
-KBI002="a90354602#support Evaluation versions are not supported"
 
 # Connections Handers
 
@@ -113,13 +105,6 @@ KBI107="a91168317 How do I check if a backend is online in DS/OpenDJ (All versio
 KBI200="a28635900#high High index entry limits"
 KBI201="a46097400 How do I rebuild indexes in DS/OpenDJ (All versions)?"
 KBI202="xxxxxxxxx Reserved for MISSING SYSTEM INDEX alerts"
-KBI203="Virtual-attributes-must~not~be~indexed Virtual attributes must not be indexed"
-KBI203URL30="https://backstage.forgerock.com/docs/opendj/3/server-dev-guide/#virtual-attributes"
-KBI203URL35="https://backstage.forgerock.com/docs/opendj/3.5/server-dev-guide/#virtual-attributes"
-KBI203URL50="https://backstage.forgerock.com/docs/ds/5/dev-guide/#virtual-attributes"
-KBI203URL55="https://backstage.forgerock.com/docs/ds/5.5/dev-guide/#virtual-attributes"
-KBI203URL60="https://backstage.forgerock.com/docs/ds/6/dev-guide/#virtual-attributes"
-KBI203URL65="https://backstage.forgerock.com/docs/ds/6.5/dev-guide/index.html#virtual-attributes"
 
 # REPLICATION INFO
 KBI300="Replication-Stopped Replication Stopped"
@@ -180,13 +165,8 @@ KBI611URL55="https://docs.oracle.com/javase/8/embedded/develop-apps-platforms/co
 KBI611URL60="https://docs.oracle.com/javase/8/embedded/develop-apps-platforms/codecache.htm"
 KBI611URL65="https://docs.oracle.com/javase/8/embedded/develop-apps-platforms/codecache.htm"
 
-KBI612="perf-java -XX:TieredStopAtLevel=1 is for client tools only. Performance may suffer!"
-KBI612URL65="https://backstage.forgerock.com/docs/ds/6.5/admin-guide/#perf-java"
-KBI612URL70="https://backstage.forgerock.com/docs/ds/7/maintenance-guide/tuning.html#perf-java"
-
 # HIGH CPU USAGE
 KBI700="a34827000 How do I collect data for troubleshooting high CPU utilization on DS/OpenDJ servers?"
-KBI701="a52327300 Unindexed searches causing slow searches and poor performance on DS/OpenDJ (All versions) server"
 
 # ACI CONTROL INFO
 KBI800="base64-1 Encode and Decode Base64 Strings"
@@ -218,7 +198,6 @@ usage()
 	printf "%s\n" ""
 	printf "%s\n" "-c, {display colors}"
 	printf "\t%s\n" "Display all errors using easy to identify colors"
-	printf "\t%s\n" "No report file is saved with this option"
 	printf "%s\n" ""
 	printf "%s\n" "-h, {save report in html format}"
 	printf "\t%s\n" "Display all errors using easy to identify colors"
@@ -242,6 +221,11 @@ debug()
 		printf "%-7s\t%-13s\t%s\n" "${cyan}DEBUG${debugindex}${nocolor}" "${cyan}${date}${nocolor}" "${label}"
 		debugindex=`expr ${debugindex} + 1`
 	fi
+}
+
+# REMOVE
+sleeper(){
+	sleep $1
 }
 
 checkHtmlFormat()
@@ -331,8 +315,8 @@ if [ -s ../monitor/monitor.ldif ]; then
 debug "grepping majorVersion - begin"
 	majorVersion=`grep "majorVersion" ${monitorfile} | sed "s/majorVersion: //"`
 debug "grepping majorVersion - done"
-	tr -d '\r' < ${monitorfile} > ${monitorfile}.ascii
-	iconv --to-code ASCII ${monitorfile}.ascii > ${monitorfile}
+	tr -d '\r' < ${monitorfile} > ${adminfile}.ascii
+	iconv --to-code ASCII ${monitorfile}.ascii > ${adminfile}
 elif [ -s ./monitor.ldif ]; then
 	monitorfile='./monitor.ldif'
 	majorVersion=`grep "majorVersion" ${monitorfile} | sed "s/majorVersion: //"`
@@ -341,7 +325,6 @@ elif [ -s ./monitor.ldif ]; then
 	iconv --to-code ASCII ${monitorfile}.ascii > ${adminfile}
 else
         printf "%s\n" "No cn=monitor files found"
-	monitorfile=""
 fi
 
 if [ -s ./admin-backend.ldif ]; then
@@ -386,13 +369,8 @@ if [ -s ../var/data.version ]; then
 fi
 
 hostname=`grep ds-cfg-server-fqdn: ${configfile} | awk '{print $2}' | sed 's/"//g'`
-hostname=`grep ds-mon-system-name ../monitor/monitor.ldif | awk '{print $2}'`
-	if [ "${hostname}" = '&{fqdn}' -o "${hostname}" = "" ]; then
-		hostname='hostname-unavailable'
-	fi
-hostnameCheck=`echo "${hostname}" | grep "^\."`
-	if [ "${hostnameCheck}" != "" ]; then
-		hostname="illegal-hostname${hostnameCheck}"
+	if [ "${hostname}" = "&{fqdn}" -o "${hostname}" = "" ]; then
+		hostname="hostname-unavailable"
 	fi
 
 getReportFileName()
@@ -409,17 +387,13 @@ pwd
 		fileext='out'
 	fi
 
-
-	if [ "${filename}" != "" -a "${fqdnDisplay}" = "" ]; then
+	if [ "${filename}" != "" ]; then
 		zipfilename=${filename}-${extractRunDate}-extract-report.zip
-	    filename=${filename}.${fileext}
-# rmf		filename=${filename}-${extractRunDate}-extract.${fileext}
+		filename=${filename}.${fileext}
+#	filename=${filename}-${extractRunDate}-extract.${fileext}
 	elif [ "${filename}" = "" -a "${hideSensitiveData}" = "1" ]; then
 		zipfilename=localhost-${extractRunDate}-extract-report.zip
 		filename=localhost-${extractRunDate}-extract.${fileext}
-	elif [ "${filename}" = "" -a "${fqdnDisplay}" != "" ]; then
-		zipfilename=${fqdnDisplay}-${extractRunDate}-extract-report.zip
-		filename=${fqdnDisplay}-${extractRunDate}-extract.${fileext}
 	else
 		zipfilename=${hostname}-${extractRunDate}-extract-report.zip
 		filename=${hostname}-${extractRunDate}-extract.${fileext}
@@ -541,11 +515,8 @@ clear
 		extractverfull=`grep -i "VERSION:" ../supportextract.log | awk -F" " '{print $NF}'`
 		extractvertype=`grep -i "VERSION:" ../supportextract.log | awk -F" " '{print $NF}' | sed "s/-/ /" | awk '{print $2}'`
 		extractdate=`head -1 ../supportextract.log | awk '{print $1 " " $2}'`
-		if [ "${extractverfull}" = '2.0' -o "${extractverfull}" = '3.0' ]; then
-			alerts="${alerts} Extract:${REDBA}${red}This~Extract~version~(${extractverfull})~has~been~EOSL'd,${nocolor}${FEND}KBI000"
-			extractverfull="${REDBA}${red}${extractverfull}-java (EOSL)${nocolor}${FEND}"
-			addKB "KBI000"
-			healthScore "ServerInfo" "RED"
+		if [ "${extractverfull}" = '3.0' ]; then
+			extractverfull="${extractverfull}-java"
 		fi
 		printf "${PREB}\n" | log
 		printf "\t%s\t\t%s %s\n" "Extract version:" "${extractverfull}" | log
@@ -567,12 +538,6 @@ clear
 	if [ "${dataversion}" = "" ]; then
 		printf "\t%-11s\t\t\t%s\n" "Data check:" "data.version not available" | log
 	fi
-	fi
-	if [ -s ../logs/server.out ]; then
-		serverOutFile='../logs/server.out'
-	fi
-	if [ -s ../logs/server.out.stacks ]; then
-		serverOutFile='../logs/server.out.stacks'
 	fi
 
 	printf "${PREE}" | log
@@ -596,10 +561,10 @@ Key (Backend config)
 
 BackendID:  	See: backend-id
 BaseDN:  	See: base-dn
-Db-Cache:  	See: db-cache-percent & db-cache-size
+Db-Cache:  	See: db-cache-percent
 Enabled:  	See: enabled
 iLimit:  	See: index-entry-limit
-LG-Cache:  	See: db-log-filecache-size; displayed as db-log-filecache-size/total jdb files (0 if unknown)
+LG-Cache:  	See: db-log-filecache-size
 Type:  		See: java-class aka Backend Type [JE|PDB|local]
 Encryption: 	See: confidentiality-enabled
 Cmprs: 		See: ds-cfg-entries-compressed" | log
@@ -616,35 +581,12 @@ getEntry()
 	baseDn=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-base-dn:" | sed "s/ds-cfg-base-dn: //"`
 }
 
-getParameter()
-{
-	entry="$1"
-	ldifFile="$2"
-	parameter="$3"
-	variable="$4"
-	entry=`echo "${entry}" | sed "s,/,\.,g"`
-	if [ -s ${ldifFile} ]; then
-		value=`sed -n "/${entry}/,/^ *$/p" ${ldifFile} | grep "${parameter}:" | sed "s/${parameter}: //"`
-	fi
-	if [ "${variable}" != "" -a "${value}" != "" ]; then
-		eval "${variable}=\"${value}\""
-	fi
-}
-
 getBackendEntries()
 {
 	entries=''
 	entriesaddin=''
 	thisbackend="${backend}"
 	thisbase="${thisbase}"
-
-		# Capture the extact number of jdb files from the new extract versions log.
-		if [ -s ../supportextract.log ]; then
-			jdbFiles=`grep " ${backend}: total jdb files" ../supportextract.log | awk -F" " '{print $NF}'`
-		fi
-		if [ "${jdbFiles}" = "" ]; then
-			jdbFiles=0
-		fi
 
 	# Use cn=monitor if available
 	if [ "${monitorfile}" != "" ]; then
@@ -656,18 +598,23 @@ getBackendEntries()
 			entries=`sed -n "/dn: ds-mon-base-dn=${thisEscapedBase},ds-cfg-backend-id=${thisbackend},cn=backends,cn=monitor/,/^ *$/p" ${monitorfile} | grep "ds-mon-base-dn-entry-count: " | awk '{print $2}'`
 		fi
 
+		# Capture the extact number of jdb files from the new extract versions log.
+		if [ -s ../supportextract.log ]; then
+			jdbFiles=`grep " ${backend}: total jdb files" ../supportextract.log | awk -F" " '{print $NF}'`
+		fi
+
 		# monitor.ldif is from an RS or the backend is shutdown
 		if [ "${jdbFiles}" != "" ]; then
 			if [ "${shortbaseversion}" -ge "6" -a "${jdbFiles}" -gt "${logcache}" ]; then
 				alerts="${alerts} Backends:${REDBA}${red}${backend}~has~more~than~${logcache}~jdb~files~(${jdbFiles}).~db-log-filecache-size~is~set~to~low.${nocolor}${FEND}KBI103"
 				addKB "KBI103"
-				backendAlert="${REDB}${red}The ${backend} backend has more than ${logcache} jdb files (${jdbFiles}). db-log-filecache-size is set too low${nocolor}${FEND}"
+				backendAlert="${REDB}${red}The ${backend} backend has more than ${logcache} jdb files (${jdbFiles}). db-log-filecache-size is set to low${nocolor}${FEND}"
 				healthScore "Backends" "RED"
 			fi
-			if [ "${jdbFiles}" -gt "100" -a "${shortbaseversion}" -le "5" -a "${jdbFiles}" -gt "${logcache}" ]; then
+			if [ "${jdbFiles}" -gt "100" -a "${shortbaseversion}" -le "5" ]; then
 				alerts="${alerts} Backends:${REDBA}${red}${backend}~has~more~than~100~jdb~files~(${jdbFiles}).~db-log-filecache-size~is~set~to~low.${nocolor}${FEND}KBI103"
 				addKB "KBI103"
-				backendAlert="${REDB}${red}The ${backend} backend has more than ${logcache} jdb files (${jdbFiles}). db-log-filecache-size is set too low${nocolor}${FEND}"
+				backendAlert="${REDB}${red}The ${backend} backend has more than 100 jdb files (${jdbFiles}). db-log-filecache-size is set to low${nocolor}${FEND}"
 				healthScore "Backends" "RED"
 			fi
 		elif [ "${entries}" != "" ]; then
@@ -675,14 +622,14 @@ getBackendEntries()
 				entriesaddin="*"
 				alerts="${alerts} Backends:${REDBA}${red}${backend}~has~more~than~9.5~million~entries.~db-log-filecache-size~is~set~to~low.${nocolor}${FEND}KBI103"
 				addKB "KBI103"
-				backendAlert="${REDB}${red}The ${backend} backend has more than 9.5 million entries. db-log-filecache-size is set too low${nocolor}${FEND}"
+				backendAlert="${REDB}${red}The ${backend} backend has more than 9.5 million entries. db-log-filecache-size is set to low${nocolor}${FEND}"
 				logcache="${logcache} *"
 				healthScore "Backends" "RED"
 			elif [ "${entries}" -gt "100000000" -a "${logcache}" = "200" -a "${shortbaseversion}" -ge "6" ]; then
 				entriesaddin="*"
 				alerts="${alerts} Backends:${REDBA}${red}${backend}~has~more~than~100~million~entries.~db-log-filecache-size~is~set~to~low.${nocolor}${FEND}KBI103"
 				addKB "KBI103"
-				backendAlert="${REDB}${red}The ${backend} backend has more than 100 million entries. db-log-filecache-size is set too low${nocolor}${FEND}"
+				backendAlert="${REDB}${red}The ${backend} backend has more than 100 million entries. db-log-filecache-size is set to low${nocolor}${FEND}"
 				logcache="${logcache} *"
 				healthScore "Backends" "RED"
 			elif [ "${entries}" = "0" ]; then
@@ -708,7 +655,7 @@ getBackendEntries()
 			if [ "${entries}" -gt "9500000" -a "${logcache}" = "100" ]; then
 				entriesaddin="*"
 				alerts="${alerts} Backends:${REDBA}${red}${backend}~has~more~than~9.5~million~entries.~db-log-filecache-size~is~set~to~low.${nocolor}${FEND}KBI103"
-				backendAlert="${REDB}${red}The ${backend} backend has more than 9.5 million entries. db-log-filecache-size is set too low${nocolor}${FEND}"
+				backendAlert="${REDB}${red}The ${backend} backend has more than 9.5 million entries. db-log-filecache-size is set to low${nocolor}${FEND}"
 				addKB "KBI103"
 				logcache="${logcache} *"
 			fi
@@ -947,7 +894,7 @@ getAdminPort()
 
 	# remove the "." dots from the version for a numerical version number check
 	if [ "${baseversion}" != "" ]; then
-		compactversion=`echo ${baseversion} | sed "s/\.//g" | cut -c1-3`
+		compactversion=`echo ${baseversion} | sed "s/\.//g"`
 	else
 		compactversion="0"
 	fi
@@ -1082,44 +1029,12 @@ getAdminPort()
 	fi
 }
 
-checkForCustomCode()
-{
-	plugins=`grep "ds-cfg-java-class:" ${configfile} | grep -vE "org.opends|org.forgerock.openidm" | awk -F" " '{print $NF}' | sort -u`
-	if [ "${plugins}" != "" ]; then
-			format "Custom java class(s) found:" "" ""
-		for plugin in ${plugins}; do
-			thisPlugin=`sed -n '1!G;h;$p' ${configfile} | sed -n "/ds-cfg-java-class: ${plugin}/,/dn: /p" | tail -1 | sed "s/dn: //"`
-				if [ "${thisPlugin}" = "cn=Backstage Connect,cn=Plugins,cn=config" ]; then
-					addin="${YELB}${yellow}Warning: Evaluation DS Software in use!${nocolor}${FEND}"
-					alerts="${alerts} Software:${YELBA}${yellow}Warning:~Evaluation~DS~Software~in~use${nocolor}${FEND}.KBI002"
-					addKB "KBI002"
-				else
-					alertaddin=`echo "${thisPlugin}" | sed "s/ /~/g"`
-					alerts="${alerts} Software:Info:~Custom~java~class~found:~${alertaddin}"
-				fi
-			printf "\t%-25s\t%-50s\t\t%s\n" "" "${thisPlugin}" "${addin}" | log
-		done
-	fi
-}
-
 printServerInfo()
 {
 
 # print the FQDN
-fqdn=`grep ds-cfg-server-fqdn ${configfile} | awk '{print $2}'`
-if [ -s "${monitorfile}" ]; then
-	fqdn=`grep ds-mon-system-name ${monitorfile} | awk '{print $2}'`
-else
-	fqdn=""
-fi
+fqdn=`grep ds-cfg-server-fqdn $configfile | awk '{print $2}'`
 fqdnDisplay=${fqdn}
-fqdnCheck=`echo "${fqdnDisplay}" | grep "^\."`
-if [ "${fqdnDisplay}" = '&{fqdn}' ]; then
-	fqdnDisplay='hostname-unavailable'
-fi
-if [ "${fqdnCheck}" != "" ]; then
-	fqdnDisplay="illegal hostname (${fqdnDisplay})"
-fi
 hide "fqdnDisplay" "${fqdnDisplay}" "#"
 	if [ "${fqdn}" = "&{fqdn}" -o "${fqdn}" = "" ]; then
 		fqdn="FQDN Unavailable"
@@ -1169,30 +1084,27 @@ printf "\t%-25s\t%s\n" "Install FQDN (Hostname):" "${fqdnDisplay}" | log
 	fi
 
 if [ "${monitorfile}" != "" ]; then
-	debug "Getting version info from ${monitorfile}"
 	format "Base version:" "${baseversion} ${eoslAlertDisplay} ${guesstimate}" "Build info not available"
-	format "Full version:" "`grep -iE "fullVersion|ds-mon-full-version" ${monitorfile} | sed "s/fullVersion: //; s/ds-mon-full-version: //"`"
+	format "Full version:" "`grep -iE "fullVersion|ds-mon-full-version" ${monitorfile} | sed "s/fullVersion: //" | sed "s/ds-mon-full-version: //"`"
 	format "Installation Directory:" "`grep -iE "installPath|ds-mon-install-path" ${monitorfile} | awk -F" " '{print $NF}'`"
 	format "Instance Directory:" "`grep -iE "instancePath|ds-mon-instance-path" ${monitorfile} | awk -F" " '{print $NF}'`"
 	testInstallDir=`grep -iE "installPath|ds-mon-install-path" ${monitorfile} | awk -F" " '{print $NF}' | grep opends`
 	if [ "${testInstallDir}" = "" ]; then
-		embeddedFound="External Instance"
+		embeddedFound="External DJ Instance"
 	else
-		embeddedFound="Embedded Instance"
+		embeddedFound="Embedded DJ Instance"
 	fi
 	format "Directory Type:" "${embeddedFound}" "NA"
-	checkForCustomCode
 	format "" "" ""
 	format "Start time:" "`grep -iE "startTime: |ds-mon-start-time: " ${monitorfile} | awk -F" " '{print $NF}'`" "NA"
 	format "Current time:" "`grep -iE "currentTime: |ds-mon-current-time: " ${monitorfile} | awk -F" " '{print $NF}'`" "NA"
 elif [ -s ../logs/server.out ]; then
-	debug "Getting version info from server.out"
-	fullversion=`grep "starting up" ../logs/server.out | sed "s/.*msg=//; s/ starting up//"`
+	fullversion=`grep "starting up" ../logs/server.out | sed "s/.*msg=//" | sed "s/ starting up//"`
 	if [ "${fullversion}" = "" ]; then
                 if [ "${dataversion}" != "" ]; then
                 	fullversion=`echo ${dataversion} | cut -c1-5`
                 else
-			fullversion="0"
+                	fullversion="NA"
                 fi
 
 	fi
@@ -1208,7 +1120,7 @@ elif [ -s ../logs/server.out ]; then
 	if [ "${baseversion}" = "" ]; then
 		baseversion=`echo ${fullversion} | sed "s/ (build.*//" | awk -F" " '{print $NF}' | cut -c1-5`
 		shortbaseversion=`echo ${baseversion} | cut -c1`
-		compactversion=`echo ${baseversion} | sed "s/\.//g" | cut -c1-3`
+		compactversion=`echo ${baseversion} | sed "s/\.//g"`
 	fi
 
 	format "Base version:" "${baseversion} ${eoslAlertDisplay} ${guesstimate}" "Build info not available"
@@ -1222,7 +1134,6 @@ elif [ -s ../logs/server.out ]; then
 		embeddedFound="Embedded DJ Instance"
 	fi
 	format "Directory Type:" "${embeddedFound}" "NA"
-	checkForCustomCode
 	format "" "" ""
 else
 	format "Base version:" "${baseversion} ${eoslAlertDisplay} ${guesstimate}" "Build info not available"
@@ -1230,7 +1141,6 @@ else
 	printf "\t%-25s\t%s\n" "Installation Directory:" "NA" | log
 	printf "\t%-25s\t%s\n" "Instance Directory:" "NA" | log
 	format "Directory Type:" "${embeddedFound}" "NA"
-	checkForCustomCode
 	format "" "" ""
 	format "Start time:" "" "NA"
 	format "Current time:" "" "NA"
@@ -1248,21 +1158,9 @@ fi
 	format "Max Persistent Searches:" "`grep -iE "ds-cfg-max-psearches:" ${configfile} | awk -F" " '{print $NF}'`" "NA" "-1"
 	format "Backend Shared Cache:" "`grep -iE "ds-cfg-je-backend-shared-cache-enabled:" ${configfile} | awk -F" " '{print $NF}'`" "true" ""
 	format "Trust Txn IDs:" "`grep -iE "ds-cfg-trust-transaction-ids:" ${configfile} | awk -F" " '{print $NF}'`" "NA" ""
-
-# 1. If monitor exists, check for dn: cn=changelog,cn=replication,cn=monitor
-# 2. If the CL entry/param is blank then try the Global Config for ds-cfg-server-id
-# 3. If it's not blank, but uses Expressions, check the default value if one exists, against the logs?
-# 3. Default to letting the RS code loop through the condfig data.
-	if [ "${monitorfile}" != "" ]; then
-		getParameter "dn: cn=changelog,cn=replication,cn=monitor" "${monitorfile}" "ds-mon-server-id" "dsid"
+	if [ "${compactversion}" -ge "650" ]; then
+	  format "Server ID:" "`grep -iE "ds-cfg-server-id:" ${configfile} | head -1 | awk -F" " '{print $NF}'`" "NA" ""
 	fi
-	if [ "${dsid}" = "" ]; then
-		dsid=`sed -n "/dn: cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-server-id:" | sed "s/ds-cfg-server-id: //"`
-		#dsidExpCheck=`echo ${dsid} | grep '&'`
-	fi
-
-	format "Server ID:" "${dsid}" "NA" ""
-	format "Replication Group ID:" "`grep -iE "ds-cfg-group-id:" ${configfile} | head -1 | awk -F" " '{print $NF}'`" "NA" ""
 	format "Work Queue:" "`sed -n "/dn: cn=Work Queue,cn=config/,/^ *$/p" ${configfile} | grep -iE "ds-cfg-max-work-queue-capacity: " | awk -F" " '{print $NF}'`" "NA" "1000"
 	format "" "" ""
 
@@ -1299,8 +1197,8 @@ printf "%s\n" "${H4B}INDEX INFORMATION:${H4E}" | log
 printf "\n%s\n" "${indexinfo}" | log
 printf "%s\n" "${HR3}" | log
 printf "${PREB}\n" | log
-if [ "${backends}" = "" -o "${backendType}" = "Proxy" ]; then
-	printf "\t%s\n\t%s\n\n" "No Backends available...system could be a Replication or Proxy Server" "See below." | log
+if [ "${backends}" = "" ]; then
+	printf "\t%s\n\t%s\n\n" "No Backends available...system could be a Replication Server" "See below." | log
 	ctsIndexCount=0
 	amCfgIndexCount=0
 	identityStoreIndexCount=0
@@ -1313,10 +1211,6 @@ printf "%s\t%s\n" "Note:" "Excessive index-entry-limit's flagged at 50,000+" | l
 	# Get the len for all index names
 	indexNames=`grep 'ds-cfg-attribute: ' ${configfile} | awk '{print $2}'`
 	indexNames="${indexNames} ${backends}"
-
-	# Grab the configured Virtual Attributes to be checked against index definitions
-	getParameter "cn=Virtual Attributes,cn=config" "${configfile}" "ds-cfg-attribute-type" "virtAttrs"
-	virtAttrs=`echo ${virtAttrs} | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/ /'|'/g; s/^/'/; s/$/'/"`
 
 	longestIndexName=0
 	for indexName in ${indexNames}; do
@@ -1346,7 +1240,7 @@ done
 
 for backend in $backends; do
 	printf "\n%-${longestIndexName}s: %-${longestIndexType}s: %-20s: %-33s: %-24s: %-11s\n" "Backend: ${backend}" "index-type" "index-entry-limit" "index-extensible-matching-rule" "confidentiality-enabled" "Index type" | log
-	printf "%-${longestIndexName}s:%-${longestIndexType}s:%-20s:%-33s:%-24s:%-11s\n" "${idash1}" "${idash2}" "---------------------" "----------------------------------" "-------------------------" "----------" | log
+	printf "%-${longestIndexName}s:%-${longestIndexType}s:%-20s:%-33s:%-24s:%-11s\n" "${idash1}" "${idash2}-" "---------------------" "----------------------------------" "-------------------------" "----------" | log
 	indexes=`sed -n "/cn=Index,ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" ${configfile} | grep "dn: " | grep -iv 'dn: cn=Index' | awk '{print $2}'`
 	indexCount=1
 	ctsIndexCount=0
@@ -1403,25 +1297,15 @@ for backend in $backends; do
 		if [ "${attrName}" = "objectClass" -o "${attrName}" = "objectclass" ]; then
 			ocIndexFound=1
 		fi
-
-		virtCheck=`echo "${virtAttrs}" | grep -i "'${attrName}'"`
-		checkVirtsToIgnore=`echo "${virtAttrIgnore}" | grep -i "'${attrName}'"`
-		if [ "${virtCheck}" != "" -a "${checkVirtsToIgnore}" = "" ]; then
-			ocTypeAlertDisplay=" *V"
-			alerts="${alerts} Indexes:${REDBA}${red}Warning:~Illegal~Index~configured~for~virtual~attribute~(${attrName})~in~backend~${backend}${nocolor}${FEND}."
-			badIndexes="${badIndexes} ${attrName}"
-			badIndexlert=1
-			addKB "KBI203"
-		fi
 		if [ "${attrName}" = "objectClass" ]; then
 			for iType in ${indexType}; do
 				if [ "${iType}" = "presence" -o "${iType}" = "substring" ]; then
 					ocTypeAlertDisplay=" *"
-					alerts="${alerts} Indexes:${REDBA}${red}Bad~objectClass~index~type(s)~found~(${iType})~for~backend~${backend}${nocolor}${FEND}."
+					alerts="${alerts} Indexes:objectClass~Index~Bad-type~found~(${iType})~for~backend~${backend}."
 					iTypes="${iTypes} ${iType}"
 					badIndexTypeAlert=1
-				#else
-				#	ocTypeAlertDisplay=""
+				else
+					ocTypeAlertDisplay=""
 				fi
 			done
 		else
@@ -1431,7 +1315,6 @@ for backend in $backends; do
 		if [ "${ttlenabled}" != "" ]; then
 			ttlEnabledAddin="ttl"
 			ttlEnabledIndexCount=`expr ${ttlEnabledIndexCount} + 1`
-			ttlEnabledIndexes=`echo "${ttlEnabledIndexes}" | sed "s/^NA$//"`
 			ttlEnabledIndexes="${attrName} ${ttlEnabledIndexes}"
 		fi
 
@@ -1517,14 +1400,14 @@ for backend in $backends; do
 	printf "\t%-32s\t%s\t%s\n\n" "Total TTL indexes: " "${ttlEnabledIndexCount}" "(${ttlEnabledIndexes})" | log
 	printf "\t%-32s\t%s\t%s\n\n" "Total System indexes: " "${systemIndexCount}" "(expected 3)${systemIndexAlertDisplay}" | log
 
-	if [ "${ttlEnabledIndexes}" != "NA" ]; then
-		alerts="${alerts} Indexes:INFO:~TTL~Indexes~found~(${backend}/${ttlEnabledIndexes})."
+	if [ "${ttlEnabledIndexes}" != "NA" -a "${ttlEnabledIndexAlert}" = "" ]; then
+		alerts="${alerts} Indexes:TTL~Indexes~found~(${backend}/${ttlEnabledIndexes})."
 		ttlEnabledIndexAlert=1
 	fi
 
 	# Check monitor for indexes that need to be rebuilt
 	if [ "${monitorfile}" != "" ]; then
-		needReindex=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=backends,cn=monitor/,/^ *$/p; /dn: cn=${backend} Storage,cn=monitor/,/^ *$/p" ${monitorfile} | grep -E 'need-reindex|ds-mon-backend-degraded-index:' | awk '{print $2}'`
+		needReindex=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=backends,cn=monitor/,/^ *$/p" ${monitorfile} | grep -E 'need-reindex|ds-mon-backend-degraded-index:' | awk '{print $2}'`
 	fi
 	if [ "${monitorfile}" != "" -a "${needReindex}" != "" ]; then
 		for reindex in ${needReindex}; do
@@ -1537,19 +1420,13 @@ for backend in $backends; do
 	fi
 
 	if [ "${customIndexCount}" != "0" ]; then
-		alerts="${alerts} Indexes:Info:~${customIndexCount}~Custom~indexes~configured~for~backend~${backend}."
+		alerts="${alerts} Indexes:${customIndexCount}~Custom~indexes~configured~for~backend~${backend}."
 	fi
 
 	if [ "${entryLimitAlert}" = "1" ]; then
 		entryLimitAlertAttrs=`echo ${entryLimitAlertAttrs} | sed "s/^ //"`
 		printf "\t${REDB}%s${FEND}\n" "${REDB}${red}Alert: Excessive Index Limits in use (${entryLimitAlertAttrs})${nocolor}${FEND}" | log
 		healthScore "Indexes" "RED"
-	fi
-	if [ "${badIndexlert}" = "1" ]; then
-		for badIndex in ${badIndexes}; do
-			printf "\t%s\n" "${REDB}${red}Alert: Illegal Index configured for virtual attribute (${badIndex}) in backend ${backend}${nocolor}${FEND}" | log
-			healthScore "Indexes" "RED"
-		done
 	fi
 	if [ "${badIndexTypeAlert}" = "1" ]; then
 		iTypes=`echo ${iTypes} | sed "s/^ //"`
@@ -1620,14 +1497,12 @@ printf "%s\n" "${HR3}" | log
 	fi
 
 	# Calculate the longest ds-cfg-replication-server string for printf formatting
-	longestRsName=`grep -E "ds-cfg-replication-server:|ds-cfg-bootstrap-replication-server:" ${configfile} | sed "s/ds-cfg-replication-server: //; s/ds-cfg-bootstrap-replication-server: //" | awk '{ print length($0) " " $0; }' | sort -u -n | cut -d ' ' -f 2- | tail -1 | awk '{ print length($0) " " $0}' | awk '{print $1}'`
+	longestRsName=`grep ds-cfg-replication-server: ${configfile} | sed "s/ds-cfg-replication-server: //" | awk '{ print length($0) " " $0; }' | sort -u -n | cut -d ' ' -f 2- | tail -1 | awk '{ print length($0) " " $0}' | awk '{print $1}'`
 
 		if [ "${longestRsName}" != "" ]; then
 			if [ "${longestRsName}" != "" -a "${longestRsName}" -lt "22" ]; then
 				longestRsName=22
 			fi
-		else
-			longestRsName=22
 		fi
   if [ "${serverType}" != "Stand Alone/Not replicated" ]; then
 	# Get all DS cn=domains and sort them by longest to shorted (for display)
@@ -1635,9 +1510,9 @@ printf "%s\n" "${HR3}" | log
 
 	# calculate $dashes to be displayed
 	for domain in ${replicaDomain}; do
-		getDashes "${longestRsName}"; d3=${dashes}
+		getDashes "${longestRsName}"; d2=${dashes}
 
-		domain=`echo ${domain} | sed "s/~/ /g; s/\\\\\/\./g"`
+		domain=`echo ${domain} | sed "s/~/ /g" | sed "s/\\\\\/\./g"`
 		baseDn=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-base-dn:" | sed "s/ds-cfg-base-dn: //"`
 		calcLen2 "$baseDn"; dl=${btab}
 			if [ "${btab}" -lt "19" ]; then
@@ -1645,19 +1520,13 @@ printf "%s\n" "${HR3}" | log
 				dl="19"
 			fi
 		getDashes "${dl}"; d1=${dashes}
-	done
-	if [ "${dsid}" != "" ]; then
-		dsidLen=`echo ${dsid} | awk '{ print length($0) " " $0}' | awk '{print $1}'`
-		if [ "${dsidLen}" -lt "5" ]; then
-			dsidLen="5"
-		fi
-		getDashes "${dsidLen}"; d2=${dashes}
-	fi
 
-	printf "%-${btab}s\t%-${dsidLen}s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "Replication Domain" "DS ID" "Replication Server(s)" "Conflict Purge" | log
-	printf "%-${btab}s\t%-${dsidLen}s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "${d1}" "${d2}" "${d3}" "--------------" | log
+	done
+
+	printf "%-${btab}s\t%-5s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "Replication Domain" "DS ID" "Replication Server(s)" "Conflict Purge" | log
+	printf "%-${btab}s\t%-5s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "${d1}" "-----" "${d2}" "--------------" | log
 	for domain in ${replicaDomain}; do
-		domain=`echo ${domain} | sed "s/~/ /g; s/\\\\\/\./g"`
+		domain=`echo ${domain} | sed "s/~/ /g" | sed "s/\\\\\/\./g"`
 		baseDn=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-base-dn:" | sed "s/ds-cfg-base-dn: //"`
                 if [ "${baseDn}" != "cn=admin data" -a "${baseDn}" != "cn=schema" -a "${baseDn}" != "" ]; then
 			displayBase="${baseDn}"
@@ -1666,16 +1535,10 @@ printf "%s\n" "${HR3}" | log
 			displayBase="${baseDn}"
                 fi
 		serverId=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-server-id:" | sed "s/ds-cfg-server-id: //"`
-		replServers=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-replication-server:" | sed "s/ds-cfg-replication-server: //" | sed "s/&{rs.servers}/rs.server.unavailable/"`
+		replServers=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-replication-server:" | sed "s/ds-cfg-replication-server: //"`
 		conflictPurge=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-conflicts-historical-purge-delay:" | sed "s/ds-cfg-conflicts-historical-purge-delay: //"`
 			if [ "${conflictPurge}" = "" ]; then
 				conflictPurge="1 d"
-			fi
-			if [ "${replServers}" = "" ]; then
-				getParameter "dn: cn=Multimaster Synchronization,cn=Synchronization Providers,cn=config" "${configfile}" "ds-cfg-bootstrap-replication-server" "replServers"
-			fi
-			if [ "${serverId}" = "" ]; then
-				serverId=${dsid}
 			fi
 
 		printedbackend=0
@@ -1684,15 +1547,15 @@ printf "%s\n" "${HR3}" | log
                         displayRS=${thisbase}
                         hide "displayRS" "${thisbase}" "#"
 		if [ "$printedbackend" = "0" -a "$currentbase" = "$thisbase" ]; then
-			printf "%-${btab}s\t%-${dsidLen}s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\n" "${displayBase}" "${serverId}" "${replServers}" "${conflictPurge}" | log
+			printf "%-${btab}s\t%-5s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\n" "${displayBase}" "${serverId}" "${replServers}" "${conflictPurge}" | log
 		
 			printedbackend=1
 			currentbase=$thisbase
 		elif [ "$printedbackend" = "1" -a "$currentbase" != "$thisbase" ]; then
-			printf "%-${btab}s\t%-${dsidLen}s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\n" "" "" "${displayRS}" "${conflictPurge}" | log
+			printf "%-${btab}s\t%-5s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\n" "" "" "${displayRS}" "${conflictPurge}" | log
 			printedbackend=1
 		else
-			printf "%-${btab}s\t%-${dsidLen}s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\n" "${displayBase}" "${serverId}" "${displayRS}" "${conflictPurge}" | log
+			printf "%-${btab}s\t%-5s\t\t%-${longestRsName}s\t%s\t%s\t%s\t%s\t%s\n" "${displayBase}" "${serverId}" "${displayRS}" "${conflictPurge}" | log
 			printedbackend=1
 			currentbase=$thisbase
 		fi
@@ -1705,7 +1568,7 @@ printf "%s\n" "${HR3}" | log
 
 	# calculate $dashes to be displayed
 	for domain in ${replicaDomain}; do
-		domain=`echo ${domain} | sed "s/~/ /g; s/\\\\\/\./g"`
+		domain=`echo ${domain} | sed "s/~/ /g" | sed "s/\\\\\/\./g"`
 		baseDn=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-base-dn:" | sed "s/ds-cfg-base-dn: //"`
 		calcLen2 "$baseDn"; dl=${btab}
 			if [ "${btab}" -lt "19" ]; then
@@ -1720,11 +1583,6 @@ printf "%s\n" "${HR3}" | log
 		printf "\n%s\t%s\n\n" "Replication Server Config:" | log
 
 		rsid=`sed -n "/dn: cn=replication server,cn=Multimaster Synchronization,cn=Synchronization Providers,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-replication-server-id:" | sed "s/ds-cfg-replication-server-id: //"`
-		if [ "${dsid}" != "" ]; then
-			rsid=${dsid}
-		else
-			rsid="id.unavailable"
-		fi
 		grpid=`sed -n "/dn: cn=replication server,cn=Multimaster Synchronization,cn=Synchronization Providers,cn=config/,/^ *$/p" ${configfile} | grep "group-id:" | sed "s/group-id: //"`
 		replicationport=`sed -n "/dn: cn=replication server,cn=Multimaster Synchronization,cn=Synchronization Providers,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-replication-port:" | sed "s/ds-cfg-replication-port: //"`
 		replicationservers=`sed -n "/dn: cn=replication server,cn=Multimaster Synchronization,cn=Synchronization Providers,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-replication-server:" | sed "s/ds-cfg-replication-server: //"`
@@ -1762,9 +1620,6 @@ printf "%s\n" "${HR3}" | log
 		if [ "${sourceaddress}" = "" ]; then
 			sourceaddress="Let the server decide."
 		fi
-		if [ "${replservers}" = "&{rs.servers}" ]; then
-			replservers="rs.servers.unavailable"
-		fi
 
 		replServerDisplay="${replservers}"
 		hide "replServerDisplay" "${replservers}" "#"
@@ -1781,9 +1636,9 @@ printf "%s\n" "${HR3}" | log
 		printf "%-24s\t\t%-5s\t\t%-27s\t%s\t%s\t%s\t%s\t%s\n" "ds-cfg-source-address" "${sourceaddress}" | log 
 
 
-		if [ "${computechangenumber}" = "disabled" -o "${computechangenumber}" = "false" ]; then
-			alerts="${alerts} REPL:${YELB}${yellow}The~changelog~is~disabled.~The~"cn=changelog"~backend~will~not~be~available~to~client~applications.${nocolor}${FEND}KBI302"
-			printf "\n\t%s\n\n" "${YELB}${yellow}Info: The changelog is disabled. The "cn=changelog" backend will not be available to client applications.${nocolor}${FEND}" | log
+		if [ "${computechangenumber}" = "disabled" ]; then
+			alerts="${alerts} REPL:${YELB}${yellow}Replication~is~configured~but~the~changelog~is~disabled.${nocolor}${FEND}KBI302"
+			printf "\n\t%s\n\n" "${YELB}${yellow}Info: Replication is configured but the changelog is disabled.${nocolor}${FEND}" | log
 			addKB "KBI302"
 			healthScore "Replication" "YELLOW"
 		fi
@@ -1797,12 +1652,8 @@ printf "%s\n" "${HR3}" | log
 
 		printf "\n%s\t%s\n\n" "Admin Data Config:" | log
 		if [ "${serverType}" != "Stand Alone/Not replicated" -a "${adminfile}" != "" -a "${shortbaseversion}" != "7" ]; then
-
-			hasInstanceKeyCount="0"
-			allServersEntryCount="0"
-			hasServerKeyEntryCount="0"
-			allServers=`grep -E '^uniqueMember:|cn=Servers,cn=admin data' "${adminfile}" | sed "s/uniqueMember: //; s/,*cn=Servers,cn=admin data//; s/dn: //g" | sort -u | grep ':'`
-			instanceKeys=`grep "dn: ds-cfg-key-id=.*,cn=instance keys,cn=admin data" ${adminfile} | sed "s/dn: ds-cfg-key-id=//; s/,cn=instance keys,cn=admin data//"`
+			allServers=`grep -E 'uniqueMember:|cn=Servers,cn=admin data' "${adminfile}" | grep -v "ds-sync-hist:" | sed "s/uniqueMember: //; s/,*cn=Servers,cn=admin data//; s/dn: //g" | sort -u | grep ':'`
+			instanceKeys=`grep "dn: ds-cfg-key-id=.*,cn=instance keys,cn=admin data" ${adminfile} | sed "s/dn: ds-cfg-key-id=//" | sed "s/,cn=instance keys,cn=admin data//"`
 			instanceKeyCount=`grep "dn: ds-cfg-key-id=.*,cn=instance keys,cn=admin data" ${adminfile} | wc -l | awk '{print $1}'`
 
 			abServerLen=0
@@ -1833,25 +1684,23 @@ printf "%s\n" "${HR3}" | log
 				printf "%-19s\t%-20s\t%-16s\t%-16s\n" "Entry not Available" "NA" "NA" "${instanceKey}" | log
 			done
 			printf "\n\t%s\n" "${YELB}${yellow}Warning: Missing configuration. DS tools and DS Proxy Services may fail.${nocolor}${FEND}" | log
-			alerts="${alerts} REPL:${YELBA}${yellow}Warning:~Missing~configuration.~DS~tools~and~DS~Proxy~Services~may~fail${nocolor}${FEND}.KBI303"
+			alerts="${alerts} REPL:${YELBA}${yellow}Warning:~Missing~configuration.~DS~tools~and~DS~Proxy~Services~may~fail.${nocolor}${FEND}.KBI303"
 			healthScore "Replication" "YELLOW"
 			addKB "KBI303"
 		else
 			printf "%-${abServerLen}s\t%-20s\t%-16s\t%-16s\n" "Server" "cn=all-servers Entry" "Has Server Entry" "Instance Key" | log
 			printf "%-${abServerLen}s\t%-20s\t%-16s\t%-32s\n" "${abServerDashes}" "--------------------" "----------------" "--------------------------------" | log
 			for thisServer in $allServers; do
-				allServersEntry=`sed -n "/dn: cn=all-servers,cn=Server Groups,cn=admin data/,/^ *$/p" ${adminfile} | grep "^uniqueMember: ${thisServer}"`
+				allServersEntry=`sed -n "/dn: cn=all-servers,cn=Server Groups,cn=admin data/,/^ *$/p" ${adminfile} | grep "uniqueMember: ${thisServer}" | grep -v "ds-sync-hist:"`
 				if [ "${allServersEntry}" != "" ]; then
 					allServersEntryDisplay="yes"
-					allServersEntryCount=`expr ${allServersEntryCount} + 1`
 				else
 					allServersEntryDisplay="no *"
 					allServersEntryAlert=1
 				fi
-				hasServerKeyEntry=`sed -n "/dn: ${thisServer},cn=Servers,cn=admin data/,/^ *$/p" ${adminfile} | grep "^ds-cfg-key-id:" | sed "s/ds-cfg-key-id: //"`
+				hasServerKeyEntry=`sed -n "/dn: ${thisServer},cn=Servers,cn=admin data/,/^ *$/p" ${adminfile} | grep "ds-cfg-key-id:" | grep -v "ds-sync-hist" | sed "s/ds-cfg-key-id: //"`
 				if [ "${hasServerKeyEntry}" != "" ]; then
 					hasServerKeyEntryDisplay="yes"
-					hasServerKeyEntryCount=`expr ${hasServerKeyEntryCount} + 1`
 				else
 					hasServerKeyEntryDisplay="no *"
 					hasServerKeyEntryAlert=1
@@ -1861,7 +1710,6 @@ printf "%s\n" "${HR3}" | log
 				if [ "${hasInstanceKeyEntry}" != "" ]; then
 					hasInstanceKeyEntry="yes"
 					instanceKeys=`echo ${instanceKeys} | sed "s/${hasServerKeyEntry}//"`
-					hasInstanceKeyCount=`expr ${hasInstanceKeyCount} + 1`
 				else
 					hasInstanceKeyEntry="no"
 					hasInstanceKeyAlert=1
@@ -1879,8 +1727,6 @@ printf "%s\n" "${HR3}" | log
 				hasServerKeyEntry=''
 				hasInstanceKeyEntry=''
 			done
-			#printf "%-19s\t%-20s\t%-16s\t%-32s\n" "                                                                   " "-------" "-------" "-------" | log
-			#printf "%-19s\t%-20s\t%-16s\t%-32s\n" "                                                                   " "${allServersEntryCount} Total" "${hasServerKeyEntryCount} Total" "${hasInstanceKeyCount} Total" | log
 				debug "instanceKeyCount $instanceKeyCount"
 				debug "instanceKeys $instanceKeys"
 				instanceKeyCount=`echo ${instanceKeys} | wc | awk '{print $2}'`
@@ -1923,14 +1769,14 @@ printf "%s\n" "${HR3}" | log
 		currentbase=""
 		for domainNumber in ${domainNumbers}; do
 		changelogDomainName=`grep ${domainNumber} ../changelogDbInfo/domains.state | sed "s/.*://"`
-		changelogDomainIDS=`grep "${domainNumber}.dom.*.server:" ../changelogDbInfo/changelogDb.listing | sed "s/.server://; s,/, ,g" | awk -F" " '{print $NF}'`
+		changelogDomainIDS=`grep "${domainNumber}.dom.*.server:" ../changelogDbInfo/changelogDb.listing | sed "s/.server://" | sed "s,/, ,g" | awk -F" " '{print $NF}'`
 
 		hide "displayBase" "${changelogDomainName}" "*"
 
 		   for serverId in ${changelogDomainIDS}; do
 			thisDomainChangelog=`sed -n "/$serverId/,/^ *$/p" ../changelogDbInfo/changelogDb.listing`
 			thisDomainChangelogCount=`echo ${thisDomainChangelog} | grep -c "log" | awk '{print $1}'`
-			thisDomainChangelogGenID=`echo ${thisDomainChangelog} | grep '.id$' | awk -F" " '{print $NF}' | sed "s/generation//; s/\.id$//"`
+			thisDomainChangelogGenID=`echo ${thisDomainChangelog} | grep '.id$' | awk -F" " '{print $NF}' | sed "s/generation//" | sed "s/\.id$//"`
 			if [ "${thisDomainChangelogGenID}" = "" ]; then
 				thisDomainChangelogGenID="NA"
 			fi
@@ -1962,11 +1808,11 @@ if [ "${serverType}" = "Directory Server + Replication Server (DS+RS)" -o "${ser
 
 	# loop through all domains and display the connected DS to RS
 	for domain in ${replicaDomain}; do
-		domain=`echo ${domain} | sed "s/~/ /g; s/\\\\\/\./g"`
+		domain=`echo ${domain} | sed "s/~/ /g" | sed "s/\\\\\/\./g"`
 		baseDn=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-base-dn:" | sed "s/ds-cfg-base-dn: //"`
 
 	  if [ "${shortbaseversion}" -le "5" ]; then
-		thisDomain=`echo ${baseDn} | sed "s/,/_/g; s/=/_/g"`
+		thisDomain=`echo ${baseDn} | sed "s/,/_/g" | sed "s/=/_/g"`
 	  else
 		thisDomain=`echo ${baseDn} | sed "s/,/.*/g"`
 	  fi
@@ -1997,11 +1843,7 @@ if [ "${serverType}" = "Directory Server + Replication Server (DS+RS)" -o "${ser
 		connectedDS=`grep "dn: cn=Connected directory server DS(.*) ${runtimeaddress}:.*,cn=Replication server RS(${rsid}) .*:${replicationport},cn=${thisDomain},cn=Replication,cn=monitor" ${monitorfile} | grep -v 'cn=Connected replication server RS'`
 
 		connectedDSconflicts=`sed -n "/dn: cn=Directory server DS(.*) ${runtimeaddress}:.*,cn=${thisDomain},cn=Replication,cn=monitor/,/^ *$/p" ${monitorfile} | grep "unresolved-naming-conflicts:" | sed "s/unresolved-naming-conflicts: //"`
-		#dsid=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-server-id:" | sed "s/ds-cfg-server-id: //; s/&{server.id}/server.id.unavailable/"`
 		dsid=`sed -n "/${domain}/,/^ *$/p" ${configfile} | grep "ds-cfg-server-id:" | sed "s/ds-cfg-server-id: //"`
-		if [ "${dsid}" = "" ]; then
-			getParameter "dn: cn=changelog,cn=replication,cn=monitor" "${monitorfile}" "ds-mon-server-id" "dsid"
-		fi
 
 		baseDn=`echo ${baseDn} | sed "s/ /~/g"`
 
@@ -2018,8 +1860,8 @@ if [ "${serverType}" = "Directory Server + Replication Server (DS+RS)" -o "${ser
 			fi
 		fi
 
-		thisRS=`echo ${connectedDS} | sed "s/.*cn=Replication server RS//; s/,cn=${thisDomain},cn=Replication,cn=monitor//"`
-		connectedDS=`echo ${connectedDS} | sed "s/dn: cn=Connected directory server DS//; s/,cn=Replication server RS.*//"`
+		thisRS=`echo ${connectedDS} | sed "s/.*cn=Replication server RS//" | sed "s/,cn=${thisDomain},cn=Replication,cn=monitor//"`
+		connectedDS=`echo ${connectedDS} | sed "s/dn: cn=Connected directory server DS//" | sed s"/,cn=Replication server RS.*//"`
 			if [ "${connectedDS}" = "" ]; then
 				connectedDS="(${dsid}) ${runtimeaddress}:${adminPort}"
 				connectionInfo="${REDB}${red}is not connected to an${nocolor}${FEND}"
@@ -2042,7 +1884,7 @@ if [ "${serverType}" = "Directory Server + Replication Server (DS+RS)" -o "${ser
 		printf "%s %s\n" " RS:" "${connectedRSDisplay}" | log
 
 		connectedRS=`grep "dn: cn=Connected replication server RS(.*) .*:.*,cn=Replication server RS(${rsid}) .*:${replicationport},cn=${thisDomain},cn=Replication,cn=monitor" ${monitorfile}`
-		connectedRS=`echo ${connectedRS} | sed "s/dn: cn=Connected replication server RS//; s/,cn=Replication server RS.*//"`
+		connectedRS=`echo ${connectedRS} | sed "s/dn: cn=Connected replication server RS//" | sed s"/,cn=Replication server RS.*//"`
 			if [ "${connectedRS}" = "" ]; then
 				#thisRS="(${rsid}) ${runtimeaddress}:${replicationport}"
 				connectedRS=""
@@ -2066,9 +1908,6 @@ if [ "${serverType}" = "Directory Server + Replication Server (DS+RS)" -o "${ser
 
 		if [ "${dsid}" = "" ]; then
 			dsid=`sed -n "/dn: cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-server-id:" | sed "s/ds-cfg-server-id: //"`
-		fi
-		if [ "${dsid}" = "" ]; then
-			getParameter "dn: cn=changelog,cn=replication,cn=monitor" "${monitorfile}" "ds-mon-server-id" "dsid"
 		fi
 		connectedDS=`sed -n "/dn: ds-mon-server-id=${dsid},cn=connected replicas,ds-mon-domain-name=${thisDomain},cn=changelog,cn=replication,cn=monitor/,/^ *$/p" ${monitorfile} | grep 'ds-mon-replica-hostport:' | sed "s/ds-mon-replica-hostport: //"`
 			if [ "${connectedDS}" = "" ]; then
@@ -2099,7 +1938,7 @@ if [ "${serverType}" = "Directory Server + Replication Server (DS+RS)" -o "${ser
 				connectedRS=""
 				connectionInfo="${REDB}${red}is not connected to an${nocolor}${FEND}"
 				baseDn=`echo ${baseDn} | sed "s/ /~/g"`
-				alerts="${alerts} REPL:${REDBA}${red}RS~for~${baseDn}~is~not~connected~to~another~RS${nocolor}${FEND}"
+				alerts="${alerts} REPL:RS~for~${baseDn}~is~not~connected~to~another~RS"
 				baseDn=`echo ${baseDn} | sed "s/~/ /g"`
 			else
 				connectionInfo="${GRNB}${green}<- connected to ->${nocolor}${FEND}"
@@ -2162,7 +2001,7 @@ printf "${PREB}\n" | log
 	done
 
 	if [ "${backends}" = "" ]; then
-		printf "\t%s\n\t%s\n\n" "No Backends available...system could be a Replication or Proxy Server" "See below." | log
+		printf "\t%s\n\t%s\n\n" "No Backends available...system could be a Replication Server" "See below." | log
 		printf "${PREE}" | log
 		return
 	fi
@@ -2185,60 +2024,37 @@ printf "${PREB}\n" | log
 # calculate the string len of each backend name
 for backend in $backends; do
 	# sed to substitute spaces in the baseDN like -> o=Bank New
-	basedn=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-base-dn: " | sed "s/ds-cfg-base-dn: //; s/ /-/g"`
+	basedn=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-base-dn: " | sed "s/ds-cfg-base-dn: //" | sed "s/ /-/g"`
 
 	# get dashes for the backendID
 	getDashes "${tab}"
-	backendDashes=$dashes
+	baseDnDashes=$dashes
 
 	# get dashes for the baseDN
 	calcLen2 "$basedn"; dl=${btab}
 	getDashes "${dl}"
-# WORKING
-	baseDnDashes=${dashes}
-	#limit=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "index-entry-limit: " | sed "s/index-entry-limit: //"`
-	#backendType=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-java-class: " | sed "s/\./ /g" | awk -F" " '{print $NF}' | sed "s/Backend//"`
-	#confidentiality=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "confidentiality-enabled: " | sed "s/\./ /g" | awk -F" " '{print $NF}' | sed "s/Backend//"`
-	#	if [ "$backendType" = "Impl" ]; then
-	#		backendType="JE"
-	#	fi
+	dbcache=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-db-cache-percent: " | sed "s/ds-cfg-db-cache-percent: //"`
+	limit=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "index-entry-limit: " | sed "s/index-entry-limit: //"`
+	backendType=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-java-class: " | sed "s/\./ /g" | awk -F" " '{print $NF}' | sed "s/Backend//"`
+	confidentiality=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "confidentiality-enabled: " | sed "s/\./ /g" | awk -F" " '{print $NF}' | sed "s/Backend//"`
+		if [ "$backendType" = "Impl" ]; then
+			backendType="JE"
+		fi
 done
 
 # print all
-	printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%-10s\t%s\t%s\t%s\t%s\n" "BackendID" "BaseDN" "Cache(s)" "Enabled" "iLimit" "LG-Cache" "Type" "Encryption" "Cmprs" "Entries" | log
-	printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%-10s\t%s\t%s\t%s\t%s\n" "${backendDashes}" "${baseDnDashes}" "---------" "-------" "------" "---------" "----" "----------" "-----" "-------" | log
+	printf "%-${tab}s\t%-${btab}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "BackendID" "BaseDN" "Db-Cache%" "Enabled" "iLimit" "LG-Cache" "Type" "Encryption" "Cmprs" "Entries" | log
+	printf "%-${tab}s\t%-${btab}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "${baseDnDashes}" "${dashes}" "---------" "-------" "------" "--------" "----" "----------" "-----" "-------" | log
 
 for backend in $backends; do
-	check=`echo "'rootUser' 'adminRoot' 'ads-truststore' 'backup' 'config' 'monitor' 'schema' 'tasks'" | grep "'${backend}'"`
+	check=`echo "rootUser adminRoot ads-truststore backup config monitor schema tasks" | grep ${backend}`
 	if [ $? = 0 -a "$displayall" = "" ]; then
 		i=`expr  1 + 1`
 	else
-	basedn=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-base-dn: " | sed "s/ds-cfg-base-dn: //; s/ /-/g"`
-
-	#dbcache=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-db-cache-.*: "`
-	getParameter "dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config" "${configfile}" "ds-cfg-db-cache-size" "cacheSize"
-	getParameter "dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config" "${configfile}" "ds-cfg-db-cache-percent" "cachePercent"
-	dbcachesizevalue=`echo "${cacheSize}" | awk '{print $1}'`
-	debug "DEBUG cacheSize [$cacheSize] cachePercent [$cachePercent] dbcachesizevalue [$dbcachesizevalue]"
-
-	if [ "${cacheSize}" != "" -a "${dbcachesizevalue}" != "0" ]; then
-		dbcache=${dbcachesizevalue}
-		dbcachesizeunit=`echo "${cacheSize}" | awk '{print $2}' | sed "s/megabytes/mb/"`
-		dbcachesizing="${dbcachesizeunit}"
-		totaldbcachesz=`expr ${totaldbcachesz} + ${dbcachesizevalue}`
-	elif [ "${cachePercent}" != "" -a "${cacheSize}" = "" -o "${cachePercent}" != "" -a "${dbcachesizevalue}" = "0" ]; then
-		dbcache=${cachePercent}
-		dbcachesizing="%"
-		totaldbcachepct=`expr ${totaldbcachepct} + ${cachePercent}`
-	else
-		dbcache="50"
-		cachePercent="50"
-		dbcachesizing="%"
-		totaldbcachepct=`expr ${totaldbcachepct} + ${cachePercent}`
-	fi
-
+	basedn=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-base-dn: " | sed "s/ds-cfg-base-dn: //" | sed "s/ /-/g"`
+	dbcache=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-db-cache-percent: " | sed "s/ds-cfg-db-cache-percent: //"`
 	logcache=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-db-log-filecache-size: " | sed "s/ds-cfg-db-log-filecache-size: //"`
-	compression=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-entries-compressed: " | sed "s/ds-cfg-entries-compressed: //" | tr [:upper:] [:lower:]`
+	compression=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-entries-compressed: " | sed "s/ds-cfg-entries-compressed: //"`
 	limit=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-index-entry-limit: " | sed "s/ds-cfg-index-entry-limit: //"`
 	backendType=`sed -n "/dn: ds-cfg-backend-id=${backend},cn=Backends,cn=config/,/^ *$/p" $configfile | grep "ds-cfg-java-class: " | sed "s/\./ /g" | awk -F" " '{print $NF}' | sed "s/Backend//"`
 
@@ -2286,7 +2102,7 @@ for backend in $backends; do
 	if [ $? = 0 ]; then
 		enabled=`echo ${enabled} | sed "s/|/ /" | awk '{print $2}' | sed "s/\}//"`
 	fi
-	if [ "${enabled}" = "false" -o "${enabled}" = "FALSE" ]; then
+	if [ "${enabled}" = "false" ]; then
 		disabledBackends="${backend}"
 		healthScore "Backends" "RED"
 	fi
@@ -2302,7 +2118,7 @@ for backend in $backends; do
 			hide "displayBase" "${displayBase}" "*"
 
 		if [ "$printedbackend" = "0" -a "$currentbase" = "$thisbase" ]; then
-			printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%-10s\t%s\t\t%s\t%s\n" ${backend} ${displayBase} "${dbcache}${dbcachesizing}" ${enabled} ${limit} "${logcache}/${jdbFiles}" ${confidentiality} "Com3" "${entries}" | log
+			printf "%-${tab}s\t%-${btab}s\t%s\t\t%s\t%s\t%s\t%s\t\t%s\t%s\n" ${backend} ${displayBase} ${dbcache} ${enabled} ${limit} "${logcache}" ${confidentiality} "Com3" "${entries}" | log
 		
 			printedbackend=1
 			currentbase=$thisbase
@@ -2312,7 +2128,7 @@ for backend in $backends; do
 			else
 				entriesaddin=""
 			fi
-			printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%-10s\t\t%s\t%s\t%s\t%s\n" " " "${displayBase}" " " " " " " " " " " " " " " "${entries}" | log
+			printf "%-${tab}s\t%-${btab}s\t%s\t\t%s\t%s\t%s\t\t%s\t%s\t%s\t\t%s\n" " " "${displayBase}" " " " " " " " " " " " " " " "${entries}" | log
 			printedbackend=1
 		else
 			if [ "${enabled}" = "false" ]; then
@@ -2320,55 +2136,54 @@ for backend in $backends; do
 			else
 				entriesaddin=""
 			fi
-			printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%-10s\t%s\t%s\t\t%s\t%s\t%s\n" "${backend}" "${displayBase}" "${dbcache}${dbcachesizing}" "${enabled}" "${limit}" "${logcache}/${jdbFiles}" ${backendType} ${confidentiality} "${compression}" "${entries} ${entriesaddin}" | log
+			printf "%-${tab}s\t%-${btab}s\t%s\t\t%s\t%s\t%s\t\t%s\t%s\t\t%s\t%s\t%s\n" "${backend}" "${displayBase}" "${dbcache}" "${enabled}" "${limit}" "${logcache}" ${backendType} ${confidentiality} "${compression}" "${entries} ${entriesaddin}" | log
 			printedbackend=1
 			currentbase=$thisbase
 		fi
+			totaldbcache=`expr ${totaldbcache} + ${dbcache}`
+			dbcache=0
 			limit=''
-			cachePercent=""
-			cacheSize=""
 	done
 	fi
 			printedbackend=0
 done
 
-			if [ "${compactversion}" -ge "650" -a "${totaldbcachepct}" -gt "80" -a "${sharedCacheEnabled}" = "true" ]; then
-				totaldbcachemsg=" ttl *"
-			elif [ "${totaldbcachepct}" -gt "80" -a "${totaldbcachepct}" -lt "90" ]; then
+			if [ "${compactversion}" -ge "650" -a "${totaldbcache}" -gt "80" -a "${sharedCacheEnabled}" = "true" ]; then
+				alerts="${alerts} Backends:Total~db-cache-percent~is~greater~than~80%~but~the~JE~shared-cache~is~enabled.~The~db-cache-percent~&~db-cache-size~settings~are~ignored.KBI105"
+				addKB "KBI105"
+				totaldbcachemsg="${totaldbcache}% Total *"
+			elif [ "${totaldbcache}" -gt "80" -a "${totaldbcache}" -lt "90" ]; then
 				alerts="${alerts} Backends:${YELA}${yellow}Total~db-cache-percent~is~greater~than~80%~${sharedCacheAddInMsgAlert}${nocolor}${FEND}.KBI100"
 				addKB "KBI100"
-				totaldbcachemsg=" ttl *"
-			elif [ "${totaldbcachepct}" -ge "90" ]; then
+				totaldbcachemsg="${totaldbcache}% Total *"
+			elif [ "${totaldbcache}" -ge "90" ]; then
 				alerts="${alerts} Backends:${REDBA}${red}Total~db-cache-percent~is~greater~than~90%~${sharedCacheAddInMsgAlert}${nocolor}${FEND}.KBI100"
 				addKB "KBI100"
-				totaldbcachemsg=" ttl *"
+				totaldbcachemsg="${totaldbcache}% Total *"
 			else
-				totaldbcachemsg=" ttl"
+				totaldbcachemsg="${totaldbcache}% Total"
 			fi
-	printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%-10s\t%s\t%s\t%s\t%s\n" "${backendDashes}" "${baseDnDashes}" "---------" "-------" "------" "---------" "----" "----------" "-----" "-------" | log
-	if [ "${totaldbcachepct}" -gt "0" ]; then
-	printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "         " "      " "${totaldbcachepct}% ${totaldbcachemsg}" "       " "      " "        " "    " "          " "     " "${totalentries}" | log
-	fi
-	if [ "${totaldbcachesz}" -gt "0" ]; then
-	printf "%-${tab}s\t%-${btab}s\t%-9s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "         " "      " "${totaldbcachesz}${dbcachesizeunit} ${totaldbcachemsg}" "       " "      " "        " "    " "          " "     " " " | log
-	fi
+	printf "%-${tab}s\t%-${btab}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "${baseDnDashes}" "${dashes}" "---------" "-------" "------" "--------" "----" "----------" "-----" "-------" | log
+	printf "%-${tab}s\t%-${btab}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "         " "      " "${totaldbcachemsg}" "       " "      " "        " "    " "          " "     " "${totalentries}" | log
 
-			if [ "${compactversion}" -ge "650" -a "${sharedCacheEnabled}" = "true" ]; then
+			if [ "${compactversion}" -ge "650" -a "${totaldbcache}" -gt "80" -a "${sharedCacheEnabled}" = "true" ]; then
+				printf "\n\t%s\n" "Info: Total db-cache-percent is greater than 80% but the JE shared-cache is enabled. The db-cache-percent & db-cache-size settings are ignored." | log
+			fi
+			if [ "${compactversion}" -ge "650" -a "${totaldbcache}" -le "80" -a "${sharedCacheEnabled}" = "true" ]; then
 				printf "\n\t%s\n" "Info: The JE shared-cache is enabled. The db-cache-percent & db-cache-size settings are ignored." | log
-				alerts="${alerts} Backends:Info:~The~JE~shared-cache~is~enabled.~The~db-cache-percent~&~db-cache-size~settings~are~ignored.KBI105"
 				addKB "KBI105"
 			fi
-			if [ "${compactversion}" -ge "650" -a "${totaldbcachepct}" -le "80" -a "${sharedCacheEnabled}" = "false" ]; then
+			if [ "${compactversion}" -ge "650" -a "${totaldbcache}" -le "80" -a "${sharedCacheEnabled}" = "false" ]; then
 				printf "\n\t%s\n" "Info: ${sharedCacheAddInMsg}." | log
 			fi
-			if [ "${totaldbcachepct}" -gt "80" -a "${totaldbcachepct}" -lt "90" -a "${sharedCacheEnabled}" = "false" ]; then
+			if [ "${totaldbcache}" -gt "80" -a "${totaldbcache}" -lt "90" -a "${sharedCacheEnabled}" = "false" ]; then
 				printf "\n\t%s\n" "${YELB}${yellow}Warning: Total db-cache-percent is greater than 80%. ${sharedCacheAddInMsg}${nocolor}${FEND}" | log
 			fi
-			if [ "${totaldbcachepct}" -ge "90" -a "${sharedCacheEnabled}" = "false" -o "${totaldbcachepct}" -ge "90" -a "${sharedCacheEnabled}" = "" ]; then
+			if [ "${totaldbcache}" -ge "90" -a "${sharedCacheEnabled}" = "false" -o "${totaldbcache}" -ge "90" -a "${sharedCacheEnabled}" = "" ]; then
 				printf "\n\t%s\n" "${REDB}${red}Alert: Total db-cache-percent is greater than 90%. ${sharedCacheAddInMsg}${nocolor}${FEND}" | log
 				healthScore "Backends" "RED"
 			fi
-			if [ "${compression}" = "true" -a "${compactversion}" -lt "650" ]; then
+			if [ "${compression}" = "true" -o "$compression" = "TRUE" ]; then
 				alerts="${alerts} Backends:Entry~Compression~is~on,~at~risk~of~hitting~OPENDJ-5137.KBI102"
 				addKB "KBI102"
 				printf "\n\t%s\n" "${REDB}${red}Alert: Entry Compression is on, at risk of hitting OPENDJ-5137${nocolor}${FEND}" | log
@@ -2388,15 +2203,13 @@ done
 		# Check for FSync limits or Latch timeout errors
 		for backend in $backends; do
 			if [ -a ../logs/${backend}/je.info.0 ]; then
-				fsyncCheck=`grep "FSync time of" ../logs/${backend}/je.info.0 | tail -1`
-				fsyncDateLast=`echo ${fsyncCheck} | awk '{print $1 "-" $2}'`
-				fsyncTime=`echo ${fsyncCheck} | awk '{print $9}'`
-				latchTimeoutCheck=`grep "Latch timeout" ../logs/${backend}/je.info.0 | tail -1`
+				fsyncCheck=`grep FSync ../logs/${backend}/je.info.0 | awk '{print $9}' | sort -u | tail -1`
+				latchTimeoutCheck=`grep "Latch timeout" ../logs/${backend}/je.info.0 | head -1`
 			fi
 			if [ "${fsyncCheck}" != "" -o "${latchTimeoutCheck}" != "" ]; then
 				if [ "${fsyncCheck}" != "" ]; then
-					fatalalerts="${fatalalerts} Backends:${REDBA}${red}Backend~${backend}~encountered~FSync~issues:~FSync~${fsyncTime}.~Last~event:~${fsyncDateLast}.${nocolor}${FEND}KBI106"
-					printf "\n\t%s\n" "${REDB}${red}Alert: Backend ${backend} encountered FSync issues: FSync time of ${fsyncTime} ms exceeds limit (5000 ms). Last event: ${fsyncDateLast}${nocolor}${FEND}" | log
+					fatalalerts="${fatalalerts} Backends:${REDBA}${red}Backend~${backend}~encountered~FSync~issues:~FSync~time~of~${fsyncCheck}~ms~exceeds~limit~(5000~ms).${nocolor}${FEND}KBI106"
+					printf "\n\t%s\n" "${REDB}${red}Alert: Backend ${backend} encountered FSync issues: FSync time of ${fsyncCheck} ms exceeds limit (5000 ms)${nocolor}${FEND}" | log
 					healthScore "Backends" "RED"
 					addKB "KBI106"
 				fi
@@ -2408,14 +2221,14 @@ done
 					addKB "KBI106"
 				fi
 			fi
-		done
 			if [ "${disabledBackends}" != "" ]; then
 				for thisDisabledBackend in ${disabledBackends}; do
 					alerts="${alerts} Backends:${REDBA}${red}Backend~${backend}~is~disabled.${nocolor}${FEND}KBI107"
-					printf "\n\t%s\n" "${REDB}${red}Alert: Backend ${thisDisabledBackend} is disabled *${nocolor}${FEND}" | log
+					printf "\n\t%s\n" "${REDB}${red}Alert: Backend ${disabledBackends} is disabled *${nocolor}${FEND}" | log
 					addKB "KBI107"
 				done
 			fi
+		done
 	printKey
 
 	if [ "${Backends}" != "RED" -o "${Backends}" != "YELLOW" ]; then
@@ -2432,7 +2245,7 @@ printJvmInfo()
 			addon="<-- ${GRNB}${green}-XX:+UseCompressedOops used!${nocolor}${FEND}"
 			usecompressedoops=1
 		elif [ `echo "${arg}" | grep -i ':MaxTenuringThreshold'` ]; then
-			maxTenuringThresholdValue=`echo "${arg}" | sed "s/=/ /; "s/\"//g"; s/,//g" | awk '{print $2}'`
+			maxTenuringThresholdValue=`echo "${arg}" | sed "s/=/ /" | sed 's/"//g' | sed "s/,//g" | awk '{print $2}'`
 			if [ "${maxTenuringThresholdValue}" = "1" ]; then
 				addon="<-- ${GRNB}${green}-XX:MaxTenuringThreshold used!${nocolor}${FEND}"
 			else
@@ -2460,38 +2273,29 @@ printJvmInfo()
 			Xmsvalue=`echo ${Xms} | sed "s/.Xms//"`
 			XmsInUse=1
 		elif [ `echo "${arg}" | grep -i 'NewSize'` ]; then
-			NewSize=`echo ${arg} | sed "s/.*NewSize=//; s/\",//; s/\"$//"`
-			NewSizeValue=`echo ${NewSize} | sed "s/\",//; s/\"$//; s/.$//"`
-			NewSizeUnit=`echo ${NewSize} | sed "s/\",//; s/\"$//; s/$NewSizeValue//" | tr [:upper:] [:lower:]`
+			NewSize=`echo ${arg} | sed "s/.*NewSize=//" | sed "s/\",//" | sed "s/\"$//"`
+			NewSizeValue=`echo ${NewSize} | sed "s/\",//" | sed "s/\"$//" | sed "s/.$//"`
+			NewSizeUnit=`echo ${NewSize} | sed "s/\",//" | sed "s/\"$//" | sed "s/$NewSizeValue//" | tr [:upper:] [:lower:]`
 			NewSizeUnitCheck=`echo "$NewSizeUnit" | grep -E ^\-?[0-9]+$`
 				if [ "${NewSizeUnitCheck}" != "" ]; then
 					NewSizeUnit="k"
 				fi
 			NewSizeInUse=1
 		elif [ `echo "${arg}" | grep -i 'agentpath'` ]; then
-			arg="-agentpath:/path/redacted"
-		elif [ `echo "${arg}" | grep -i 'HSM'` ]; then
-			arg="-D_INFO=parameterredacted"
-		elif [ `echo "${arg}" | grep -i 'org.glassfish.grizzly.memory.HeapMemoryManager'` ]; then
-			defaultMemManagerOn=1
-		elif [ `echo "${arg}" | grep -i ':TieredStopAtLevel'` ]; then
-			addon="<-- ${REDB}${red}-XX:TieredStopAtLevel=1 used!${nocolor}${FEND}"
-			TieredStopAtLevel=1
+			arg="-agentpath *redacted*"
 		else
 			addon=''
 		fi
 		if [ `echo ${Xmxvalue} | grep -i 'g' ` ]; then
-			XmxGbValue=`echo ${Xmxvalue} | sed 's/[^0-9]*//g'`
+			XmxGbValue=`echo ${Xmxvalue} | sed 's/[^0-9]*//g' | awk '{ byte =$1 **2 ; print byte " GB" }'`
 			XmxGbNumericalValue=`echo ${XmxGbValue} | sed 's/GB//g'`
 		elif [ `echo ${Xmxvalue} | grep -i 'm' ` ]; then
-			XmxGbValue=`echo ${Xmxvalue} | sed 's/[^0-9]*//g;  s/\..*$//; s/ //g' | awk '{ byte =$1 /1000 ; print byte " MB" }'`
-			XmxGbNumericalValue=`echo ${XmxGbValue} | sed 's/MB//g'`
+			XmxGbValue=`echo ${Xmxvalue} | sed 's/[^0-9]*//g' | awk '{ byte =$1 /1024**2 ; print byte " GB" }'`
+			XmxGbNumericalValue=`echo ${XmxGbValue} | sed 's/GB//g'`
 		else
-			XmxGbValue=`echo ${Xmxvalue} | sed 's/[^0-9]*//g' | awk '{ byte =$1 /1000/1000 ; print byte " GB" }'`
+			XmxGbValue=`echo ${Xmxvalue} | sed 's/[^0-9]*//g' | awk '{ byte =$1 /1024/1024**2 ; print byte " GB" }'`
 			XmxGbNumericalValue=`echo ${XmxGbValue} | sed 's/GB//g'`
 		fi
-		# Remove after a dot
-		XmxGbNumericalValue=`echo "${XmxGbNumericalValue}" | sed "s/\..*$//; s/ //g"`
 		
 		if [ "${XmxInUse}" != "" -a "${XmsInUse}" != "" -a "${Xmxvalue}" = "${Xmsvalue}" -a "${minMaxAlert}" = "" ]; then
 			minMaxAlert=1
@@ -2518,60 +2322,6 @@ printJvmInfo()
 		fi
 }
 
-getLoggerInfo()
-{
-printf "\n%s\n" "${HR2}" | log
-printf "%s\n" "${H4B}LOG HANDLER INFORMATION:${H4E}" | log
-printf "\n%s\n" "${loghandlerinfo}" | log
-printf "%s\n" "${HR3}" | log
-	printf "${PREB}" | log
-
-	loggers=`sed -n "/cn=Loggers,cn=config/,/^ *$/p" ${configfile} | grep "dn: " | grep -vE "dn: cn=Loggers,cn=config|cn=Filtering Criteria" | sed "s/,cn=Loggers,cn=config//; s/dn: cn=//; s/ /~/g"`
-	# Get the longest logger name
-	longestLoggerName=0
-	for loggerName in ${loggers}; do
-		thisLen=${#loggerName}
-		if [ "${thisLen}" -gt "${longestLoggerName}" ]; then
-			longestLoggerName=${thisLen}
-		fi
-	done
-	getDashes "${longestLoggerName}"
-
-	printf "\n%-${longestLoggerName}s : %-15s : %-15s \n" "Log Handler" "Enabled" "Filtering Policy" | log
-	printf "%-${longestLoggerName}s:%-17s:%-15s\n" "${dashes}-" "-----------------" "-----------------:" | log
-
-	for logger in ${loggers}; do
-		logger=`echo ${logger} | sed "s/~/ /g"`
-		loggerName=`echo ${logger} | sed "s/ /~/g"`
-		getParameter "dn: cn=${logger},cn=Loggers,cn=config" "${configfile}" "ds-cfg-enabled" "loggerenabled"
-		getParameter "dn: cn=${logger},cn=Loggers,cn=config" "${configfile}" "ds-cfg-filtering-policy" "loggerfilter"
-		loggerName=`echo ${logger} | sed "s/~/ /g"`
-		printf "%-${longestLoggerName}s : %-15s : %-15s : %s" "${loggerName}" "${loggerenabled}" "${loggerfilter}" | log
-			if [ "${loggerfilter}" = "" ]; then
-				loggerfilter="no-filtering"
-			fi
-			if [ "${loggerenabled}" = "false" ]; then
-				if [ "${logger}" = "File-Based Audit Logger" -o "${logger}" = "File-Based Debug Logger" ]; then
-					printf "\n" "" | log
-					continue
-				fi
-				loggerName=`echo ${logger} | sed "s/ /~/g"`
-				printf "%s" "${YELBA}${yellow}Warning: Logger is Disabled${nocolor}${FEND}" | log
-				alerts="${alerts} Logging:${YELBA}${yellow}Warning:~Logger~is~Disabled~[${loggerName}]${nocolor}${FEND}"
-			fi
-			if [ "${loggerenabled}" = "true" ]; then
-				if [ "${logger}" = "File-Based Audit Logger" -o "${logger}" = "File-Based Debug Logger" ]; then
-				loggerName=`echo "${logger}" | sed "s/ /~/g"`
-				printf "%s" "${REDB}${red}Alert: Heavyweight Logger is Enabled${nocolor}${FEND}" | log
-				alerts="${alerts} Logging:${REDB}${red}Alert:~Heavyweight~Logger~is~Enabled~[${loggerName}]${nocolor}${FEND}"
-				fi
-			fi
-			printf "\n" "" | log
-		loggerenabled=''
-		loggerfilter=''
-	done
-}
-
 getJVMInfo()
 {
 printf "\n%s\n" "${HR2}" | log
@@ -2593,36 +2343,20 @@ printf "%s\n" "${HR3}" | log
 				javaShortVersion=`echo ${javaVersion} | cut -c1-2`
 			fi
 			debug "javaShortVersion->$javaShortVersion"
-		printf "\t%-16s  %s\n" "Java Version" "$javaVersion" | log
+		printf "\t%-16s  %s\n" "javaVersion" "$javaVersion" | log
 			javaVendor=`grep -iE 'javaVendor|ds-mon-jvm-java-vendor' ${monitorfile} | sed "s/.*: //"`
-		printf "\t%-16s  %s\n" "Java Vendor" "$javaVendor" | log
+		printf "\t%-16s  %s\n" "javaVendor" "$javaVendor" | log
 			usedMemory=`grep -iE 'usedMemory|ds-mon-jvm-memory-used' ${monitorfile} | head -1 | awk '{print $2}'`
 			usedMemoryGb=`echo ${usedMemory} | awk '{ byte =$1 /1024/1024**2 ; print byte " GB" }'`
-			printf "\t%-16s  %s\n" "Used Memory" "$usedMemory (${usedMemoryGb})" | log
+			printf "\t%-16s  %s\n" "usedMemory" "$usedMemory (${usedMemoryGb})" | log
 			maxMemory=`grep -iE 'maxMemory|ds-mon-jvm-memory-max' ${monitorfile} | awk '{print $2}'`
 			maxMemoryGb=`echo ${maxMemory} | awk '{ byte =$1 /1024/1024**2 ; print byte " GB" }'`
-			printf "\t%-16s  %s\n" "Max Memory" "$maxMemory (${maxMemoryGb})" | log
+			printf "\t%-16s  %s\n" "maxMemory" "$maxMemory (${maxMemoryGb})" | log
 		if [ -s ../node/diskInfo ]; then
 			availSpace=`awk '{print $14}' ../node/diskInfo` 
 			availSpaceGb=`echo ${availSpace} | awk '{ byte =$1 /1024/1024**2 ; print byte " GB" }'`
-			printf "\t%-16s  %s\n" "Avail Diskspace" "${availSpace} ($availSpaceGb)" | log
+			printf "\t%-16s  %s\n" "avail disk space" "${availSpace} ($availSpaceGb)" | log
 		fi
-		printf "\t%-16s\n" "Disk state monitor" | log
-		diskMonitors=`grep "dn: ds-mon-disk-root=.*,cn=disk space monitor,cn=monitor" "${monitorfile}" | sed "s/ /~/g"`
-		for diskMonitor in ${diskMonitors}; do
-			diskMonitor=`echo ${diskMonitor} | sed "s/~/ /g"`
-			diskRoot=`echo "${diskMonitor}" | sed "s/,/ /" | awk '{print $2}'`
-			getParameter "${diskMonitor}" "${monitorfile}" "ds-mon-disk-state" "diskState"
-			if [ "${diskState}" = "full" ]; then
-				printf "\t\t\t - %s\n" "${REDB}${red}Fatal Issue: Disk is Full! [${diskRoot}]${nocolor}${FEND}" | log
-				fatalalerts="${fatalalerts} System:${REDB}${red}Fatal~Issue:~Disk~is~Full!${nocolor}${FEND}~[${diskRoot}]."
-			elif [ "${diskState}" = "low" ]; then
-				printf "\t\t\t - %s\n" "${YELBA}${yellow}Warning: Disk Space is Low [${diskRoot}]${nocolor}${FEND}" | log
-				alerts="${alerts} System:${YELBA}${yellow}Warning:~Disk~Space~is~Low~[${diskRoot}]${nocolor}${FEND}."
-			else
-				printf "\t\t\t - %s\n" "${GRNB}${green}Info: Disk Space is Normal. [${diskRoot}]${nocolor}${FEND}" | log
-			fi
-		done
 			availableCPUs=`grep -iE 'availableCPUs|ds-mon-jvm-available-cpus' ${monitorfile} | awk '{print $2}'`
         		if [ "${availableCPUs}" = "" ]; then
 				availableCPUs='0'
@@ -2637,7 +2371,7 @@ printf "%s\n" "${HR3}" | log
 		printf "\t%-16s  %s\n\n" "Operating System" "$operatingSystem" | log
 	else
 		if [ -s ../logs/server.out ]; then
-			javaInfo=`grep -iE 'JVM Information' ../logs/server.out | sed "s/^.*msg=JVM Information://; s/,.*-bit architecture.*$//"`
+			javaInfo=`grep -iE 'JVM Information' ../logs/server.out | sed "s/^.*msg=JVM Information://" | sed "s/,.*-bit architecture.*$//"`
 			javaVersion=`echo "${javaInfo}" | awk '{print $1}'`
 			jvmFileFound=1
 			javaShortVersion=`echo ${javaVersion} | cut -c3`
@@ -2647,7 +2381,7 @@ printf "%s\n" "${HR3}" | log
 			debug "javaShortVersion->$javaShortVersion"
 		fi
 		if [ "${javaVersion}" = "" -a -s ../logs/errors ]; then
-			javaInfo=`grep -iE 'JVM Information' ../logs/errors | head -1 | sed "s/^.*msg=JVM Information://; s/,.*-bit architecture.*$//"`
+			javaInfo=`grep -iE 'JVM Information' ../logs/errors | head -1 | sed "s/^.*msg=JVM Information://" | sed "s/,.*-bit architecture.*$//"`
 			javaVersion=`echo "${javaInfo}" | awk '{print $1}'`
 			jvmFileFound=1
 			javaShortVersion=`echo ${javaVersion} | cut -c3`
@@ -2657,13 +2391,11 @@ printf "%s\n" "${HR3}" | log
 			debug "javaShortVersion->$javaShortVersion"
 		fi
 		if [ "${javaVersion}" != "" ]; then
-			javaVendor=`echo "${javaInfo}" | sed "s/ ${javaVersion} //; s/by //"`
+			javaVendor=`echo "${javaInfo}" | sed "s/ ${javaVersion} //" | sed "s/by //"`
 			printf "\t%-16s  %s\n" "javaVersion" "$javaVersion" | log
 			printf "\t%-16s  %s\n\n" "javaVendor" "$javaVendor" | log
 		fi
 	fi
-
-		collapsedJavaVersion=`echo ${javaVersion} | sed "s/\.//g; s/_//g; s/[+-].*$//g"`
 printf "%-26s %s\n\n" "java.properties (start-ds.java-args)" | log
 	if [ -s ./config.ldif -a -s ./java.properties ]; then
 		theseArgs=`grep '^start-ds.java-args=' java.properties | sed "s/start-ds.java-args=//"`
@@ -2700,22 +2432,10 @@ printf "%-26s\t%s\n\n" "server.out log - (JVM Arguments)" | log
 	printf "\n" | log
 
    if [ "${jvmFileFound}" = "1" ]; then
-		printf "\n%-26s\t%s\n\n" "JVM issues found" | log
-	# Check for 64-Bit Server VM warning's in the server.out
-	if [ "${serverOutFile}" != "" ]; then
-		jvmWarnings=`grep '64-Bit Server VM warning' ${serverOutFile} | sort -u | sed "s/ /~/g"`
-	fi
-	if [ "${jvmWarnings}" != "" ]; then
-		for jvmWarning in ${jvmWarnings}; do
-			alerts="$alerts JVM:${YELBA}${yellow}${jvmWarning}${nocolor}${FEND}"
-			printf "\t%s\n" "${YELB}${yellow}Warning: `echo ${jvmWarning} | sed 's/~/ /g'`${nocolor}${FEND}"
-		done
-		healthScore "JVMTuning" "YELLOW"
-	fi
+		printf "\n%-26s\t%s\n\n" "Results:" | log
         if [ "${collectorinuse}" != "1" ]; then
 		alerts="$alerts JVM:${REDBA}${red}-XX:+UseConcMarkSweepGC~or~-XX:+UseG1GC~not~used${nocolor}${FEND}"
 		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -XX:+UseConcMarkSweepGC or -XX:+UseG1GC missing${nocolor}${FEND}" "*" | log
-		healthScore "JVMTuning" "RED"
 		tuningKBNeeded=1
 	fi
         if [ "${Xmx}" = "" ]; then
@@ -2729,34 +2449,25 @@ printf "%-26s\t%s\n\n" "server.out log - (JVM Arguments)" | log
 	fi
 
         if [ "${usecompressedoops}" != "1" ]; then
-		if [ "${XmxGbNumericalValue}" -lt "32" -o "${XmxGbNumericalValue}" = "0" ]; then
-			alerts="$alerts JVM:${REDBA}${red}-XX:+UseCompressedOops~not~used${nocolor}${FEND}"
-			printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -XX:+UseCompressedOops missing${nocolor}${FEND}" "*" | log
-		fi
+		alerts="$alerts JVM:${REDBA}${red}-XX:+UseCompressedOops~not~used${nocolor}${FEND}"
+		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -XX:+UseCompressedOops missing${nocolor}${FEND}" "*" | log
 	fi
         if [ "${maxTenuringThresholdValue}" = "" ]; then
 		alerts="$alerts JVM:${REDBA}${red}-XX:MaxTenuringThreshold=1~not~used${nocolor}${FEND}"
 		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -XX:MaxTenuringThreshold=1 missing${nocolor}${FEND}" "*" | log
-		healthScore "JVMTuning" "RED"
 		tuningKBNeeded=1
+		healthScore "JVMTuning" "RED"
 	else
         	if [ "${maxTenuringThresholdValue}" -gt "1" ]; then
 			alerts="$alerts JVM:${REDBA}${red}-XX:MaxTenuringThreshold~value~(${maxTenuringThresholdValue}),~must~be~set~to~1${nocolor}${FEND}"
 			printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -XX:MaxTenuringThreshold value (${maxTenuringThresholdValue}), must be set to 1.${nocolor}${FEND}" "*" | log
-			healthScore "JVMTuning" "RED"
 			tuningKBNeeded=1
+			healthScore "JVMTuning" "RED"
 		fi
-	fi
-	if [ "${XmxGbNumericalValue}" -ge "32" -a "${usecompressedoops}" = "1" ]; then
-		minMaxAlert=1
-		addon="<-- ${REDB}${red}-Xmx is 32GB or above. -XX:+UseCompressedOops is not needed${nocolor}${FEND}"
-		alerts="$alerts JVM:${YELBA}${yellow}-Xmx~is~32GB~or~above.~-XX:+UseCompressedOops~is~not~needed${nocolor}${FEND}"
-		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -Xmx is 32GB or above. -XX:+UseCompressedOops is not needed.${nocolor}${FEND}" "*" | log
 	fi
         if [ "${minMaxAlert}" != "1" -a "${XmxInUse}" != "" -a "${XmsInUse}" != "" ]; then
 		alerts="$alerts JVM:${REDBA}${red}-Xmx~should~be~the~same~as~-Xms~and~is~not${nocolor}${FEND}"
 		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -Xmx (${Xmx}) are not equal -Xms (${Xms})${nocolor}${FEND}" "*" | log
-		healthScore "JVMTuning" "RED"
 		tuningKBNeeded=1
 	fi
         if [ "${NewSizeInUse}" = "1" -a "${NewSizeValue}" -gt "2" -a "${NewSizeUnit}" != "m" -a "${NewSizeUnit}" != "k" -a "${collectorType}" != "UseG1GC" ]; then
@@ -2772,31 +2483,24 @@ printf "%-26s\t%s\n\n" "server.out log - (JVM Arguments)" | log
 		tuningKBNeeded=1
 		addKB "KBI603"
 	fi
-        if [ "${TieredStopAtLevel}" = "1" ]; then
-		alerts="$alerts JVM:${REDBA}${red}-XX:TieredStopAtLevel=1~is~for~client~tools~only.~Performance~may~suffer!${nocolor}${FEND}KBI612"
-		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: -XX:TieredStopAtLevel=1 is for client tools only. Performance may suffer!${nocolor}${FEND}" "*" | log
-		healthScore "JVMTuning" "RED"
-		tuningKBNeeded=1
-		addKB "KBI612"
-	fi
-        if [ "${jmxportenabled}" = "enabled" -a "${DisableExplicitGCInUse}" = "" ]; then
-		alerts="$alerts JVM:${REDBA}${red}JMX~Handler~enabled~without~-XX:+DisableExplicitGC~-~Full~GC~(System.gc())s~will~happen!${nocolor}${FEND}"
-		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: JMX Handler enabled without -XX:+DisableExplicitGC - Full GC (System.gc())s will happen!${nocolor}${FEND}" "*" | log
-		healthScore "JVMTuning" "RED"
-		tuningKBNeeded=1
-	fi
-
-	if [ "${javaShortVersion}" = "8" -a "${collectorType}" = "" -o "${javaShortVersion}" = "8" -a "${collectorType}" = "default" ]; then
-		alerts="$alerts JVM:${REDBA}${red}Default~ParallelGC~collector~in~use,~Stop~The~World~GCs~will~happen${FEND}${nocolor}"
-		healthScore "JVMTuning" "RED"
-		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: Default ParallelGC collector in use, Stop The World GC's will happen!!${nocolor}${FEND}" "*" | log
-		#collectorType='default'
-	fi
         if [ "${gclogging}" != "1" ]; then
 		alerts="$alerts JVM:${YELBA}${yellow}GC~Logging~not~enabled${nocolor}${FEND}"
 		printf "\t%-74s\t%s\n" "${YELB}${yellow}Warning: GC Logging not enabled${nocolor}${FEND}" "*" | log
 		addKB "KBI602"
 	fi
+        if [ "${jmxportenabled}" = "enabled" -a "${DisableExplicitGCInUse}" = "" ]; then
+		alerts="$alerts JVM:${REDBA}${red}JMX~Handler~enabled~without~-XX:+DisableExplicitGC~-~Full~GC~(System.gc())s~will~happen!${nocolor}${FEND}"
+		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: JMX Handler enabled without -XX:+DisableExplicitGC - Full GC (System.gc())s will happen!${nocolor}${FEND}" "*" | log
+		tuningKBNeeded=1
+		healthScore "JVMTuning" "RED"
+	fi
+
+	if [ "${javaShortVersion}" = "8" -a "${collectorType}" = "" -o "${javaShortVersion}" = "8" -a "${collectorType}" = "default" ]; then
+		alerts="$alerts JVM:${REDBA}${red}Default~ParallelGC~collector~in~use,~Stop~The~World~GCs~will~happen${FEND}${nocolor}"
+		printf "\t%-74s\t%s\n" "${REDB}${red}Alert: Default ParallelGC collector in use, Stop The World GC's will happen!!${nocolor}${FEND}" "*" | log
+		#collectorType='default'
+	fi
+
 	if [ "${javaShortVersion}" != "" -a "${collectorType}" != "" ]; then
 		if [ "${javaShortVersion}" -lt "11" -a "${collectorType}" = "UseG1GC" ]; then
 			alerts="$alerts JVM:${YELBA}${yellow}G1~Collector~in~use~with~JDK~${javaShortVersion}.~G1~bugs~fixed~in~JDK~11.${nocolor}${FEND}"
@@ -2805,31 +2509,19 @@ printf "%-26s\t%s\n\n" "server.out log - (JVM Arguments)" | log
 		fi
 	fi
 
-	if [ "${javaShortVersion}" = "11" -a "${collapsedJavaVersion}" -le "1103" ]; then
-		if [ "${ldapporttlsv13}" = "TLSv1.3" -o "${ldapsporttlsv13}" = "TLSv1.3" -o "${ttlsv13mon}" = "TLSv1.3" ]; then
-			alerts="$alerts JVM:${YELBA}${yellow}TLSv1.3~in~use~with~JDK~11.0.3~or~older.~TLSv1.3~bugs~exist.${nocolor}${FEND}KBI609"
-			addKB "KBI609"
-			printf "\t%-74s\t%s\n" "${YELB}${yellow}Alert: TLSv1.3 in use with JDK 11.0.3 or older. TLSv1.3 bugs exist.${nocolor}${FEND}" "*" | log
-		fi
+	if [ "${ldapporttlsv13}" = "TLSv1.3" -o "${ldapsporttlsv13}" = "TLSv1.3" -o "${ttlsv13mon}" = "TLSv1.3" ]; then
+		alerts="$alerts JVM:${YELBA}${yellow}TLSv1.3~in~use~with~JDK~11.~TLSv1.3~bugs~exist.${nocolor}${FEND}KBI609"
+		addKB "KBI609"
+		printf "\t%-74s\t%s\n" "${YELB}${yellow}Alert: TLSv1.3 in use with JDK 11. TLSv1.3 bugs exist.${nocolor}${FEND}" "*" | log
 	fi
 
 	# OPENDJ-5260 is fixed in 6.5.0 and was backported to 5.5.2
 	if [ "${compactversion}" = "400" -o "${compactversion}" = "550" -o "${compactversion}" = "551" ]; then
-		if [ "${defaultMemManagerOn}" = "" ]; then
-			alerts="$alerts JVM:${YELBA}${yellow}Grizzly~pre-allocated~MemoryManager~in~use,~use~workaround${nocolor}${FEND}.KBI610"
-			addKB "KBI610"
-			printf "\t%-74s\t%s\n" "${YELB}${yellow}Info: Grizzly pre-allocated MemoryManager in use, use workaround.${nocolor}${FEND}" "*" | log
-			healthScore "JVMTuning" "YELLOW"
-			tuningKBNeeded=1
-		fi
-	else
-		if [ "${defaultMemManagerOn}" = "1" ]; then
-			alerts="$alerts JVM:${YELBA}${yellow}Grizzly~HeapMemoryManager~used,~workaround~can~be~removed${nocolor}${FEND}.KBI610"
-			addKB "KBI610"
-		printf "\t%-74s\t%s\n" "${YELB}${yellow}Info: Grizzly HeapMemoryManager used, OPENDJ-5260 workaround can be removed.${nocolor}${FEND}" "*" | log
-			healthScore "JVMTuning" "YELLOW"
-			tuningKBNeeded=1
-		fi
+		alerts="$alerts JVM:${YELBA}${yellow}Grizzly~pre-allocated~MemoryManager~not~needed.~Use~Jira~workaround${nocolor}${FEND}.KBI610"
+		addKB "KBI610"
+		printf "\t%-74s\t%s\n" "${YELB}${yellow}Info: Grizzly pre-allocated MemoryManager not needed. Use Jira workaround.${nocolor}${FEND}" "*" | log
+		healthScore "JVMTuning" "YELLOW"
+		tuningKBNeeded=1
 	fi
 
 	if [ "${tuningKBNeeded}" = "1" ]; then
@@ -2837,7 +2529,6 @@ printf "%-26s\t%s\n\n" "server.out log - (JVM Arguments)" | log
 		printf "\n\t%-74s\t%s\n" "${REDB}${red}JVM tuning is needed, for the above issues${nocolor}${FEND}" "*" | log
 		if [ "${embeddedFound}" = "Embedded DJ Instance"  ]; then
 			printf "\t%-74s\t%s\n" "${REDB}${red}Tuning for Embedded DJ must be done within the Container JVM${nocolor}${FEND}" "*" | log
-			healthScore "JVMTuning" "RED"
 		fi
 	fi
    fi
@@ -2876,16 +2567,16 @@ printCertInfo()
 			keyStoreFileParam="ds-cfg-key-store-file"
 		fi
 	debug  "keyManagerEntry -> $keyManagerEntry"
-	keyStore=`sed -n "/${keyManagerEntry}/,/^ *$/p" ${configfile} | grep "${keyStoreFileParam}:" | sed "s/${keyStoreFileParam}: //; s,/, ,g" | awk -F" " '{print $NF}'`
+	keyStore=`sed -n "/${keyManagerEntry}/,/^ *$/p" ${configfile} | grep "${keyStoreFileParam}:" | sed "s/${keyStoreFileParam}: //" | sed "s,/, ,g" | awk -F" " '{print $NF}'`
 	debug "keyStore -> $keyStore"
 
 	# Get the actual store info/expiration
 	if [ "${certNick}" != "" -a "${keyManagerEntry}" != "NA" ]; then
 		if [ -s ./security/${keyStore}-list ]; then
 			if [ "${extractvertype}" = "script" -o "${extractvertype}" = "powershell" ]; then
-				thisCertInfo=`sed -n "/^Alias name: ${certNick}/,/^ *$/p" ./security/${keyStore}-list | grep 'Valid from' | head -1 | sed "s/Valid from: //; s/ /~/g"`
+				thisCertInfo=`sed -n "/^Alias name: ${certNick}/,/^ *$/p" ./security/${keyStore}-list | grep 'Valid from' | head -1 | sed "s/Valid from: //" | sed "s/ /~/g"`
 			else
-				thisCertInfo=`grep "^${certNick} " ./security/${keyStore}-list | sed "s/${certNick} ,//; s/ /~/g"`
+				thisCertInfo=`grep "^${certNick} " ./security/${keyStore}-list | sed "s/${certNick} ,//" | sed "s/ /~/g"`
 			fi
 
 			# For debugging purposes only
@@ -2931,7 +2622,7 @@ printCertInfo()
 		else
 			thisCertExp="Unknown"
 		fi
-	thisCertType=`echo ${thisCertInfo} | sed "s/,/ /g" | awk -F" " '{print $NF}' | sed "s/~/ /g; s/^ //"`
+	thisCertType=`echo ${thisCertInfo} | sed "s/,/ /g" | awk -F" " '{print $NF}' | sed "s/~/ /g" | sed "s/^ //"`
 		if [ "${thisCertType}" = "" ]; then
 			thisCertType="Unknown"
 		fi
@@ -2964,19 +2655,14 @@ printf "%s\n" "${H4B}ACI CONTROL INFORMATION:${H4E}" | log
 printf "\n%s\n" "${accesscontrolinfo}" | log
 printf "%s\n" "${HR3}" | log
 
-if [ "${backendType}" = "Proxy" ]; then
-	printf "\t%s\n\n" "No ACI's available...system could be a Proxy Server" | log
-	return
-fi
-
-acis=`grep 'ds-cfg-global-aci:' ${configfile} | sed "s/ /~/g; s/[~|(]userdn/;userdn/; s/[~|(]groupdn/;groupdn/"`
+acis=`grep 'ds-cfg-global-aci:' config.ldif | sed "s/ /~/g" | sed "s/[~|(]userdn/;userdn/" | sed "s/[~|(]groupdn/;groupdn/"`
 aciNum=0
 aciDescLen=0
 aciSubLen=0
 
 	for aci in $acis; do
-		thisAciLen=`echo ${aci} | sed "s/;/ /g" | awk '{print $2}' | sed "s/\"$//; s/.*\"//; s/~/ /g" | awk '{ print length($0) }'`
-		thisAciSubLen=`echo ${aci} | sed "s/;/ /g" | awk '{print $4}' | sed "s/[~\"()]//g; s/ldap:...//; s/^=//; s/=/\(/; s/$/\)/" | awk '{ print length($0) }'`
+		thisAciLen=`echo ${aci} | sed "s/;/ /g" | awk '{print $2}' | sed "s/\"$//" | sed "s/.*\"//" | sed "s/~/ /g" | awk '{ print length($0) }'`
+		thisAciSubLen=`echo ${aci} | sed "s/;/ /g" | awk '{print $4}' | sed "s/[~\"()]//g" | sed "s/ldap:...//" | sed "s/^=//" | sed "s/=/\(/" | sed "s/$/\)/" | awk '{ print length($0) }'`
 		if [ "${thisAciLen}" -gt "${aciDescLen}" ]; then
 			aciDescLen=${thisAciLen}
 		fi
@@ -2996,10 +2682,10 @@ printf "${PREB}\n" | log
 	printf "%-4s\t%-${aciDescLen}s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "     " "${aciDescDashes}" "-----------------------------------" "${aciSubDashes}" | log
 for aci in $acis; do
 	aciNum=`expr ${aciNum} + 1`
-	aciDesc=`echo ${aci} | sed "s/;/ /g" | awk '{print $2}' | sed "s/\"$//; s/.*\"//; s/~/ /g"`
+	aciDesc=`echo ${aci} | sed "s/;/ /g" | awk '{print $2}' | sed "s/\"$//" | sed "s/.*\"//" | sed "s/~/ /g"`
 
 	aciPerms=`echo ${aci} | sed "s/;/ /g" | awk '{print $3}' | sed "s/~//g"`
-	aciSubject=`echo ${aci} | sed "s/;/ /g" | awk '{print $4}' | sed "s/[~\"()]//g; s/ldap:...//; s/^=//; s/=/\(/; s/$/\)/"`
+	aciSubject=`echo ${aci} | sed "s/;/ /g" | awk '{print $4}' | sed "s/[~\"()]//g" | sed "s/ldap:...//" | sed "s/^=//" | sed "s/=/\(/" | sed "s/$/\)/"`
 
 	if [ "${aciDesc}" = "" ]; then
 		aciBase64Check=`echo ${aci} | grep 'ds-cfg-global-aci::'`
@@ -3035,7 +2721,7 @@ printf "\n%s\n" "${passwordpolicyinfo}" | log
 printf "%s\n" "${HR3}" | log
 printf "%s\t%s\n" "Note:" "Password Policies other than \"Root Password Policy\" using Bcrypt, PBKDF2 or PKCS5S2 are flagged" | log
 
-	passwordPolicies=`grep ',cn=Password Policies,cn=config' ${configfile} | grep ^dn: | sed "s/,cn=Password Policies,cn=config//; s/^dn: //; s/cn=//; s/ /~/g"`
+	passwordPolicies=`grep ',cn=Password Policies,cn=config' ${configfile} | grep ^dn: | sed "s/,cn=Password Policies,cn=config//" | sed "s/^dn: //" | sed "s/cn=//" | sed "s/ /~/g"`
 
 	# Get the longest policy name
 	longestPassPolName=0
@@ -3048,7 +2734,7 @@ printf "%s\t%s\n" "Note:" "Password Policies other than \"Root Password Policy\"
 	# Get the longest storage schemes
 	for passwordPolicy in ${passwordPolicies}; do
 		passwordPolicyName=`echo ${passwordPolicy} | sed "s/~/ /g"`
-		passwordStorageSchemes=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-default-password-storage-scheme: " | sed "s/ds-cfg-default-password-storage-scheme: //; s/,cn=Password Storage Schemes,cn=config//; s/,cn=password storage schemes,cn=config//; s/,cn=password storage schemes,cn=config//; s/cn=//; s/ /~/g" | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/ /~/g"`
+		passwordStorageSchemes=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-default-password-storage-scheme: " | sed "s/ds-cfg-default-password-storage-scheme: //" | sed "s/,cn=Password Storage Schemes,cn=config//; s/,cn=password storage schemes,cn=config//" | sed "s/,cn=password storage schemes,cn=config//" | sed "s/cn=//" | sed "s/ /~/g" | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/ /~/g"`
 		passwordStorageSchemes=`echo ${passwordStorageSchemes} | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/ /~/g"`
 
 		for passwordStorageScheme in $passwordStorageSchemes; do
@@ -3073,7 +2759,7 @@ printf "%s\t%s\n" "Note:" "Password Policies other than \"Root Password Policy\"
 	for passwordPolicy in ${passwordPolicies}; do
 		deprecatedPasswordStorageScheme=""
 		passwordPolicyName=`echo ${passwordPolicy} | sed "s/~/ /g"`
-		passwordStorageScheme=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-default-password-storage-scheme: " | sed "s/ds-cfg-default-password-storage-scheme: //; s/,cn=Password Storage Schemes,cn=config//; s/,cn=password storage schemes,cn=config//; s/cn=//; s/ /~/g" | perl -p -e 's/\r\n|\n|\r/\n/g'`
+		passwordStorageScheme=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-default-password-storage-scheme: " | sed "s/ds-cfg-default-password-storage-scheme: //" | sed "s/,cn=Password Storage Schemes,cn=config//; s/,cn=password storage schemes,cn=config//" | sed "s/cn=//" | sed "s/ /~/g" | perl -p -e 's/\r\n|\n|\r/\n/g'`
 		passwordStorageScheme=`echo ${passwordStorageScheme} | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/~/ /g"`
 
 		heavyScheme=`echo "${passwordStorageScheme}" | grep -iE 'BCRYPT|PBKDF2|PKCS5S2'`
@@ -3119,7 +2805,7 @@ printf "%s\t%s\n" "Note:" "Password Policies other than \"Root Password Policy\"
 		fi
 
 		passwordAttr=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-password-attribute: " | awk '{print $2}'`
-		deprecatedPasswordStorageSchemes=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-deprecated-password-storage-scheme: " | sed "s/ds-cfg-deprecated-password-storage-scheme: //; s/,cn=Password Storage Schemes,cn=config//; s/,cn=password storage schemes,cn=config//; s/cn=//; s/ /~/g" | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/~/ /"`
+		deprecatedPasswordStorageSchemes=`sed -n "/dn: cn=${passwordPolicyName},cn=Password Policies,cn=config/,/^ *$/p" ${configfile} | grep "ds-cfg-deprecated-password-storage-scheme: " | sed "s/ds-cfg-deprecated-password-storage-scheme: //" | sed "s/,cn=Password Storage Schemes,cn=config//; s/,cn=password storage schemes,cn=config//" | sed "s/cn=//" | sed "s/ /~/g" | perl -p -e 's/\r\n|\n|\r/\n/g' | sed "s/~/ /"`
 			if [ "${deprecatedPasswordStorageSchemes}" = "" ]; then
 				deprecatedPasswordStorageScheme="-"
 			else
@@ -3236,13 +2922,6 @@ while [ "${c}" -le "${topFiles}" ]; do
 			topTotal=`expr ${topTotal} + ${thisCpu}`
 		fi
 	done
-	# Check for BLOCKED threads
-	grep --no-filename -B1 " BLOCKED " jstackdump*-${c}.txt | grep "nid=" | sed "s/.*tid=.* nid=//g" | awk '{print $1}' > blocked-threads-${c}.tmp
-	blockedThreadCount=`wc -l blocked-threads-${c}.tmp | awk '{print $1}'`
-	if [ "${blockedThreadCount}" -gt "0" ]; then
-		blockedThreadCheck=`expr ${blockedThreadCount} + ${blockedThreadCheck}`
-		threads="${blockedThreadCount} BLOCKED Thread(s)"
-	fi
 	if [ -s ./high-cpu-threads-${c}.out ]; then
 		lowCPU=`cat ./cpuPercentages.tmp | sort -u --general-numeric-sort | head -1`
 		highCPU=`cat ./cpuPercentages.tmp | sort -u --general-numeric-sort | tail -1`
@@ -3253,33 +2932,16 @@ while [ "${c}" -le "${topFiles}" ]; do
 				fi
 				ADDIN=" *"
 			fi
-		(cd ../config; printf "%s \t%-24s\t%-17s\n" "CPU Range: ${lowCPU}% to ${highCPU}%" "Total Process CPU: ${topTotal}%" "${threads}" | log )
+		(cd ../config; printf "%s \t%s\n" "CPU Range: ${lowCPU}% to ${highCPU}%" "Total Process CPU: ${topTotal}%" | log )
 
 		rm ./cpuPercentages.tmp
 		highCpuThreadsFound=1
 	else
-		(cd ../config; printf "%-19s\t\t%-24s\t%-17s\n" "......................." "Total Process CPU: 0%" "${threads}" | log )
+		(cd ../config; printf "%-19s\t\t%-24s\t\t\t%-21s\n" "......................." "Total Process CPU: 0%" | log )
 	fi
 	c=`expr ${c} + 1`
-	threads=''
 done
-c=1
-while [ "${c}" -le "${topFiles}" ]; do
-	if [ -s blocked-threads-${c}.tmp ]; then
-	nids=`cat blocked-threads-${c}.tmp`
-	for nid in ${nids}; do
-		sed -n "/nid=${nid}/,/^ *$/p" jstackdump*-${c}.txt > blocked-threads-${c}.out
-	done
-		# Set the following as a check to display "Creating blocked-threads reports" or not
-		blockedThreadCount=1
-	fi
-	rm blocked-threads-${c}.tmp
-	c=`expr ${c} + 1`
-done
-	(cd ../config; printf "\n%s\n" " * Total Process CPU = total cpu used by all threads in that stack sample" | log )
-	if [ "${blockedThreadCount}" -gt "0" ]; then
-		(cd ../config; printf "%s\t%s\n" " * Creating blocked-threads reports (in ../processStats)" | log )
-	fi
+	(cd ../config; printf "\n%s\n" "   * Total Process CPU = total cpu used by all threads in that stack sample" | log )
 	if [ "${highestCpuThread}" -gt "5" ]; then
 		compilerThreadCheck=`grep -B1 "C. CompilerThread" high-cpu-threads-* | grep "CPU" | awk '{print $3}' | sort -r | head -1`
 		if [ "${compilerThreadCheck}" != "" ]; then
@@ -3289,36 +2951,7 @@ done
 			addKB "KBI611"
 			healthScore "JVMTuning" "YELLOW"
 		fi
-		searchNotIndexedThreadCheck=`grep -B27 "searchNotIndexed" high-cpu-threads-* | grep "CPU" | awk '{print $3}' | sort -r | head -1`
-		if [ "${searchNotIndexedThreadCheck}" != "" ]; then
-			alerts="${alerts} Process:${YELBA}${yellow}Unindexed~Search~Thread's~with~high~CPU~found~(${searchNotIndexedThreadCheck}~%)${nocolor}${FEND}.KBI701"
-			(cd ../config; printf "\n   %-68s\t%s\n" "${YELB}${yellow}Alert: Unindexed Search Thread's with high CPU found (${searchNotIndexedThreadCheck} %).${nocolor}${FEND}" "" | log )
-			addKB "KBI701"
-			healthScore "CPUUsage" "YELLOW"
-		fi
 	fi
-		# Check for org.opends.server.protocols.BlockingBackpressureOperator$BackpressureSemaphore.blockUntilAllowedToEmit
-		# Pattern = org.opends.server.protocols.BlockingBackpressureOperator.BackpressureSemaphore.blockUntilAllowedToEmit
-		backPressureThreadCheck=`grep -c "blockUntilAllowedToEmit" jstackdump*-* | grep -v ':0' | wc -l | awk '{print $1}'`
-		if [ "${backPressureThreadCheck}" != "0" ]; then
-			alerts="${alerts} Process:${REDBA}${red}${backPressureThreadCheck}~Worker~threads~waiting~in~backpressure.${nocolor}${FEND}"
-			(cd ../config; printf "\n   %-68s\t%s\n" "${REDB}${red}Alert: ${backPressureThreadCheck} Worker threads waiting in backpressure.${nocolor}${FEND}" "" | log )
-			healthScore "Threads" "RED"
-		fi
-		# Pattern = sun.security.util.MemoryCache.emptyQueue
-		jdkSslBlockingThreadCheck=`grep -c "waiting to lock <.*> (a sun.security.util.MemoryCache)" jstackdump*-* | grep -v ':0' | wc -l | awk '{print $1}'`
-		if [ "${jdkSslBlockingThreadCheck}" != "0" ]; then
-			alerts="${alerts} Process:${REDBA}${red}${jdkSslBlockingThreadCheck}~Worker~threads~blocked~in~JDK~SSL.${nocolor}${FEND}"
-			(cd ../config; printf "\n   %-68s\t%s\n" "${REDB}${red}Alert: ${jdkSslBlockingThreadCheck} Worker threads blocked in JDK SSL.${nocolor}${FEND}" "" | log )
-			healthScore "Threads" "RED"
-		fi
-		# Pattern = BLOCKED
-		if [ "${blockedThreadCheck}" != "0" ]; then
-			alerts="${alerts} Process:${REDBA}${red}${blockedThreadCheck}~Worker~threads~blocked.${nocolor}${FEND}"
-			(cd ../config; printf "\n   %-68s\t%s\n" "${REDB}${red}Alert: ${blockedThreadCheck} threads in a BLOCKED state.${nocolor}${FEND}" "" | log )
-			(cd ../config; printf "   \t%-68s\t%s\n" "Note: blocked threads do not always indicate a problem. Investigation required." "" | log )
-			healthScore "Threads" "RED"
-		fi
 	if [ "${highestCpuThread}" -gt "25" ]; then
 		alerts="${alerts} Process:${REDBA}${red}High~CPU~Threads~found~(${highestCpuThread}~%).${nocolor}${FEND}"
 		(cd ../config; printf "\n   ${REDB}%s${FEND}\n" "${REDB}${red}Alert: High CPU Threads found (${highestCpuThread} %)${nocolor}${FEND}" | log )
@@ -3355,14 +2988,7 @@ filedate=`date "+%Y%m%d-%H%M%S"`
 # Dec 9, 2019 14:03:19 -0600 [5640 1] com.newrelic INFO: New Relic Agent: Loading configuration file "/opt/newrelic/java/./newrelic.yml"
 # Jan 22, 2020 05:08:08 +0000 [13180 1] com.newrelic INFO: New Relic Agent: Loading configuration file "/opt/newrelic/./newrelic.yml"
 if [ "${osType}" = "Darwin" ]; then
-#LEET TEST THIS ON LINUX
 	sed -i '' "/... .*, .... ..:..:../d" ${serverOutFile}
-
-	#sed -n '/....-..-.. ..:..:../,$p' ${serverOutFile} > ${serverOutFile}.tmp
-	#mv ${serverOutFile}.tmp ${serverOutFile}
-	#grep '..-..-.. ..:..:..' ${serverOutFile} | head -1 > ${serverOutFile}.tmp
-	#sed '1,/....-..-.. ..:..:../d' ${serverOutFile} >> ${serverOutFile}.tmp
-	#awk 'f;/2020-06-13 15:49:32/{f=1}' ${serverOutFile} >> ${serverOutFile}.tmp
 else
 	sed -i "/... .*, .... ..:..:../d" ${serverOutFile}
 fi
@@ -3503,10 +3129,10 @@ while [ "${c}" -le "9" ]; do
 		wc=`wc -l ${currentSample} | awk '{print $1}'`; wc=`expr ${wc} - 1`
 		tail -${wc} ${currentSample} > ${currentSample}.tmp
 
-		lastSampleIndex=`echo ${lastSample} | sed "s/\.txt//; s/-/ /g" | awk '{print $2 "-" $3}'`
-		currentSampleIndex=`echo ${currentSample} | sed "s/\.txt//; s/-/ /g" | awk '{print $2 "-" $3}'`
+		lastSampleIndex=`echo ${lastSample} | sed "s/\.txt//" | sed "s/-/ /g" | awk '{print $2 "-" $3}'`
+		currentSampleIndex=`echo ${currentSample} | sed "s/\.txt//" | sed "s/-/ /g" | awk '{print $2 "-" $3}'`
 
-		(cd ../config; printf "%-20s vs %-16s\t%s" "   - Sample ${lastSampleIndex}" "Sample ${currentSampleIndex}" | log )
+		(cd ../config; printf "%-20s vs %-16s\t%s\n" "   - Sample ${lastSampleIndex}" "Sample ${currentSampleIndex}" | log )
 
 		pTaken=1
 		if [ -s  ${lastSample}.tmp -a -s ${currentSample}.tmp ]; then
@@ -3519,7 +3145,7 @@ while [ "${c}" -le "9" ]; do
 			rm jstackdiff.${lastSampleIndex}-${currentSampleIndex}
 		fi
 		else
-			(cd ../config; printf "%-20s\n" "0-byte files" | log )
+			printf "%-20s\n" "0-byte files" | log
 		fi
 	fi
 	if [ "$pTaken" = "1" -o "$i" = "1" ];then
@@ -3535,7 +3161,7 @@ done
 printStackCpuInfo()
 {
 printf "\n%s\n" "${HR2}" | log
-printf "%s\n" "${H4B}CPU USAGE AND THREAD INFORMATION:${H4E}" | log
+printf "%s\n" "${H4B}CPU USAGE INFORMATION:${H4E}" | log
 printf "\n%s\n" "${cpuusageinfo}" | log
 printf "%s\n" "${HR3}" | log
 printf "${PREB}" | log
@@ -3610,8 +3236,6 @@ printf "${PREB}\n" | log
 			dsprofile=`echo ${dsprofile} | sed "s/:/ /"`
 			printf " * %-20s\t\t%s\n" "DS Profiles found" "$dsprofile" | log
 		done
-	else
-		printf " * %-20s\t\t%s\n" "DS Profiles" "DS was not installed using profiles" | log
 	fi
 
 	globalAciCount=`grep -c ds-cfg-global-aci: config.ldif | awk '{print $1}'`
@@ -3626,7 +3250,7 @@ printf "${PREB}\n" | log
 		printf " * %-17s\t\t%-5s %-42s\n" "Data version" "${dataver}" "${datacommit}" | log
 	fi
 
-	if [ "${serverType}" != "Stand Alone/Not replicated" -a "${serverType}" != "Directory Server (DS only)" -a ${ctsIndexCount} -ge "1" -a  "${computechangenumber}" != "disabled" -a "${computechangenumber}" != "false" ]; then
+	if [ "${serverType}" != "Stand Alone/Not replicated" -a "${serverType}" != "Directory Server (DS only)" -a ${ctsIndexCount} -ge "1" -a  "${computechangenumber}" != "disabled" ]; then
 		printf " * %-21s\n" "This CTS is replicated. The ${changenumberindexerattr} may be disabled to increase performance." | log
 		printf "\t- %-21s\n" "Verify cn=changelog is not being used, before disabling." | log
 		otherInfoDisplayed=1
@@ -3662,7 +3286,7 @@ printf "${OLB}\n" | log
 		if [ $? = 0 ]; then
 			kbi=`echo ${alertmsg} | sed -E "s/^.*(KBI.*)/\1/"`
 			debug "kbi=${kbi}"
-			kb=`grep "${kbi}=" $0 | sed "s/${kbi}=//; s/\"//g" | awk '{print $1}'`
+			kb=`grep "${kbi}=" $0 | sed "s/${kbi}=//" | sed "s/\"//g" | awk '{print $1}'`
 			debug "kb=${kb}"
 
 			kbiTest=`echo ${kb} | grep 'OPENDJ-'`
@@ -3707,7 +3331,7 @@ printf "${OLB}\n" | log
 		if [ $? = 0 ]; then
 			kbi=`echo ${fatalalertmsg} | sed -E "s/^.*(KBI.*)/\1/"`
 			debug "kbi=${kbi}"
-			kb=`grep "${kbi}=" $0 | sed "s/${kbi}=//; s/\"//g" | awk '{print $1}'`
+			kb=`grep "${kbi}=" $0 | sed "s/${kbi}=//" | sed "s/\"//g" | awk '{print $1}'`
 			debug "kb=${kb}"
 
 			kbiTest=`echo ${kb} | grep 'OPENDJ-'`
@@ -3746,8 +3370,8 @@ printf "${OLB}\n" | log
 	# get the lengths for each KB message for proper formatting
 	msgLen=0
 	for kba in ${kbas}; do
-		kbi=`grep "^${kba}=" $0 | sed "s/${kba}=//; s/\"//g" | awk '{print $1}'`
-		kbimessage=`grep "${kba}=" $0 | sed "s/\"//g; s/${kba}=${kbi} //"`
+		kbi=`grep "^${kba}=" $0 | sed "s/${kba}=//" | sed "s/\"//g" | awk '{print $1}'`
+		kbimessage=`grep "${kba}=" $0 | sed "s/\"//g" | sed "s/${kba}=${kbi} //"`
 		calcLen "$kbimessage"
 			if [ "${mylen}" -gt "${msgLen}" ]; then
 				msgLen=$mylen
@@ -3757,16 +3381,16 @@ printf "${OLB}\n" | log
 	for kba in ${kbas}; do
 		debug "KBA->$kba"
 		kbasalertnumber=`expr ${kbasalertnumber} + 1`
-		kbi=`grep "^${kba}=" $0 | sed "s/${kba}=//; s/\"//g" | awk '{print $1}'`
+		kbi=`grep "^${kba}=" $0 | sed "s/${kba}=//" | sed "s/\"//g" | awk '{print $1}'`
 		debug "KBURL->$kburl"
 		debug "KBI->$kbi"
 		debug "KBI=KBA->${kba}=${kbi}"
-		kbimessage=`grep "${kba}=" $0 | sed "s/\"//g; s/${kba}=${kbi} //"`
+		kbimessage=`grep "${kba}=" $0 | sed "s/\"//g" | sed "s/${kba}=${kbi} //"`
 		debug "KBIMESSAGE->$kbimessage"
 
 		basicversion=`echo ${compactversion} | cut -c1-2`
 
-		msgUrl=`grep "^${kba}URL${basicversion}=" $0 | sed "s/${kba}URL${basicversion}=//; s/\"//g"`
+		msgUrl=`grep "^${kba}URL${basicversion}=" $0 | sed "s/${kba}URL${basicversion}=//" | sed "s/\"//g"`
 		debug "msgUrl->$msgUrl"
 		if [ "${msgUrl}" = "" ]; then
 			kbUrlCheck=`echo "${kbi}" | grep "OPENDJ"`
@@ -3792,6 +3416,7 @@ printf "${OLE}\n" | log
 printHealthStatus()
 {
 
+if [ "${experimental}" = "" ]; then
 printf "\n%s\n" "${HR2}" | log
 printf "%s\n" "${H4B}HEALTH STATUS:${H4E}" | log
 printf "\n%s\n" "${healthstatusinfo}" | log
@@ -3830,6 +3455,7 @@ printf "%-6s\t\t%s\n" " ${GRNB}${green}GREEN${nocolor}${FEND}" "No issues" | log
 printf "%-6s\t\t%s\n" " ${YELB}${yellow}YELLOW${nocolor}${FEND}" "Minor issues, attention recommended" | log
 printf "%-6s\t\t%s\n" " ${REDB}${red}RED${nocolor}${FEND}" "Major issues, attention required" | log
 printf "${PREE}" | log
+fi
 }
 
 footer()
@@ -3870,7 +3496,6 @@ printReplicaInfo
 printAciInfo
 printPasswordPolicyInfo
 getCertInfo
-getLoggerInfo
 getJVMInfo
 printStackCpuInfo
 printStackDifference
@@ -3880,4 +3505,3 @@ printHealthStatus
 footer
 
 #EOF
-
