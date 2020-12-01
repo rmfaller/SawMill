@@ -58,6 +58,8 @@ public class SawMill {
         boolean usenull = false;
         boolean sequence = false;
         long cut = 1;
+        long startcut = 0;
+        long endcut = Long.MAX_VALUE;
         int y = 0;
         if (args.length < 1) {
             help();
@@ -96,7 +98,7 @@ public class SawMill {
                         lbra[y] = new BufferedReader(new FileReader(args[x]));
                         y++;
                     }
-                    lmnt = new Laminate(fra, usenull);
+                    lmnt = new Laminate(fra, usenull, startcut, endcut);
                     break;
                 case "-e":
                 case "--usenull":
@@ -131,6 +133,12 @@ public class SawMill {
                 case "--filltimegap":
                     filltimegap = true;
                     break;
+                case "--startcut":
+                    startcut = Long.parseLong(args[i + 1]);
+                    break;                
+                case "--endcut":
+                    endcut = Long.parseLong(args[i + 1]);
+                    break;
                 case "-n":
                 case "--noheader":
                     showheader = false;
@@ -147,7 +155,7 @@ public class SawMill {
             cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap, totalsonly, html);
         }
         if (runlaminate) {
-            lmnt.laminate(lbra, usenull);
+            lmnt.laminate(lbra, usenull, startcut, endcut);
         }
         if (runlocate && (locatestring != null)) {
             locater = new Locater(filenames, locatestring);

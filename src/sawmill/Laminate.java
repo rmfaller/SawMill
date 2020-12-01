@@ -17,10 +17,10 @@ import java.util.logging.Logger;
  */
 class Laminate {
 
-    Laminate(FileReader[] fra, boolean usespace) {
+    Laminate(FileReader[] fra, boolean usespace, long startcut, long endcut) {
     }
 
-    void laminate(BufferedReader[] lbra, boolean usenull) throws IOException {
+    void laminate(BufferedReader[] lbra, boolean usenull, long startcut, long endcut) throws IOException {
         boolean[] filedone = new boolean[lbra.length];
         String[][] chdrs = new String[lbra.length][];
         String[][] data = new String[lbra.length][1];
@@ -53,25 +53,27 @@ class Laminate {
                     lowvali = i;
                 }
             }
-            System.out.print(data[lowvali][0] + ",");
+            if ((Long.parseLong(data[lowvali][0]) >= startcut) && (Long.parseLong(data[lowvali][0]) <= endcut)) {
+                System.out.print(data[lowvali][0] + ",");
 //            System.out.print(data[lowvali][0] + lowvali + ",");
-            System.out.print(data[lowvali][1] + ",");
-            System.out.print(data[lowvali][2] + ",");
-            System.out.print(data[lowvali][3]);
-            for (int i = 0; i < lowvali; i++) {
-                for (int j = 4; j < (data[i].length); j++) {
-                    System.out.print(replace);
+                System.out.print(data[lowvali][1] + ",");
+                System.out.print(data[lowvali][2] + ",");
+                System.out.print(data[lowvali][3]);
+                for (int i = 0; i < lowvali; i++) {
+                    for (int j = 4; j < (data[i].length); j++) {
+                        System.out.print(replace);
+                        lastcell++;
+                    }
+                }
+                for (int i = 4; i < data[lowvali].length; i++) {
+                    System.out.print("," + data[lowvali][i]);
                     lastcell++;
                 }
+                for (; lastcell < totalcells; lastcell++) {
+                    System.out.print(replace);
+                }
+                System.out.println();
             }
-            for (int i = 4; i < data[lowvali].length; i++) {
-                System.out.print("," + data[lowvali][i]);
-                lastcell++;
-            }
-            for (; lastcell < totalcells; lastcell++) {
-                System.out.print(replace);
-            }
-            System.out.println();
             brin = lbra[lowvali].readLine();
             if (brin != null) {
                 data[lowvali] = brin.split(",");

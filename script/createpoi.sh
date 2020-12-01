@@ -41,7 +41,9 @@ if [[ $3 ]]; then
     for log in $logs; do
       cat $log | $HOME/bin/jq '.http.request.method,.component,.response.status' | paste -d"," - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
     done
-    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | sort | uniq | tr -d "\"" | tr "," "~")
+#    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | sort | uniq | tr -d "\"" | tr "," "~")
+    cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep  -v '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | sort | uniq > $POIHOME/$POISOURCE/$LOGTYPE-unknownverbs.txt
+    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep  '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | tr -d "\"" | tr "," "~" | sort | uniq)
     if [[ $pois ]]; then
       echo $jsonheader >$POIHOME/$POISOURCE/$LOGTYPE-poi.json
       printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
@@ -111,16 +113,16 @@ if [[ $3 ]]; then
           echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
           echo -n '"\"status\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
           echo -n "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-#else
-#                  echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+          #else
+          #                  echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
         fi
         if [[ $statuscode ]]; then
           echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
           echo -n '"\"statusCode\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
           echo "$statuscode\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-#        else
-#          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        fi        
+          #        else
+          #          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
+        fi
         echo '],
   "lapsedtimefield": "elapsedTime",
   "sla": 200
@@ -137,7 +139,9 @@ if [[ $3 ]]; then
     for log in $logs; do
       cat $log | $HOME/bin/jq '.http.request.method,.response.statusCode,.response.status' | paste -d"," - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
     done
-    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | tr -d "\"" | tr "," "~" | sort | uniq)
+#    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | tr -d "\"" | tr "," "~" | sort | uniq | grep 'DELETE\|POST\|PUT\|PATCH\|GET')
+    cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep  -v '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"' | sort | uniq > $LOGTYPE-unknownverbs.txt
+    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep  '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"' | tr -d "\"" | tr "," "~" | sort | uniq)
     if [[ $pois ]]; then
       echo $jsonheader >$POIHOME/$POISOURCE/$LOGTYPE-poi.json
       printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json

@@ -23,6 +23,7 @@ SCRIPTHOME="$SAWMILLHOME/script"
 HTMLHOME="$SAWMILLHOME/html"
 # SUBSCRIPTION="$BOH/build/web/uploads/$1"
 SUBSCRIPTIONHOME=/Users/rmfaller
+#SUBSCRIPTIONHOME=/Volumes/twoTBdrive
 SUBSCRIPTION=$SUBSCRIPTIONHOME/sawmill/$1
 FULLFILENAME=$2
 SOURCETYPE=$3
@@ -74,9 +75,7 @@ if [ "$ZIPTYPE" = "x" ]; then
   echo "<hr size=\"2\" width=\"100%\"><font face=\"Arial Unicode MS\"><a href=./$FILENAMEONLY.html>Directory Server Extractor Report</a><br></font>" >>./report/report.html
 fi
 
-# rotatedldaplogs=$(ls ./support-data/logs/ldap-access.audit.json.*)
 rotatedldaplogs=$(find . -name "ldap-access.audit.json.*" -print | sort)
-# ldaplogs="$(echo $rotatedldaplogs)  $(ls ./support-data/logs/ldap-access.audit.json)"
 ldaplogs="$(echo $rotatedldaplogs)  $(find . -name "ldap-access.audit.json" -print)"
 rotatedhttplogs=$(find . -type f \( -name "access.audit.json-*" -o -name "http-access.audit.json.*" \) -print | sort)
 httplogs="$(echo $rotatedhttplogs) $(find . -type f \( -name "access.audit.json" -o -name "http-access.audit.json" \) -print)"
@@ -155,6 +154,15 @@ if [ -n "$ldaplogs" ]; then
     echo "<hr size=\"2\" width=\"100%\">" >>./report/operation-assessment.html
     cat $log >>./report/operation-assessment.html
   done
+  echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th></tr>" >>./report/report.html
+  OLDIFS=$IFS
+  IFS=$'\n'
+  rows=$(grep 'Operations from log file\|Time span\|Epoch time' ./report/operation-assessment.html | paste -d" " - - - | sed 's/pre/td/g')
+  for row in $rows; do
+    echo "<tr>$row</tr>" >>./report/report.html
+  done
+  echo "</table><hr>" >>./report/report.html
+  IFS=$OLDIFS
 
   # dd=`date`
   # cat ./metadata.json | $JQ --arg dd "$dd" '.operationsassessed.endtime = $dd' > ./tmpmetadata.json
@@ -164,20 +172,25 @@ if [ -n "$ldaplogs" ]; then
   # cat ./metadata.json | $JQ --arg dd "$dd" '.activitygraphed.starttime = $dd' > ./tmpmetadata.json
   # mv ./tmpmetadata.json ./metadata.json
 
-  cat ./tmp/*-ops.csv >./tmp/allops.csv
+  # cat ./tmp/*-ops.csv >./tmp/allops.csv
 
   if (($ldaplogcount != 0)); then
     cat ./tmp/*ldap-ops.csv >./tmp/allldapops.csv
     $SCRIPTHOME/chartprep.sh ./tmp/allldapops.csv
+    echo "<div id=\"note\"></div>" >./report/ldapnote.phtml
     if (($ldaplogcount > 1)); then
-      echo "<div id=\"note\"></div>" >./report/ldapnote.phtml
       echo "<pre><b>Note: </b>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/ldapnote.phtml
-      epochs=$(grep -i epoch ./tmp/*-ldap-operations.html | cut -d ":" -f3 | cut -d " " -f2)
-      echo "<pre>$epochs</pre>" >>./report/ldapnote.phtml
-      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/ldapnote.phtml >./report/allldapops.html
-    else
-      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allldapops.html
     fi
+    echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th></tr>" >>./report/ldapnote.phtml
+    OLDIFS=$IFS
+    IFS=$'\n'
+    rows=$(grep 'Operations from log file\|Time span\|Epoch time' ./report/operation-assessment.html | paste -d" " - - - | grep ldap | sed 's/pre/td/g')
+    for row in $rows; do
+      echo "<tr>$row</tr>" >>./report/ldapnote.phtml
+    done
+    echo "</table><hr>" >>./report/ldapnote.phtml
+    IFS=$OLDIFS
+    cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/ldapnote.phtml >./report/allldapops.html
     echo "</body></html>" >>./report/allldapops.html
     echo "<font face=\"Arial Unicode MS\"><a href=./allldapops.html>LDAP operations (DS | CTS | Config store)</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
   fi
@@ -185,16 +198,21 @@ if [ -n "$ldaplogs" ]; then
   if (($httplogcount != 0)); then
     cat ./tmp/*rest-ops.csv >./tmp/allrestops.csv
     $SCRIPTHOME/chartprep.sh ./tmp/allrestops.csv
+    echo "<div id=\"note\"></div>" >./report/restnote.phtml
     if (($httplogcount > 1)); then
-      echo "<div id=\"note\"></div>" >./report/restnote.phtml
       echo "<pre><b>Note: </b>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/restnote.phtml
-      epochs=$(grep -i epoch ./tmp/*-rest-operations.html | cut -d ":" -f3 | cut -d " " -f2)
-      echo "<pre>$epochs</pre>" >>./report/restnote.phtml
-      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/restnote.phtml >./report/allrestops.html
-    else
-      cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml >./report/allrestops.html
     fi
-    echo "</body></html>" >>./report/allldapops.html
+    echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th></tr>" >>./report/restnote.phtml
+    OLDIFS=$IFS
+    IFS=$'\n'
+    rows=$(grep 'Operations from log file\|Time span\|Epoch time' ./report/operation-assessment.html | paste -d" " - - - | grep -v ldap | sed 's/pre/td/g')
+    for row in $rows; do
+      echo "<tr>$row</tr>" >>./report/restnote.phtml
+    done
+    echo "</table><hr>" >>./report/restnote.phtml
+    IFS=$OLDIFS
+    cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/restnote.phtml >./report/allrestops.html
+    echo "</body></html>" >>./report/allrestops.html
     echo "<font face=\"Arial Unicode MS\"><a href=./allrestops.html>REST operations</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
   fi
 
@@ -270,6 +288,7 @@ if [ -n "$ldaplogs" ]; then
   echo "</pre><br>" >>./report/report.html
   cat $SCRIPTHOME/sortTable.js >>./report/report.html
   # cat $SCRIPT_HOME/sortTableID.js >>./report/report.html
+  echo "<hr><pre> --- END OF REPORT --- </body> </html>" >>./report/report.html
   echo "</body> </html>" >>./report/report.html
 
 #dd=`date`
@@ -295,8 +314,6 @@ else
   mv ./tmpmetadata.json ./metadata.json
   cat ./metadata.json | $JQ --arg dd "$dd" '.accessassessed.endtime = $dd' >./tmpmetadata.json
   mv ./tmpmetadata.json ./metadata.json
-  echo "</body> </html>" >>./report/report.html
-
 fi
 
 # rm -r tmp
