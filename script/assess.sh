@@ -181,10 +181,10 @@ if [ -n "$ldaplogs" ]; then
     if (($ldaplogcount > 1)); then
       echo "<pre><b>Note: </b>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/ldapnote.phtml
     fi
-    echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th></tr>" >>./report/ldapnote.phtml
+    echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th><th>Length of time</th></tr>" >>./report/ldapnote.phtml
     OLDIFS=$IFS
     IFS=$'\n'
-    rows=$(grep 'Operations from log file\|Time span\|Epoch time' ./report/operation-assessment.html | paste -d" " - - - | grep ldap | sed 's/pre/td/g')
+    rows=$(grep 'Operations from log file \|Time span: \|Epoch time: \|Length of time = ' ./report/operation-assessment.html | paste -d" " - - - - | grep ldap | sed 's/pre/td/g')
     for row in $rows; do
       echo "<tr>$row</tr>" >>./report/ldapnote.phtml
     done
@@ -202,10 +202,10 @@ if [ -n "$ldaplogs" ]; then
     if (($httplogcount > 1)); then
       echo "<pre><b>Note: </b>More than one log file is being used for the graphs above which <font color=red><b>may</b></font> result in some data discrepancy around (+ or - 1,000ms) these epoch times (shown in milliseconds):</pre>" >>./report/restnote.phtml
     fi
-    echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th></tr>" >>./report/restnote.phtml
+    echo "<table cellspacing=\"2\" cellpadding=\"2\" border=\"1\"><tr><th>File</th><th>Time span</th><th>Epoch time span</th><th>Length of time</th></tr>" >>./report/restnote.phtml
     OLDIFS=$IFS
     IFS=$'\n'
-    rows=$(grep 'Operations from log file\|Time span\|Epoch time' ./report/operation-assessment.html | paste -d" " - - - | grep -v ldap | sed 's/pre/td/g')
+    rows=$(grep 'Operations from log file \|Time span: \|Epoch time: \|Length of time = ' ./report/operation-assessment.html | paste -d" " - - - - | grep -v ldap | sed 's/pre/td/g')
     for row in $rows; do
       echo "<tr>$row</tr>" >>./report/restnote.phtml
     done
