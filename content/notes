@@ -25,3 +25,12 @@ Steps:
 1605834734000
 1604931000000
 16049315000000
+
+cat access.audit.json-2020.11.09-17.38.31 access.audit.json | $HOME/bin/jq '.timestamp,.response.status,.http.request.method'|paste -d" " - - - | sed 's/\" \"/./g' | cut -d"." -f1,3-4 | uniq -c > 1109c.txt
+files=$(find . -name all*ops.csv -print | sort)
+java -jar /Users/robert.faller/projects/SawMill/dist/SawMill.jar --startcut 1605834200000 --endcut 1605834760000 --usenull --laminate $files > all.csv
+/Users/robert.faller/projects/SawMill/script/chartprep.sh ./all.csv
+cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml opscolumns.data etimescolumns.data ops.data etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml > all.html
+
+files=$(find log*am* -name *-rest-ids.txt -print)
+cat $files | sort | uniq -c | sort -k2
