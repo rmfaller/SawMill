@@ -156,20 +156,20 @@ class Condenser {
                         } catch (java.text.ParseException ex) {
                             Logger.getLogger(Condenser.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        float ts = 1;
+                        float ts = (float) 1.0;
                         if (etime > 0) {
                             switch (timescale) {
                                 case "MILLISECONDS":
-                                    ts = 1;
+                                    ts = (float) 1.0;
                                     break;
                                 case "NANOSECONDS":
-                                    ts = (1 / 1000);
+                                    ts = (float) .000001;
                                     break;
                                 case "SECONDS":
-                                    ts = 1000;
+                                    ts = (float) 1000.0;
                                     break;
                                 case "MINUTES":
-                                    ts = 60000;
+                                    ts = (float) 60000.0;
                                     break;
                                 default:
                                     ts = 1;
@@ -190,7 +190,7 @@ class Condenser {
                         stats[index][OPCNT]++;
                         stats[index][TOTALOPCNT]++;
                         slatime[index] = (long) pois[index].get("sla");
-                        etime = etime * ts;
+                        etime = (float) etime * ts;
                         if (etime <= slatime[index]) {
                             stats[index][OPSUNDER]++;
                             stats[index][TOTALOPSUNDER]++;

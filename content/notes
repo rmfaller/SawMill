@@ -34,3 +34,6 @@ cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml opscolumns.d
 
 files=$(find log*am* -name *-rest-ids.txt -print)
 cat $files | sort | uniq -c | sort -k2
+
+git hub personal token:
+6f326962ab0a8ba031572a79809ce2f930b71dc2
