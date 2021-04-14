@@ -37,3 +37,9 @@ cat $files | sort | uniq -c | sort -k2
 
 git hub personal token:
 6f326962ab0a8ba031572a79809ce2f930b71dc2
+
+
+rmfaller-forgerock-mac:usaa rmfaller$ java -jar /Volumes/robertmfaller/projects/SawMill/dist/SawMill.jar --usenull --laminate $files > all.csv
+rmfaller-forgerock-mac:usaa rmfaller$ /Volumes/robertmfaller/projects/SawMill/script/chartprep.sh ./all.csv
+rmfaller-forgerock-mac:usaa rmfaller$ cat /Volumes/robertmfaller/projects/SawMill/content/chartheader.phtml opscolumns.data etimescolumns.data ops.data etimes.data /Volumes/robertmfaller/projects/SawMill/content/charttailer.phtml > all.html
+

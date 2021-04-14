@@ -29,6 +29,7 @@ FULLFILENAME=$2
 SOURCETYPE=$3
 ZIPTYPE=$4
 ALLLOGS=true
+IDASSESS=true
 LDAPCUT=60000
 HTTPCUT=60000
 FILENAME=${FULLFILENAME%.*}
@@ -203,52 +204,53 @@ echo "<tr><td><pre><a href=https://ipinfo.io/40.112.181.172>40.112.181.172</a></
 echo "</tbody></table></body></html>" >>./report/ip-assessment.html
 echo "<a href=./ip-assessment.html>IP Assessment</a><hr>" >>./report/report.html
 
-echo "<html><head></head><body>" >./report/id-assessment.html
-echo "<table id=\"idtable\" class=\"searchablesortable\" cellpadding=\"1\" border=\"1\"><tbody>" >>./report/id-assessment.html
-echo "<tr><td>Id</td><td>Number of SUCCESSFUL operations</td><td>Number of FAILED operations</td><td>success:fail ratio score</td></tr>" >>./report/id-assessment.html
-# echo "<thead><tr><th onclick=\"sortTableID(0)\">ID</th><th onclick=\"sortTableID(1)\">SUCCESSFUL-operations</th><th onclick=\"sortTableID(2)\">FAILED-operations</th><th onclick=\"sortTableID(3)\">Score</th></tr></thead><tbody>" >>./report/report.html
-idvaluecount=0
-while read idvalue; do
-  declare -i failed=$(grep "$idvalue" ./tmp/all-ids-sorted.txt | grep FAILED | cut -f1 -d" ")
-  declare -i successful=$(grep "$idvalue" ./tmp/all-ids-sorted.txt | grep SUCCESSFUL | cut -f1 -d" ")
-  if (($failed >= 1)); then
-    #    ratio=$(echo $successful / $failed | bc -l)
-    declare -i totalopcount=$(echo $successful + $failed | bc -l)
-    ratio=$(echo $failed / $totalopcount | bc -l)
-    printf -v score "%.4f" $ratio
-  else
-    ratio=$successful
-    score="-"
-  fi
-  headervalue=$(($idvaluecount % 20))
-  echo "<tr><td><pre>" >>./report/id-assessment.html
-  #  echo "<form id=\"dig_$idvaluecount\" name=\"dig_$idvaluecount\" method=\"POST\" action=\"kestreldig\">" >>./report/report.html
-  #  echo "<input id=\"submit_$idvaluecount\" type=\"submit\" value=$idvalue></form>" >>./report/report.html
-  #    idonly=$(echo $idvalue | cut -f1 -d",")
-  #    echo "$idonly" >>./report/report.html
-  echo "$idvalue" >>./report/id-assessment.html
-  echo "</pre></td>" >>./report/id-assessment.html
-  ((idvaluecount++))
-  if (($failed == 0)); then
-    echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td><pre>$score</pre></td>" >>./report/id-assessment.html
-  else
-    if (($successful >= $failed)); then
-      echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td bgcolor=\"lightyellow\"><pre>$score</pre></td>" >>./report/id-assessment.html
+if $IDASSESS; then
+  echo "<html><head></head><body>" >./report/id-assessment.html
+  echo "<table id=\"idtable\" class=\"searchablesortable\" cellpadding=\"1\" border=\"1\"><tbody>" >>./report/id-assessment.html
+  echo "<tr><td>Id</td><td>Number of SUCCESSFUL operations</td><td>Number of FAILED operations</td><td>success:fail ratio score</td></tr>" >>./report/id-assessment.html
+  # echo "<thead><tr><th onclick=\"sortTableID(0)\">ID</th><th onclick=\"sortTableID(1)\">SUCCESSFUL-operations</th><th onclick=\"sortTableID(2)\">FAILED-operations</th><th onclick=\"sortTableID(3)\">Score</th></tr></thead><tbody>" >>./report/report.html
+  idvaluecount=0
+  while read idvalue; do
+    declare -i failed=$(grep "$idvalue" ./tmp/all-ids-sorted.txt | grep FAILED | cut -f1 -d" ")
+    declare -i successful=$(grep "$idvalue" ./tmp/all-ids-sorted.txt | grep SUCCESSFUL | cut -f1 -d" ")
+    if (($failed >= 1)); then
+      #    ratio=$(echo $successful / $failed | bc -l)
+      declare -i totalopcount=$(echo $successful + $failed | bc -l)
+      ratio=$(echo $failed / $totalopcount | bc -l)
+      printf -v score "%.4f" $ratio
     else
-      if (($successful >= 1)); then
-        echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td bgcolor=\"pink\"><pre>$score</pre></td>" >>./report/id-assessment.html
+      ratio=$successful
+      score="-"
+    fi
+    headervalue=$(($idvaluecount % 20))
+    echo "<tr><td><pre>" >>./report/id-assessment.html
+    #  echo "<form id=\"dig_$idvaluecount\" name=\"dig_$idvaluecount\" method=\"POST\" action=\"kestreldig\">" >>./report/report.html
+    #  echo "<input id=\"submit_$idvaluecount\" type=\"submit\" value=$idvalue></form>" >>./report/report.html
+    #    idonly=$(echo $idvalue | cut -f1 -d",")
+    #    echo "$idonly" >>./report/report.html
+    echo "$idvalue" >>./report/id-assessment.html
+    echo "</pre></td>" >>./report/id-assessment.html
+    ((idvaluecount++))
+    if (($failed == 0)); then
+      echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td><pre>$score</pre></td>" >>./report/id-assessment.html
+    else
+      if (($successful >= $failed)); then
+        echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td bgcolor=\"lightyellow\"><pre>$score</pre></td>" >>./report/id-assessment.html
       else
-        echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td bgcolor=\"red\"><pre>$score</pre></td>" >>./report/id-assessment.html
+        if (($successful >= 1)); then
+          echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td bgcolor=\"pink\"><pre>$score</pre></td>" >>./report/id-assessment.html
+        else
+          echo "<td><pre>$successful</pre></td><td><pre>$failed</pre></td><td bgcolor=\"red\"><pre>$score</pre></td>" >>./report/id-assessment.html
+        fi
       fi
     fi
-  fi
-  echo "</tr>" >>./report/id-assessment.html
-done <./tmp/all-idsonly.txt
-echo "</tbody></table></pre>" >>./report/id-assessment.html
-cat $SCRIPTHOME/sortTable.js >>./report/id-assessment.html
-echo "</body></html>" >>./report/id-assessment.html
-echo "<a href=./id-assessment.html>ID Assessment</a><hr>" >>./report/report.html
-
+    echo "</tr>" >>./report/id-assessment.html
+  done <./tmp/all-idsonly.txt
+  echo "</tbody></table></pre>" >>./report/id-assessment.html
+  cat $SCRIPTHOME/sortTable.js >>./report/id-assessment.html
+  echo "</body></html>" >>./report/id-assessment.html
+  echo "<a href=./id-assessment.html>ID Assessment</a><hr>" >>./report/report.html
+fi
 # cat $SCRIPT_HOME/sortTableID.js >>./report/report.html
 echo "<hr><pre> --- END OF REPORT --- </body> </html>" >>./report/report.html
 echo "</body> </html>" >>./report/report.html
