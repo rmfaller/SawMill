@@ -1,5 +1,5 @@
 #!/bin/bash
-LOCATION=$(echo $1 | sed -r "s/(.+)\/.+/\1/")
+
 # ldapheader=`head -1 ./tmp/allldapops.csv | cut -d"," -f1,5-`
 # chartdata=`tail -n +2 ./tmp/allldapops.csv | cut -d"," -f1,5-`
 #sed 's/^/[/' gc.log
@@ -18,10 +18,10 @@ while read -r line; do
     totalheaders=${#ha[@]}
     ((totalheaders--))
     ((totalheaders--))
-    echo "var opscolumns = [" >$LOCATION/opscolumns.data
-    echo "var etimescolumns = [" >$LOCATION/etimescolumns.data
-    echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>$LOCATION/opscolumns.data
-    echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>$LOCATION/etimescolumns.data
+    echo "var opscolumns = [" >opscolumns.data
+    echo "var etimescolumns = [" >etimescolumns.data
+    echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>opscolumns.data
+    echo "{type: 'number', label: 'clock', color: 'black', disabledColor: 'lightgray', visible: true}," >>etimescolumns.data
     hc=0
     cc=0
     colors=(Blue Brown Cyan Green Gray Orange Pink Purple Red  \
@@ -63,42 +63,42 @@ MediumAquaMarine DarkSeaGreen Indigo LightSeaGreen DarkCyan Teal)
 
     for header in $headers; do
       if (($hc % 2)); then
-        echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>$LOCATION/etimescolumns.data
+        echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>etimescolumns.data
         if (($hc < $totalheaders)); then
-          echo "," >>$LOCATION/etimescolumns.data
+          echo "," >>etimescolumns.data
         else
-          echo "];" >>$LOCATION/etimescolumns.data
+          echo "];" >>etimescolumns.data
         fi
         ((cc++))
       else
-        echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>$LOCATION/opscolumns.data
+        echo -n "{type: 'number', label: '$header', color: '${colors[${cc}]}', disabledColor: 'lightgray', visible: true}" >>opscolumns.data
         if (($hc < $totalheaders)); then
-          echo "," >>$LOCATION/opscolumns.data
+          echo "," >>opscolumns.data
         else
-          echo "];" >>$LOCATION/opscolumns.data
+          echo "];" >>opscolumns.data
         fi
       fi
       ((hc++))
     done
-    echo "function drawChart () {" >>$LOCATION/etimescolumns.data
-    echo "if (!opschart) {" >$LOCATION/ops.data
-    echo "ops = new google.visualization.DataTable();" >>$LOCATION/ops.data
-    echo "ops.addColumn('number','clock');" >>$LOCATION/ops.data
-    echo "if (!etimeschart) {" >$LOCATION/etimes.data
-    echo "etimes = new google.visualization.DataTable();" >>$LOCATION/etimes.data
-    echo "etimes.addColumn('number','clock');" >>$LOCATION/etimes.data
+    echo "function drawChart () {" >>etimescolumns.data
+    echo "if (!opschart) {" >ops.data
+    echo "ops = new google.visualization.DataTable();" >>ops.data
+    echo "ops.addColumn('number','clock');" >>ops.data
+    echo "if (!etimeschart) {" >etimes.data
+    echo "etimes = new google.visualization.DataTable();" >>etimes.data
+    echo "etimes.addColumn('number','clock');" >>etimes.data
     hc=0
     for header in $headers; do
       if (($hc % 2)); then
-        echo "etimes.addColumn('number','$header');" >>$LOCATION/etimes.data
+        echo "etimes.addColumn('number','$header');" >>etimes.data
         ((cc++))
       else
-        echo "ops.addColumn('number','$header');" >>$LOCATION/ops.data
+        echo "ops.addColumn('number','$header');" >>ops.data
       fi
       ((hc++))
     done
-    echo "ops.addRows([" >>$LOCATION/ops.data
-    echo "etimes.addRows([" >>$LOCATION/etimes.data
+    echo "ops.addRows([" >>ops.data
+    echo "etimes.addRows([" >>etimes.data
     IFS=$OLDIFS
   else
     OLDIFS=$IFS
@@ -126,20 +126,20 @@ MediumAquaMarine DarkSeaGreen Indigo LightSeaGreen DarkCyan Teal)
       ((vc++))
     done
     if (($linecount < $filesize)); then
-      #      echo $opvalues | sed 's/^/[/; s/$/],/g' >>$LOCATION/ops.data
-      #      echo $etimevalues | sed 's/^/[/; s/$/],/g' >>$LOCATION/etimes.data
-      #      echo "$hbracket$opvalues$tcbracket" | tr -s "~" "0" >>$LOCATION/ops.data
-      #      echo "$hbracket$etimevalues$tcbracket" | tr -s "~" "0" >>$LOCATION/etimes.data
-      echo "$hbracket$opvalues$tcbracket" >>$LOCATION/ops.data
-      echo "$hbracket$etimevalues$tcbracket" >>$LOCATION/etimes.data
+      #      echo $opvalues | sed 's/^/[/; s/$/],/g' >>ops.data
+      #      echo $etimevalues | sed 's/^/[/; s/$/],/g' >>etimes.data
+      #      echo "$hbracket$opvalues$tcbracket" | tr -s "~" "0" >>ops.data
+      #      echo "$hbracket$etimevalues$tcbracket" | tr -s "~" "0" >>etimes.data
+      echo "$hbracket$opvalues$tcbracket" >>ops.data
+      echo "$hbracket$etimevalues$tcbracket" >>etimes.data
     fi
     if (($linecount == $filesize)); then
-      #      echo "$hbracket$opvalues$tbracket" | tr -s "~" "0" >>$LOCATION/ops.data
-      #      echo "$hbracket$etimevalues$tbracket" | tr -s "~" "0" >>$LOCATION/etimes.data
-      echo "$hbracket$opvalues$tbracket" >>$LOCATION/ops.data
-      echo "$hbracket$etimevalues$tbracket" >>$LOCATION/etimes.data
-      #      echo $opvalues | sed 's/^/[/; s/$/]/g' >>$LOCATION/ops.data
-      #      echo $etimevalues | sed 's/^/[/; s/$/]/g' >>$LOCATION/etimes.data
+      #      echo "$hbracket$opvalues$tbracket" | tr -s "~" "0" >>ops.data
+      #      echo "$hbracket$etimevalues$tbracket" | tr -s "~" "0" >>etimes.data
+      echo "$hbracket$opvalues$tbracket" >>ops.data
+      echo "$hbracket$etimevalues$tbracket" >>etimes.data
+      #      echo $opvalues | sed 's/^/[/; s/$/]/g' >>ops.data
+      #      echo $etimevalues | sed 's/^/[/; s/$/]/g' >>etimes.data
     fi
     IFS=$OLDIFS
   fi
@@ -156,7 +156,7 @@ echo "], false);
                         drawChart();
                     }
                 });
-            }" >>$LOCATION/ops.data
+            }" >>ops.data
 echo "], false);
                etimesdataView = new google.visualization.DataView(etimes);
                 etimeschart = new google.visualization.LineChart(document.getElementById('etimeschart'));
@@ -168,4 +168,4 @@ echo "], false);
                         drawChart();
                     }
                 });
-            }" >>$LOCATION/etimes.data
+            }" >>etimes.data

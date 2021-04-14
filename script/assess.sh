@@ -160,7 +160,7 @@ if (($ldaplogcount != 0)); then
   done
   echo "</table><hr>" >>./report/ldapnote.phtml
   IFS=$OLDIFS
-  cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/ldapnote.phtml >./report/allldapops.html
+  cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./tmp/opscolumns.data ./tmp/etimescolumns.data ./tmp/ops.data ./tmp/etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/ldapnote.phtml >./report/allldapops.html
   echo "</body></html>" >>./report/allldapops.html
   echo "<font face=\"Arial Unicode MS\"><a href=./allldapops.html>LDAP operations (DS | CTS | Config store)</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
 fi
@@ -181,7 +181,7 @@ if (($httplogcount != 0)); then
   done
   echo "</table><hr>" >>./report/restnote.phtml
   IFS=$OLDIFS
-  cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./opscolumns.data ./etimescolumns.data ./ops.data ./etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/restnote.phtml >./report/allrestops.html
+  cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml ./tmp/opscolumns.data ./tmp/etimescolumns.data ./tmp/ops.data ./tmp/etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml ./report/restnote.phtml >./report/allrestops.html
   echo "</body></html>" >>./report/allrestops.html
   echo "<font face=\"Arial Unicode MS\"><a href=./allrestops.html>REST operations</a><br></font><hr size=\"2\" width=\"100%\">" >>./report/report.html
 fi
@@ -196,8 +196,8 @@ echo "<html><head></head><body>" >./report/ip-assessment.html
 echo "<table id=\"iptable\" class=\"searchablesortable\" cellpadding=\"1\" border=\"1\">" >>./report/ip-assessment.html
 echo "<thead><tr><th onclick=\"sortTable(0)\">IP-address</th><th onclick=\"sortTable(1)\">SUCCESSFUL-operations</th><th onclick=\"sortTable(2)\">FAILED-operations</th></tr></thead><tbody>" >>./report/ip-assessment.html
 while read ipvalue; do
-  failed=$(grep "$ipvalue" ./tmp/all-ips-sorted.txt | grep FAILED | cut -f1 -d" ")
-  successful=$(grep "$ipvalue" ./tmp/all-ips-sorted.txt | grep SUCCESSFUL | cut -f1 -d" ")
+  failed=$(grep -m 1 "$ipvalue" ./tmp/all-ips-sorted.txt | grep FAILED | cut -f1 -d" ")
+  successful=$(grep -m 1 "$ipvalue" ./tmp/all-ips-sorted.txt | grep SUCCESSFUL | cut -f1 -d" ")
   echo "<tr><td><pre><a href=https://ipinfo.io/$ipvalue>$ipvalue</a></pre></td><td><pre>$successful</pre></td><td><pre>$failed</pre></td></tr>" >>./report/ip-assessment.html
 done <./tmp/all-ipsonly.txt
 echo "<tr><td><pre><a href=https://ipinfo.io/40.112.181.172>40.112.181.172</a></pre></td><td><pre>SAMPLE</pre></td><td><pre>-</pre></td></tr>" >>./report/ip-assessment.html
@@ -211,8 +211,8 @@ if $IDASSESS; then
   # echo "<thead><tr><th onclick=\"sortTableID(0)\">ID</th><th onclick=\"sortTableID(1)\">SUCCESSFUL-operations</th><th onclick=\"sortTableID(2)\">FAILED-operations</th><th onclick=\"sortTableID(3)\">Score</th></tr></thead><tbody>" >>./report/report.html
   idvaluecount=0
   while read idvalue; do
-    declare -i failed=$(grep "$idvalue" ./tmp/all-ids-sorted.txt | grep FAILED | cut -f1 -d" ")
-    declare -i successful=$(grep "$idvalue" ./tmp/all-ids-sorted.txt | grep SUCCESSFUL | cut -f1 -d" ")
+    declare -i failed=$(grep -m 1 "$idvalue" ./tmp/all-ids-sorted.txt | grep FAILED | cut -f1 -d" ")
+    declare -i successful=$(grep -m 1 "$idvalue" ./tmp/all-ids-sorted.txt | grep SUCCESSFUL | cut -f1 -d" ")
     if (($failed >= 1)); then
       #    ratio=$(echo $successful / $failed | bc -l)
       declare -i totalopcount=$(echo $successful + $failed | bc -l)
