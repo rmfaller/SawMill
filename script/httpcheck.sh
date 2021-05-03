@@ -1,5 +1,5 @@
 #!/bin/bash
-date
+
 files="./access.audit.json*"
 ops="DELETE GET PATCH POST PUT"
 status="SUCCESSFUL FAILED"

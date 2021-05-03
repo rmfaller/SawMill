@@ -29,7 +29,7 @@ class Condenser {
     }
 
     void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf,
-            boolean sla, boolean showheader, boolean filltimegap, boolean totalsonly, boolean html) {
+            boolean sla, boolean showheader, boolean filltimegap, boolean totalsonly, boolean html, String label) {
         String timestampformat = config.get("timestampformat").toString();
         SimpleDateFormat sdf = new SimpleDateFormat(timestampformat);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -295,7 +295,8 @@ class Condenser {
                 }
                 if (showtotals || totalsonly) {
                     if (!html) {
-                        System.out.print("Totals, , " + new File(lf).getName() + ", ");
+//                        System.out.print("Totals, , " + new File(lf).getName() + ", ");
+                        System.out.print("Totals, , " + label + new File(lf).getName() + ", ");
                         System.out.print((epochtime - starttime) + ", ");
                         for (int i = 0; i < stats.length; i++) {
                             System.out.format("%.0f%s", stats[i][TOTALOPCNT], ", ");

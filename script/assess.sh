@@ -44,7 +44,8 @@ $JAR -xf $2
 mkdir tmp
 mkdir report
 chmod -R 700 *
-$SCRIPTHOME/createpoi.sh $SUBSCRIPTION $FILENAMEONLY $3
+
+$SCRIPTHOME/old-createpoi.sh $SUBSCRIPTION $FILENAMEONLY $3
 
 # uploadtype=`cat metadata.json | jq -r '.info.uploadtype'`
 echo "<html> <head> <title>BlueOx</title> </head> <body>" >./report/report.html
@@ -70,6 +71,8 @@ fi
 
 #if [ -n "$ldaplogs" ]; then
 ldaplogcount=0
+echo -n > ./tmp/ldap-object-activity.txt
+echo -n > ./tmp/ldap-identity-activity.txt
 for log in $ldaplogs; do
   if [ -f $log ]; then
     filesize=$(wc -c $log | awk '{print $1}')
@@ -89,14 +92,17 @@ for log in $ldaplogs; do
       echo "<pre>Operations from log file $filename</pre>" >>./tmp/$cnt-ldap-operations.html
       /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}ldap-poi.json --totalsonly --condense $log --sla --html >>./tmp/$cnt-ldap-operations.html
       echo "Cnt | e | operation" >./tmp/$cnt-ldap-ms.txt
-      cat $log | $JQ '.response.elapsedTime, .request.operation' | paste -d " " - - | sort -k1 -n | uniq -c | sort -k2 -n >>./tmp/$cnt-ldap-ms.txt
-      cat $log | $JQ '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" >>./tmp/$cnt-ldap-ip.txt
+      cat $log | $JQ '.response.elapsedTime, .request.operation' | paste -d " " - - | sort -k1 -n | uniq -c | sort -k2 -n >>./tmp/$cnt-ldap-ms.txt &
+      cat $log | $JQ '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" >>./tmp/$cnt-ldap-ip.txt &
+      cat $log | $JQ '.request.dn, .request.operation' | paste -d" " - - | grep -v null >>./tmp/ldap-object-activity.txt &
+      cat $log | $JQ '.userId, .request.operation, .response.status' | paste -d" " - - - | grep -v null >>./tmp/ldap-identity-activity.txt &
+      wait
       # curl --silent ipinfo.io/40.112.181.172
       ((ldaplogcount++))
     fi
   fi
 done
-# wait
+
 
 httplogcount=0
 for log in $httplogs; do
@@ -118,7 +124,7 @@ for log in $httplogs; do
       echo "<pre>Operations from log file $filename</pre>" >>./tmp/$cnt-rest-operations.html
       /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $SUBSCRIPTION/$FILENAMEONLY/${SOURCETYPE}http-poi.json --totalsonly --cut 10000 --condense $log --sla --html >>./tmp/$cnt-rest-operations.html
       echo "Cnt | e | operation" >./tmp/$cnt-rest-ms.txt
-      cat $log | $JQ '.response.elapsedTime, .request.operation' | paste -d " " - - | sort -k1 -n | uniq -c | sort -k2 -n >>./tmp/$cnt-rest-ms.txt &
+      cat $log | $JQ '.response.elapsedTime, .request.operation' | paste -d " " - - | sort -k1 -n | uniq -c | sort -k2 -n >>./tmp/$cnt-rest-ms.txt
       cat $log | $JQ '.client.ip,.response.status' | paste -d " " - - | grep -v null | tr -d "\"" >>./tmp/$cnt-rest-ip.txt
       ((httplogcount++))
     fi

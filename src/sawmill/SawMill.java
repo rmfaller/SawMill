@@ -45,6 +45,7 @@ public class SawMill {
         Condenser cdr = null;
         Laminate lmnt = null;
         Locater locater = null;
+        String label = null;
         String locatestring = null;
         boolean runcondense = false;
         boolean runlaminate = false;
@@ -104,10 +105,11 @@ public class SawMill {
                 case "--usenull":
                     usenull = true;
                     break;
-                /*                case "--locate":
-                    locatestring = args[i + 1];
+                case "-b":
+                case "--label":
+                    label = args[i + 1];
                     break;
-                case "--location":
+/*                case "--location":
                     filenames = new String[(args.length - i) - 1];
                     runlocate = true;
                     y = 0;
@@ -152,7 +154,7 @@ public class SawMill {
             }
         }
         if (runcondense && (cfn != null)) {
-            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap, totalsonly, html);
+            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap, totalsonly, html, label);
         }
         if (runlaminate) {
             lmnt.laminate(lbra, usenull, startcut, endcut);

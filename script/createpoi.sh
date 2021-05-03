@@ -4,263 +4,208 @@ LOGPREFIX="access.audit.json"
 DSLDAPLOGPREFIX="ldap-access.audit.json"
 DSHTTPLOGPREFIX="http-access.audit.json"
 
-h0="{ \"timestampformat\":\"yyyy-MM-dd"
-h1="'T'"
-h2="HH:mm:ss\",\"fielddelimiter\":\"JSON\",\"timestampfield\":\"timestamp\",\"timescale\":\"elapsedTimeUnits\",\"poi\":"
-jsonheader=$h0$h1$h2
+H0="{ \"timestampformat\":\"yyyy-MM-dd"
+H1="'T'"
+H2="HH:mm:ss\",\"fielddelimiter\":\"JSON\",\"timestampfield\":\"timestamp\",\"timescale\":\"elapsedTimeUnits\",\"poi\":"
+JSONHEADER=$H0$H1$H2
 
 if [[ $1 ]]; then
-  POIHOME=$1
+  POIHOME="$1/poi"
+  DATA="$1/data"
   if [ ! -d $POIHOME ]; then
     echo "$POIHOME does not exist; Please create first."
     exit
   fi
 else
-  echo "Argument 1 - full path to the file system directory location to place the poi JSON file - not provided"
+  echo "Argument 1 - file system directory location (instance) to place the poi JSON file - not provided"
   exit
 fi
 
-if [[ $2 ]]; then
-  POISOURCE=$2
-  if [ ! -d $POIHOME/$POISOURCE ]; then
-    echo "$POISOURCE does not exist; Please correct."
-    exit
+if [[ $2 == "lastlog" ]]; then
+  ALLLOGS=false
+else
+  ALLLOGS=true
+fi
+
+if $ALLLOGS; then
+  rotatedldaplogs=$(find $DATA -type f \( -name "ldap-access.audit.json.*" -a -not -name "*.txt" -a -not -name "*.extended" -a -not -name "*.tmp" \) -print | sort )
+  if [ -z "$rotatedldaplogs" ]; then
+    ldaplogs="$(find $DATA -name "ldap-access.audit.json" -print)"
+  else
+    ldaplogs="$(echo $rotatedldaplogs) $(find $DATA -name "ldap-access.audit.json" -print)"
+  fi
+  rotatedhttplogs=$(find $DATA -type f \( -name "access.audit.json-*" -o -name "http-access.audit.json.*" -a -not -name "*.txt" \) -print | sort )
+  if [ -z "$rotatedhttplogs" ]; then
+    httplogs="$(find $DATA -type f \( -name "access.audit.json" -o -name "http-access.audit.json" \) -print)"
+  else
+    httplogs="$(echo $rotatedhttplogs) $(find $DATA -type f \( -name "access.audit.json" -o -name "http-access.audit.json" \) -print)"
   fi
 else
-  echo "Argument 2 - full path to the file system directory to collect poi from i.e. where the JSON log file(s) are - not provided"
-  exit
+  ldaplogs=$(find $DATA -name "ldap-access.audit.json" -print)
+  httplogs=$(find $DATA -type f \( -name "access.audit.json" -o -name "http-access.audit.json" \) -print)
 fi
 
-if [[ $3 ]]; then
-  LOGTYPE=""
-  case $3 in
-  am | ig)
-    LOGTYPE=$3http
-    logs=$(find $POIHOME/$POISOURCE -name "$LOGPREFIX*" -print)
-    echo -n >$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    for log in $logs; do
-      cat $log | $HOME/bin/jq '.http.request.method,.component,.response.status' | paste -d"," - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    done
-    #    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | sort | uniq | tr -d "\"" | tr "," "~")
-    cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep -v '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | sort | uniq >$POIHOME/$POISOURCE/$LOGTYPE-unknownverbs.txt
-    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | tr -d "\"" | tr "," "~" | sort | uniq)
-    if [[ $pois ]]; then
-      echo $jsonheader >$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      OLDIFS=$IFS
-      IFS=$'\n'
-      for poi in $pois; do
-        method=$(echo $poi | cut -d"~" -f1)
-        component=$(echo $poi | cut -d"~" -f2)
-        status=$(echo $poi | cut -d"~" -f3)
-        if [ "$component" = "null" ]; then
-          component=""
-        fi
-        echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"method\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$method\\\"\"," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"component\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$component\\\"\"," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"status\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo '],"lapsedtimefield": "elapsedTime",
-        "sla": 200
-    },' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      done
-      echo '"end":{}
-         }' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      IFS=$OLDIFS
+if ! [ -z "$ldaplogs" ]; then
+  for log in $ldaplogs; do
+    if ! [ -f $log.extended ]; then
+      cat $log |
+        sed 's/\"additionalItems\":{\"persistent\":null}/\"searchType\":\"persistent\",\"additionalItems\":{\"persistent\":null}/' |
+        sed 's/\"additionalItems\":{\"unindexed\":null}/\"searchType\":\"unindexed\",\"additionalItems\":{\"unindexed\":null}/' >$log.tmp &
+      echo "$(date)" >$log.extended
     fi
-    ;;
-  idm)
-    LOGTYPE=$3http
-    logs=$(find $POIHOME/$POISOURCE -name "$LOGPREFIX*" -print)
-    echo -n >$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    for log in $logs; do
-      cat $log | $HOME/bin/jq '.http.request.method,.request.operation,.response.status' | paste -d"," - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    done
-    cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep -v '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | sort | uniq >$POIHOME/$POISOURCE/$LOGTYPE-unknownverbs.txt
-    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | tr -d "\"" | tr "," "~" | sort | uniq)
-    if [[ $pois ]]; then
-      echo $jsonheader >$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      OLDIFS=$IFS
-      IFS=$'\n'
-      for poi in $pois; do
-        method=$(echo $poi | cut -d"~" -f1)
-        component=$(echo $poi | cut -d"~" -f2)
-        status=$(echo $poi | cut -d"~" -f3)
-        if [ "$component" = "null" ]; then
-          component=""
-        fi
-        echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"method\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$method\\\"\"," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"operation\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$component\\\"\"," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"status\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo '],"lapsedtimefield": "elapsedTime",
-        "sla": 200
-    },' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      done
-      echo '"end":{}
-         }' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      IFS=$OLDIFS
+  done
+  wait
+  for log in $ldaplogs; do
+    if [ -f $log.tmp ]; then
+      mv $log.tmp $log
     fi
-    ;;
-  ds | cts | cfg | idr)
-    LOGTYPE="$3ldap"
-    logs=$(find $POIHOME/$POISOURCE -name "$DSLDAPLOGPREFIX*" -print)
-    echo -n >$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    for log in $logs; do
-      cat $log | sed 's/\"additionalItems\":{\"persistent\":null}/\"searchType\":\"persistent\",\"additionalItems\":{\"persistent\":null}/' >$log.tmp
-      cat $log.tmp | sed 's/\"additionalItems\":{\"unindexed\":null}/\"searchType\":\"unindexed\",\"additionalItems\":{\"unindexed\":null}/' >$log
-      rm $log.tmp
-      #      cat $log | $HOME/bin/jq '.request.operation,.request.opType,.response.status,.response.statusCode' | paste -d"," - - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-      cat $log | $HOME/bin/jq '.request.operation,.request.opType,.response.status,.response.statusCode,.response.searchType' | paste -d"," - - - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
+    cat $log | ~/bin/jq -c '[.request.operation, .request.opType, .response.status, .response.statusCode, .response.searchType]' | sort -u >$POIHOME/$(basename $log)-ldap-ops.txt &
+  done
+  wait
+  cat $POIHOME/ldap-access.audit.json*-ldap-ops.txt | tr -d "[" | tr -d "]" | sort -u >$POIHOME/ldap-poi.txt
+  etu=$(grep -m 1 elapsedTimeUnits $log | $HOME/bin/jq '.response.elapsedTimeUnits')
+  pois=$(cat $POIHOME/ldap-poi.txt | grep -v UNBIND | tr -d "\"" | tr "," "~" | sort -r | uniq)
+  if [[ $pois ]]; then
+    echo $JSONHEADER >$POIHOME/ldap-poi.json
+    printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/ldap-poi.json
+    echo "," >>$POIHOME/ldap-poi.json
+    OLDIFS=$IFS
+    IFS=$'\n'
+    for poi in $pois; do
+      operation=$(echo $poi | cut -d"~" -f1)
+      opType=$(echo $poi | cut -d"~" -f2)
+      if [ "$opType" = "null" ]; then
+        opType=""
+      fi
+      status=$(echo $poi | cut -d"~" -f3)
+      if [ "$status" = "null" ]; then
+        status=""
+      fi
+      statuscode=$(echo $poi | cut -d"~" -f4)
+      if [ "$statuscode" = "null" ]; then
+        statuscode=""
+      fi
+      searchtype=$(echo $poi | cut -d"~" -f5)
+      if [ "$searchtype" = "null" ]; then
+        searchtype=""
+      fi
+      echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/ldap-poi.json
+      echo -n '"\"operation\":\"' >>$POIHOME/ldap-poi.json
+      echo -n "$operation\\\"\"" >>$POIHOME/ldap-poi.json
+      if [[ $opType ]]; then
+        echo "," >>$POIHOME/ldap-poi.json
+        echo -n '"\"opType\":\"' >>$POIHOME/ldap-poi.json
+        echo -n "$opType\\\"\"" >>$POIHOME/ldap-poi.json
+      fi
+      if [[ $status ]]; then
+        echo "," >>$POIHOME/ldap-poi.json
+        echo -n '"\"status\":\"' >>$POIHOME/ldap-poi.json
+        echo -n "$status\\\"\"" >>$POIHOME/ldap-poi.json
+      fi
+      if [[ $statuscode ]]; then
+        echo "," >>$POIHOME/ldap-poi.json
+        echo -n '"\"statusCode\":\"' >>$POIHOME/ldap-poi.json
+        echo "$statuscode\\\"\"" >>$POIHOME/ldap-poi.json
+      fi
+      if [[ $searchtype ]]; then
+        echo "," >>$POIHOME/ldap-poi.json
+        echo -n '"\"searchType\":\"' >>$POIHOME/ldap-poi.json
+        echo "$searchtype\\\"\"" >>$POIHOME/ldap-poi.json
+      fi
+      echo '],
+  "lapsedtimefield": "elapsedTime",' >>$POIHOME/ldap-poi.json
+      echo "\"timescale\": $etu," >>$POIHOME/ldap-poi.json
+      case $operation in
+      ABANDON)
+        sla=10
+        ;;
+      ADD)
+        sla=100
+        ;;
+      BIND)
+        sla=10
+        ;;
+      DELETE)
+        sla=300
+        ;;
+      MODIFY)
+        sla=100
+        ;;
+      MODIFYDN)
+        sla=100
+        ;;
+      SEARCH)
+        sla=20
+        ;;
+      *)
+        sla=200
+        ;;
+      esac
+      echo "\"sla\": $sla" >>$POIHOME/ldap-poi.json
+      echo '},' >>$POIHOME/ldap-poi.json
     done
-    etu=$(grep -m 1 elapsedTimeUnits $log | $HOME/bin/jq '.response.elapsedTimeUnits')
-    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep -v UNBIND | tr -d "\"" | tr "," "~" | sort -r | uniq)
-    if [[ $pois ]]; then
-      echo $jsonheader >$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      OLDIFS=$IFS
-      IFS=$'\n'
-      for poi in $pois; do
-        operation=$(echo $poi | cut -d"~" -f1)
-        opType=$(echo $poi | cut -d"~" -f2)
-        if [ "$opType" = "null" ]; then
-          opType=""
-        fi
-        status=$(echo $poi | cut -d"~" -f3)
-        if [ "$status" = "null" ]; then
-          status=""
-        fi
-        statuscode=$(echo $poi | cut -d"~" -f4)
-        if [ "$statuscode" = "null" ]; then
-          statuscode=""
-        fi
-        searchtype=$(echo $poi | cut -d"~" -f5)
-        if [ "$searchtype" = "null" ]; then
-          searchtype=""
-        fi
-        echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"operation\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n "$operation\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        if [[ $opType ]]; then
-          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo -n '"\"opType\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo -n "$opType\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        fi
-        if [[ $status ]]; then
-          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo -n '"\"status\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo -n "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          #else
-          #                  echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        fi
-        if [[ $statuscode ]]; then
-          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo -n '"\"statusCode\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo "$statuscode\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          #        else
-          #          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        fi
-        if [[ $searchtype ]]; then
-          echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo -n '"\"searchType\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-          echo "$searchtype\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        fi
-        echo '],
-  "lapsedtimefield": "elapsedTime",' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "\"timescale\": $etu," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo '"sla": 200
-    },' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      done
-      echo '"end":{}
-         }' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      IFS=$OLDIFS
-    fi
-    #=================
-    LOGTYPE="$3http"
-    logs=$(find $POIHOME/$POISOURCE -name "$DSHTTPLOGPREFIX*" -print)
-    echo -n >$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    for log in $logs; do
-      cat $log | $HOME/bin/jq '.http.request.method,.response.statusCode,.response.status' | paste -d"," - - - | sort | uniq >>$POIHOME/$POISOURCE/$LOGTYPE-attrs.txt
-    done
-    #    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | tr -d "\"" | tr "," "~" | sort | uniq | grep 'DELETE\|POST\|PUT\|PATCH\|GET')
-    cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep -v '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"' | sort | uniq >$LOGTYPE-unknownverbs.txt
-    pois=$(cat $POIHOME/$POISOURCE/$LOGTYPE-attrs.txt | grep '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"' | tr -d "\"" | tr "," "~" | sort | uniq)
-    if [[ $pois ]]; then
-      echo $jsonheader >$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      echo "," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      OLDIFS=$IFS
-      IFS=$'\n'
-      for poi in $pois; do
-        method=$(echo $poi | cut -d"~" -f1)
-        component=$(echo $poi | cut -d"~" -f2)
-        status=$(echo $poi | cut -d"~" -f3)
-        if [ "$component" = "null" ]; then
-          component=""
-        fi
-        echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"method\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$method\\\"\"," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"statusCode\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$component\\\"\"," >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo -n '"\"status\":\"' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo "$status\\\"\"" >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-        echo '],"lapsedtimefield": "elapsedTime",
-        "sla": 200
-    },' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      done
-      echo '"end":{}
-         }' >>$POIHOME/$POISOURCE/$LOGTYPE-poi.json
-      IFS=$OLDIFS
-    fi
-    ;;
-  *)
-    echo "Argument 3 = $3 - type of log file(s) - which not correct. Use one of the following: am, ds, cts, cfg, idm, idr, ig"
-    exit
-    ;;
-  esac
-else
-  echo "Argument 3 - type of log file(s) - not provided. Use one of the following: am, ds, cts, cfg, idm, idr, ig"
-  echo "am  = AM JSON logs"
-  echo "ds  = DS (User store) JSON logs"
-  echo "cts = DS (CTS) JSON logs"
-  echo "cfg = DS (config store for AM) JSON logs"
-  echo "idm = IDM JSON logs"
-  echo "idr = DS (IDM repository) JSON logs"
-  echo "ig  = IG JSON logs"
-  exit
+    echo '"end":{}
+         }' >>$POIHOME/ldap-poi.json
+    IFS=$OLDIFS
+  fi
 fi
 
-#logcount=0
-#for log in $logs; do
-#  if (($logcount == 0)); then
-#    java -jar $HOME/projects/SawMill/dist/SawMill.jar --poi $POIHOME/$LOGTYPE-poi.json --totalsonly --condense $log
-#  else
-#    java -jar $HOME/projects/SawMill/dist/SawMill.jar --poi $POIHOME/$LOGTYPE-poi.json --totalsonly --noheader --condense $log
-#  fi
-#  ((logcount++))
-#done
-# REST: for log in $logs; do cat $log | $HOME/bin/jq '.http.request.method,.component,.response.status' | paste -d" " - - - | sort | uniq > summary; done; cat summary | sort | uniq
-# LDAP: for log in $logs; do cat $log | $HOME/bin/jq '.request.operation,.request.opType,.response.status' | paste -d" " - - - | sort | uniq > summary; done; cat summary | sort | uniq
-# jqstring=".http.request.method,.component,.response.status"
-# for log in $logs; do cat $log | $HOME/bin/jq "$jqstring" | paste -d" " - - - | sort | uniq
-# for log in $logs; do cat $log | $HOME/bin/jq "$jqstring" | paste -d" " - - - | sort | uniq; done
-#  logcount=0
-#  for log in $logs; do
-#    if (( $logcount == 0)); then
-#      java -jar $HOME/projects/SawMill/dist/SawMill.jar --poi ./$AMPOI --totalsonly --condense $log
-#    else
-#      java -jar $HOME/projects/SawMill/dist/SawMill.jar --poi ./$AMPOI --totalsonly --noheader --condense $log
-#    fi
-#    ((logcount++))
-#  done
+if ! [ -z "$httplogs" ]; then
+  for log in $httplogs; do
+    cat $log | ~/bin/jq -c '[.http.request.method, .http.request.path, .response.status]' | sort -u >$POIHOME/$(basename $log)-http-ops.txt &
+  done
+  wait
+  cat $POIHOME/*access.audit.json*-http-ops.txt | tr -d "[" | tr -d "]" | sort -u >$POIHOME/http-poi.txt
+  cat $POIHOME/http-poi.txt | grep -v '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"\|\"HEAD\"' | sort | uniq >$POIHOME/http-unknownverbs.txt
+  pois=$(cat $POIHOME/http-poi.txt | grep '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"' | tr -d "\"" | tr "," "~" | sort | uniq)
+  if [[ $pois ]]; then
+    echo $JSONHEADER >$POIHOME/http-poi.json
+    printf '%s\n' "${pois[@]}" | $HOME/bin/jq -R . | $HOME/bin/jq -s . >>$POIHOME/http-poi.json
+    echo "," >>$POIHOME/http-poi.json
+    OLDIFS=$IFS
+    IFS=$'\n'
+    for poi in $pois; do
+      method=$(echo $poi | cut -d"~" -f1)
+      fullpath=$(echo $poi | cut -d"~" -f2)
+      status=$(echo $poi | cut -d"~" -f3)
+      if [ "$fullpath" = "null" ]; then
+        path=""
+      else
+        path=$(echo $fullpath)
+      fi
+      echo "\"$poi\": { \"identifiers\": [ " >>$POIHOME/http-poi.json
+      echo -n '"\"method\":\"' >>$POIHOME/http-poi.json
+      echo "$method\\\"\"," >>$POIHOME/http-poi.json
+      echo -n '"\"path\":\"' >>$POIHOME/http-poi.json
+      echo "$path\\\"\"," >>$POIHOME/http-poi.json
+      echo -n '"\"status\":\"' >>$POIHOME/http-poi.json
+      echo "$status\\\"\"" >>$POIHOME/http-poi.json
+      echo '],"lapsedtimefield": "elapsedTime",' >>$POIHOME/http-poi.json
+      case $method in
+      DELETE)
+        sla=100
+        ;;
+      GET)
+        sla=10
+        ;;
+      PATCH)
+        sla=150
+        ;;
+      POST)
+        sla=300
+        ;;
+      PUT)
+        sla=200
+        ;;
+      *)
+        sla=200
+        ;;
+      esac
+      echo "\"sla\": $sla" >>$POIHOME/http-poi.json
+      echo '},' >>$POIHOME/http-poi.json
+    done
+    echo '"end":{}
+         }' >>$POIHOME/http-poi.json
+    IFS=$OLDIFS
+  fi
+fi

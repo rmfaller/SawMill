@@ -1,0 +1,109 @@
+timestampformat:
+fielddelimiter: SPACE, TAB, COMMA, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)" (default = COMMA)
+timescale: NANOSECONDS, MILLISECONDS, SECONDS, MINUTES, elapsedTimeUnits (default = MILLISECONDS)
+timestampfield: integer i.e. 1 or timestamp (check timestamp = JSON)
+points-of-interest - poi: SEARCH-sub, SEARCH, BIND, AUTHN, etc [array of references for following poi]
+SEARCH-sub: 
+  identifiers:[" SEARCH "," scope=sub "] 
+              or 
+              ["\"operation\": \"SEARCH\"\,", "\"scope\": \"sub\"\,", "\"status\": \"SUCCESSFUL\"]
+  timefield: integer or elapsedTime
+  sla: 200 {in ms and optional}
+  results: "nentries=" or "\"nentries\":" {optional} 
+
+
+
+$HOME/projects/SawMill/script/assess.sh testsubscription /Users/robert.faller/accounts/usaa/49969/opendj-support-data-20200617-prodempcts2lsat.zip ds x
+java -jar /Users/robert.faller/projects/SawMill/dist/SawMill.jar --laminate ./opendj-support-data-20200617-prodempcts1lsat/tmp/allldapops.csv ./opendj-support-data-20200617-prodempcts2lsat/tmp/allldapops.csv > all.csv
+/Users/robert.faller/projects/SawMill/script/chartprep.sh ./all.csv
+cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml opscolumns.data etimescolumns.data ops.data etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml > all.html
+
+Steps:
+1. Create a support-extract -or- a zip of all .json access logs (DS | CTS = DSHOME/logs/ldap* and DSHOME/logs/http*)
+
+
+1605834734000
+1604931000000
+16049315000000
+
+cat access.audit.json-2020.11.09-17.38.31 access.audit.json | $HOME/bin/jq '.timestamp,.response.status,.http.request.method'|paste -d" " - - - | sed 's/\" \"/./g' | cut -d"." -f1,3-4 | uniq -c > 1109c.txt
+files=$(find . -name all*ops.csv -print | sort)
+java -jar /Users/robert.faller/projects/SawMill/dist/SawMill.jar --startcut 1605834200000 --endcut 1605834760000 --usenull --laminate $files > all.csv
+/Users/robert.faller/projects/SawMill/script/chartprep.sh ./all.csv
+cat /Users/robert.faller/projects/SawMill/content/chartheader.phtml opscolumns.data etimescolumns.data ops.data etimes.data /Users/robert.faller/projects/SawMill/content/charttailer.phtml > all.html
+
+#!/bin/bash
+i=0
+for file in $files
+ do
+ echo "$i $file"
+ (( i++ ))
+done
+
+files=$(find log*am* -name *-rest-ids.txt -print)
+cat $files | sort | uniq -c | sort -k2
+
+Activity against objects:
+cat ldap-access.audit.json | ~/bin/jq '.request.operation, .request.dn' | paste -d" " - - | grep -v null | sort -k1 | uniq -c | sed -e 's/^[[:space:]]*//' | sort -n -k1
+
+Activity by userId:
+cat ldap-access.audit.json | ~/bin/jq '.userId, .request.operation, .response.status' | paste -d" " - - - | grep -v null | sort -k1 | uniq -c | sed -e 's/^[[:space:]]*//' | sort -k2
+
+Layout:
+project|subscription 
+  ticket | environment (prod) | time period
+    unzipped files with directory name being that of the zip file
+    file file should be from DSHOME/bin/supportextract or using zip or jar cvf
+
+shared poi:
+._id
+.timestamp
+.transactionId
+.userId
+.client.ip
+.response.status
+.response.statusCode
+.response.elapsedTime
+.response.elapsedTimeUnits
+.http.request.method
+.http.request.path
+.trackingIds
+
+AM poi:
+.component
+.authorizationId.roles
+.request.operation
+.realm
+
+IDM poi:
+.request.operation
+.roles
+
+ldap poi:
+.searchType (custom)
+.response.nentries (search)
+.request.dn
+.request.opType
+.response.additionalItems
+
+Read one JSON object at a time and then do all the processing on one JSON object at a time.
+time cat ldap-access.audit.json.20210415140947 | ~/bin/jq -c '[.request.operation,.request.opType,.response.status,.response.statusCode]' | sort -u > results.txt
+
+1. one instance first run all logs
+1a. same as #1 but only last log 
+2. one instance additional runs with different SLAs/cut all logs: copy poi and make changes to new poi (SLA) and/or rerun assess with different cut - sawmill and regen chart
+3. Multiple instances against all logs - execute #1 and then combine the needed data sets
+4. Multiple instances but starting at a specific time/SLAs/cut
+
+#if [ -z ${x} ]; then echo "empty"; fi
+
+echo "<table>" ;
+print_header=true
+while read INPUT ; do
+  if $print_header;then
+    echo "<tr><th>$INPUT" | sed -e 's/:[^,]*\(,\|$\)/<\/th><th>/g'
+    print_header=false
+  fi
+  echo "<tr><td>${INPUT//,/</td><td>}</td></tr>" ;
+done < Medical.csv ;
+echo "</table>"
