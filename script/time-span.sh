@@ -19,8 +19,8 @@
 for log in $(find . -type f \( \( -name "access.audit*" -o -name "http-access.audit*" -o -name "ldap-access.audit*" \) -a -not -name "*.txt" -a -not -name "*.extended" -a -not -name "*.tmp" \) -print | sort | cut -d"/" -f1-2 | uniq ); do
    echo $log
    instance="$(echo $log) $(echo $instance)"
-done
-for i in $(echo "$instance" | tr ' ' '\n' | sort | uniq | tr '\n' ' '); do
+#done
+#for i in $(echo "$log" | tr ' ' '\n' | sort | uniq | tr '\n' ' '); do
     ldaplogs=$(find . -type f \( \( -name "ldap-access.audit*" \) -a -not -name "*.txt" -a -not -name "*.extended" -a -not -name "*.tmp" \) -print | sort -r)
     firstldaplog=$(echo "$ldaplogs" | tr ' ' '\n' | head -1)
     lastldaplog=$(echo "$ldaplogs" | tr ' ' '\n' | tail -1)

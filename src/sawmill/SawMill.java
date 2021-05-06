@@ -154,7 +154,7 @@ public class SawMill {
             }
         }
         if (runcondense && (cfn != null)) {
-            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap, totalsonly, html, label);
+            cdr.condense(config, br, cut, cfn, showtotals, lf, sla, showheader, filltimegap, totalsonly, html, label, startcut, endcut);
         }
         if (runlaminate) {
             lmnt.laminate(lbra, usenull, startcut, endcut);

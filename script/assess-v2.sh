@@ -417,27 +417,29 @@ if [ ! -z "$ldaplogs" ]; then
     echo -n "Collecting LDAP data points ..."
     ldaplogcount=0
     for log in $ldaplogs; do
-        if [ -f $log ]; then
-            filesize=$(wc -c $log | awk '{print $1}')
-            if (($filesize > 0)); then
-                filename=$(echo "$log" | sed "s/.*\///")
-                printf -v cnt "%05d" $ldaplogcount
-                if (($ldaplogcount == 0)); then
-                    echo "<pre>Operation assessment for $FILENAME</pre>" >$WS/$TMP/$cnt-ldap-operations.html
-                    java -jar $SAWMILLHOME/dist/SawMill.jar --cut $LDAPCUT --poi $WS/$POI/ldap-poi.json --condense $log >$WS/$TMP/$cnt-ldap-ops.csv &
-                else
-                    java -jar $SAWMILLHOME/dist/SawMill.jar --cut $LDAPCUT --poi $WS/$POI/ldap-poi.json --noheader --condense $log >$WS/$TMP/$cnt-ldap-ops.csv &
+        if [[ -f $log ]]; then
+            if [[ -s $log ]]; then
+                filesize=$(wc -c $log | awk '{print $1}')
+                if (($filesize > 0)); then
+                    filename=$(echo "$log" | sed "s/.*\///")
+                    printf -v cnt "%05d" $ldaplogcount
+                    if (($ldaplogcount == 0)); then
+                        echo "<pre>Operation assessment for $FILENAME</pre>" >$WS/$TMP/$cnt-ldap-operations.html
+                        java -jar $SAWMILLHOME/dist/SawMill.jar --cut $LDAPCUT --poi $WS/$POI/ldap-poi.json --condense $log >$WS/$TMP/$cnt-ldap-ops.csv &
+                    else
+                        java -jar $SAWMILLHOME/dist/SawMill.jar --cut $LDAPCUT --poi $WS/$POI/ldap-poi.json --noheader --condense $log >$WS/$TMP/$cnt-ldap-ops.csv &
+                    fi
+                    echo "<pre>Operations from log file $filename</pre>" >$WS/$TMP/$cnt-ldap-operations.html
+                    java -jar $SAWMILLHOME/dist/SawMill.jar --poi $WS/$POI/ldap-poi.json --totalsonly --condense $log --sla --html >>$WS/$TMP/$cnt-ldap-operations.html &
+                    if $firstrun; then
+                        cat $log | $JQ -c '[.response.elapsedTime, .request.operation]' | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-ldap-ms.txt &
+                        cat $log | $JQ -c '[.client.ip,.response.status]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-ldap-ip.txt &
+                        cat $log | $JQ -c '[.request.dn, .request.operation]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-ldap-object-activity.txt &
+                        cat $log | $JQ -c '[.userId, .request.operation, .response.status]' | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-ldap-identity-activity.txt &
+                    fi
+                    wait
+                    ((ldaplogcount++))
                 fi
-                echo "<pre>Operations from log file $filename</pre>" >$WS/$TMP/$cnt-ldap-operations.html
-                java -jar $SAWMILLHOME/dist/SawMill.jar --poi $WS/$POI/ldap-poi.json --totalsonly --condense $log --sla --html >>$WS/$TMP/$cnt-ldap-operations.html &
-                if $firstrun; then
-                    cat $log | $JQ -c '[.response.elapsedTime, .request.operation]' | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-ldap-ms.txt &
-                    cat $log | $JQ -c '[.client.ip,.response.status]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-ldap-ip.txt &
-                    cat $log | $JQ -c '[.request.dn, .request.operation]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-ldap-object-activity.txt &
-                    cat $log | $JQ -c '[.userId, .request.operation, .response.status]' | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-ldap-identity-activity.txt &
-                fi
-                wait
-                ((ldaplogcount++))
             fi
         fi
     done
@@ -452,27 +454,29 @@ if [ ! -z "$httplogs" ]; then
     echo -n "Collecting HTTP|REST data points ..."
     httplogcount=0
     for log in $httplogs; do
-        if [ -f $log ]; then
-            filesize=$(wc -c $log | awk '{print $1}')
-            if (($filesize > 0)); then
-                filename=$(echo "$log" | sed "s/.*\///")
-                printf -v cnt "%05d" $httplogcount
-                if (($httplogcount == 0)); then
-                    echo "<pre>Operation assessment for $FILENAME</pre>" >$WS/$TMP/$cnt-rest-operations.html
-                    /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --cut $HTTPCUT --poi $WS/$POI/http-poi.json --condense $log >$WS/$TMP/$cnt-rest-ops.csv &
-                else
-                    /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --cut $HTTPCUT --poi $WS/$POI/http-poi.json --noheader --condense $log >$WS/$TMP/$cnt-rest-ops.csv &
+        if [[ -f $log ]]; then
+            if [[ -s $log ]]; then
+                filesize=$(wc -c $log | awk '{print $1}')
+                if (($filesize > 0)); then
+                    filename=$(echo "$log" | sed "s/.*\///")
+                    printf -v cnt "%05d" $httplogcount
+                    if (($httplogcount == 0)); then
+                        echo "<pre>Operation assessment for $FILENAME</pre>" >$WS/$TMP/$cnt-rest-operations.html
+                        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --cut $HTTPCUT --poi $WS/$POI/http-poi.json --condense $log >$WS/$TMP/$cnt-rest-ops.csv &
+                    else
+                        /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --cut $HTTPCUT --poi $WS/$POI/http-poi.json --noheader --condense $log >$WS/$TMP/$cnt-rest-ops.csv &
+                    fi
+                    echo "<pre>Operations from log file $filename</pre>" >$WS/$TMP/$cnt-rest-operations.html
+                    /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $WS/$POI/http-poi.json --totalsonly --cut 10000 --condense $log --sla --html >>$WS/$TMP/$cnt-rest-operations.html &
+                    if $firstrun; then
+                        cat $log | $JQ -c '[.response.elapsedTime, .http.request.method]' | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-rest-ms.txt &
+                        cat $log | $JQ -c '[.client.ip,.response.status]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-rest-ip.txt &
+                        cat $log | $JQ -c '[.http.request.method, .http.request.path]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-rest-object-activity.txt &
+                        cat $log | $JQ -c '[.userId, .http.request.method, .response.status]' | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-rest-identity-activity.txt &
+                    fi
+                    wait
+                    ((httplogcount++))
                 fi
-                echo "<pre>Operations from log file $filename</pre>" >$WS/$TMP/$cnt-rest-operations.html
-                /usr/bin/java -jar $SAWMILLHOME/dist/SawMill.jar --poi $WS/$POI/http-poi.json --totalsonly --cut 10000 --condense $log --sla --html >>$WS/$TMP/$cnt-rest-operations.html &
-                if $firstrun; then
-                    cat $log | $JQ -c '[.response.elapsedTime, .http.request.method]' | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-rest-ms.txt &
-                    cat $log | $JQ -c '[.client.ip,.response.status]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' >$WS/$TMP/$cnt-rest-ip.txt &
-                    cat $log | $JQ -c '[.http.request.method, .http.request.path]' | grep -v null | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-rest-object-activity.txt &
-                    cat $log | $JQ -c '[.userId, .http.request.method, .response.status]' | sed -e 's/\[//g' -e 's/\]//g' >$WS/$TMP/$cnt-rest-identity-activity.txt &
-                fi
-                wait
-                ((httplogcount++))
             fi
         fi
     done

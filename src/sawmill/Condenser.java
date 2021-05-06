@@ -29,7 +29,8 @@ class Condenser {
     }
 
     void condense(JSONObject config, BufferedReader br, long cut, String cfn, boolean showtotals, String lf,
-            boolean sla, boolean showheader, boolean filltimegap, boolean totalsonly, boolean html, String label) {
+            boolean sla, boolean showheader, boolean filltimegap, boolean totalsonly, boolean html, String label,
+            long startcut, long endcut) {
         String timestampformat = config.get("timestampformat").toString();
         SimpleDateFormat sdf = new SimpleDateFormat(timestampformat);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -45,21 +46,21 @@ class Condenser {
         long[] slatime;
         char fd = 0;
         switch (fielddelimiter) {
-            case "JSON": {
-                fd = 'J';
-            }
-                break;
-            case "TAB":
-                fd = '\t';
-                break;
-            case "COMMA":
-                fd = ',';
-                break;
-            case "SPACE":
-                fd = ' ';
-                break;
-            default:
-                break;
+        case "JSON": {
+            fd = 'J';
+        }
+            break;
+        case "TAB":
+            fd = '\t';
+            break;
+        case "COMMA":
+            fd = ',';
+            break;
+        case "SPACE":
+            fd = ' ';
+            break;
+        default:
+            break;
         }
         // String timefield = null;
         JSONArray poi = (JSONArray) config.get("poi");
@@ -159,109 +160,114 @@ class Condenser {
                         float ts = (float) 1.0;
                         if (etime > 0) {
                             switch (timescale) {
-                                case "MILLISECONDS":
-                                    ts = (float) 1.0;
-                                    break;
-                                case "NANOSECONDS":
-                                    ts = (float) .000001;
-                                    break;
-                                case "SECONDS":
-                                    ts = (float) 1000.0;
-                                    break;
-                                case "MINUTES":
-                                    ts = (float) 60000.0;
-                                    break;
-                                default:
-                                    ts = 1;
-                                    break;
+                            case "MILLISECONDS":
+                                ts = (float) 1.0;
+                                break;
+                            case "NANOSECONDS":
+                                ts = (float) .000001;
+                                break;
+                            case "SECONDS":
+                                ts = (float) 1000.0;
+                                break;
+                            case "MINUTES":
+                                ts = (float) 60000.0;
+                                break;
+                            default:
+                                ts = 1;
+                                break;
                             }
                         }
                         epochtime = operationtime.getTime();
-                        if (oldtime == 0) {
+                        if ((epochtime >= startcut) && (epochtime <= endcut)) {
+                            if (oldtime == 0) {
+                                oldtime = epochtime;
+                                starttime = epochtime;
+                                if (showheader && !html) {
+                                    printHeader(poi, sla);
+                                }
+                                // if (showheader && html) {
+                                // printHTMLHeader(poi, sla);
+                                // }
+                            }
+                            stats[index][OPCNT]++;
+                            stats[index][TOTALOPCNT]++;
+                            slatime[index] = (long) pois[index].get("sla");
+                            etime = (float) etime * ts;
+                            if (etime <= slatime[index]) {
+                                stats[index][OPSUNDER]++;
+                                stats[index][TOTALOPSUNDER]++;
+                            } else {
+                                stats[index][OPSOVER]++;
+                                stats[index][TOTALOPSOVER]++;
+                            }
+                            stats[index][TIMEOP] = stats[index][TIMEOP] + etime;
+                            stats[index][TOTALTIMEOP] = stats[index][TOTALTIMEOP] + etime;
+                            if ((epochtime >= (oldtime + cut)) && (!totalsonly)) {
+                                int x = 1;
+                                if (filltimegap && (epochtime > (oldtime + cut))) {
+                                    while ((oldtime + (cut * x)) < epochtime) {
+                                        System.out.print(oldtime + (cut * x));
+                                        System.out.print("," + timestamp + ",");
+                                        System.out.print(lf + ",");
+                                        System.out.print(cut + ",");
+                                        for (int i = 0; i < stats.length; i++) {
+                                            System.out.print("0,0,");
+                                            if (sla) {
+                                                System.out.print("0,0,0,0,");
+                                            }
+                                        }
+                                        System.out.println();
+                                        x++;
+                                    }
+                                }
+                                System.out.print(epochtime);
+                                System.out.print("," + timestamp + ",");
+                                System.out.print(lf + ",");
+                                if (filltimegap) {
+                                    System.out.print((epochtime - (oldtime + (cut * (x - 1)))) + ",");
+                                } else {
+                                    System.out.print((epochtime - oldtime) + ",");
+                                }
+                                oldtime = epochtime;
+                                for (int i = 0; i < stats.length; i++) {
+                                    System.out.format("%.0f%s", stats[i][OPCNT], ",");
+                                    if (stats[i][OPCNT] > 0) {
+                                        System.out.format("%.2f", (stats[i][TIMEOP] / stats[i][OPCNT]));
+                                    } else {
+                                        System.out.print("0");
+                                    }
+                                    if (sla) {
+                                        System.out.print(",");
+                                        System.out.print(slatime[i] + ",");
+                                        System.out.format("%.0f%s", stats[i][OPSUNDER], ",");
+                                        System.out.format("%.0f%s", stats[i][OPSOVER], ",");
+                                        if (stats[i][OPSOVER] > 0) {
+                                            System.out.format("%3.1f%s", ((stats[i][OPSUNDER] / stats[i][OPCNT]) * 100),
+                                                    "%");
+                                        } else {
+                                            System.out.print("100.0%");
+                                        }
+                                        System.out.print(",");
+                                    }
+                                    if (i < (stats.length - 1)) {
+                                        System.out.print(",");
+                                    }
+                                }
+                                System.out.println();
+                                for (int i = 0; i < stats.length; i++) {
+                                    stats[i][OPCNT] = 0;
+                                    stats[i][TIMEOP] = 0;
+                                    stats[i][OPSUNDER] = 0;
+                                    stats[i][OPSOVER] = 0;
+                                }
+                            } // if ((epochtime >= (oldtime + cut)) && (!totalsonly))
+                        } else { // epoch within cut times
                             oldtime = epochtime;
                             starttime = epochtime;
-                            if (showheader && !html) {
-                                printHeader(poi, sla);
-                            }
-                            // if (showheader && html) {
-                            // printHTMLHeader(poi, sla);
-                            // }
                         }
-                        stats[index][OPCNT]++;
-                        stats[index][TOTALOPCNT]++;
-                        slatime[index] = (long) pois[index].get("sla");
-                        etime = (float) etime * ts;
-                        if (etime <= slatime[index]) {
-                            stats[index][OPSUNDER]++;
-                            stats[index][TOTALOPSUNDER]++;
-                        } else {
-                            stats[index][OPSOVER]++;
-                            stats[index][TOTALOPSOVER]++;
-                        }
-                        stats[index][TIMEOP] = stats[index][TIMEOP] + etime;
-                        stats[index][TOTALTIMEOP] = stats[index][TOTALTIMEOP] + etime;
-                        if ((epochtime >= (oldtime + cut)) && (!totalsonly)) {
-                            int x = 1;
-                            if (filltimegap && (epochtime > (oldtime + cut))) {
-                                while ((oldtime + (cut * x)) < epochtime) {
-                                    System.out.print(oldtime + (cut * x));
-                                    System.out.print("," + timestamp + ",");
-                                    System.out.print(lf + ",");
-                                    System.out.print(cut + ",");
-                                    for (int i = 0; i < stats.length; i++) {
-                                        System.out.print("0,0,");
-                                        if (sla) {
-                                            System.out.print("0,0,0,0,");
-                                        }
-                                    }
-                                    System.out.println();
-                                    x++;
-                                }
-                            }
-                            System.out.print(epochtime);
-                            System.out.print("," + timestamp + ",");
-                            System.out.print(lf + ",");
-                            if (filltimegap) {
-                                System.out.print((epochtime - (oldtime + (cut * (x - 1)))) + ",");
-                            } else {
-                                System.out.print((epochtime - oldtime) + ",");
-                            }
-                            oldtime = epochtime;
-                            for (int i = 0; i < stats.length; i++) {
-                                System.out.format("%.0f%s", stats[i][OPCNT], ",");
-                                if (stats[i][OPCNT] > 0) {
-                                    System.out.format("%.2f", (stats[i][TIMEOP] / stats[i][OPCNT]));
-                                } else {
-                                    System.out.print("0");
-                                }
-                                if (sla) {
-                                    System.out.print(",");
-                                    System.out.print(slatime[i] + ",");
-                                    System.out.format("%.0f%s", stats[i][OPSUNDER], ",");
-                                    System.out.format("%.0f%s", stats[i][OPSOVER], ",");
-                                    if (stats[i][OPSOVER] > 0) {
-                                        System.out.format("%3.1f%s", ((stats[i][OPSUNDER] / stats[i][OPCNT]) * 100),
-                                                "%");
-                                    } else {
-                                        System.out.print("100.0%");
-                                    }
-                                    System.out.print(",");
-                                }
-                                if (i < (stats.length - 1)) {
-                                    System.out.print(",");
-                                }
-                            }
-                            System.out.println();
-                            for (int i = 0; i < stats.length; i++) {
-                                stats[i][OPCNT] = 0;
-                                stats[i][TIMEOP] = 0;
-                                stats[i][OPSUNDER] = 0;
-                                stats[i][OPSOVER] = 0;
-                            }
-                        }
-                    }
-                }
-                // clean up
+                    } // if index != -1
+                } // while read line
+                  // clean up
                 if (((epochtime - oldtime) > 0) && (!totalsonly)) {
                     System.out.print(epochtime);
                     System.out.print("," + timestamp + ",");
@@ -295,8 +301,11 @@ class Condenser {
                 }
                 if (showtotals || totalsonly) {
                     if (!html) {
-//                        System.out.print("Totals, , " + new File(lf).getName() + ", ");
-                        System.out.print("Totals, , " + label + new File(lf).getName() + ", ");
+                        if (label != null && !label.isEmpty()) {
+                            System.out.print("Totals, , " + label + ", ");
+                        } else {
+                            System.out.print("Totals, , " + new File(lf).getName() + ", ");
+                        }
                         System.out.print((epochtime - starttime) + ", ");
                         for (int i = 0; i < stats.length; i++) {
                             System.out.format("%.0f%s", stats[i][TOTALOPCNT], ", ");

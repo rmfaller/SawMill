@@ -28,7 +28,7 @@ JSONHEADER=$H0$H1$H2
 MIT=$(date +"%Y%m%d%H%M%S")
 RPT="rpt$MIT"
 TMP="tmp$MIT"
-POI="poi$MIT"
+# POI="poi$MIT"
 firstrun=false
 FILENAME=${FULLFILENAME%.*}
 FILENAMEONLY=${FILENAME##*/}
@@ -45,6 +45,10 @@ LDAPCUT=60000
 HTTPCUT=60000
 WS=$(pwd)
 DATA="$WS"
+rm -r $WS/combine
+instances=$(ls $WS)
+mkdir $WS/combine
+POI="combine"
 
 create_graph() {
     echo -n "Generating $1 operation graph..."
@@ -54,6 +58,169 @@ create_graph() {
     cat $SAWMILLHOME/content/chartheader.phtml $WS/opscolumns.data $WS/etimescolumns.data $WS/ops.data $WS/etimes.data $SAWMILLHOME/content/charttailer.phtml >$WS/all$1.html
     echo "</body></html>" >>$WS/all$1.html
     echo "...completed"
+}
+
+create_ldap_poi() {
+    echo -n "Creating LDAP poi..."
+    etu='"MILLISECONDS"'
+    pois=$(cat $WS/combine/combine-ldap-poi.txt | grep -v UNBIND | tr -d "\"" | tr "," "~" | sort -ru)
+    if [[ $pois ]]; then
+        echo $JSONHEADER >$WS/$POI/ldap-poi.json
+        printf '%s\n' "${pois[@]}" | $JQ -R . | $JQ -s . >>$WS/$POI/ldap-poi.json
+        echo "," >>$WS/$POI/ldap-poi.json
+        OLDIFS=$IFS
+        IFS=$'\n'
+        for poi in $pois; do
+            operation=$(echo $poi | cut -d"~" -f1)
+            opType=$(echo $poi | cut -d"~" -f2)
+            if [ "$opType" = "null" ]; then
+                opType=""
+            fi
+            status=$(echo $poi | cut -d"~" -f3)
+            if [ "$status" = "null" ]; then
+                status=""
+            fi
+            statuscode=$(echo $poi | cut -d"~" -f4)
+            if [ "$statuscode" = "null" ]; then
+                statuscode=""
+            fi
+            searchtype=$(echo $poi | cut -d"~" -f5)
+            if [ "$searchtype" = "null" ]; then
+                searchtype=""
+            fi
+            echo "\"$poi\": { \"identifiers\": [ " >>$WS/$POI/ldap-poi.json
+            echo -n '"\"operation\":\"' >>$WS/$POI/ldap-poi.json
+            echo -n "$operation\\\"\"" >>$WS/$POI/ldap-poi.json
+            if [[ $opType ]]; then
+                echo "," >>$WS/$POI/ldap-poi.json
+                echo -n '"\"opType\":\"' >>$WS/$POI/ldap-poi.json
+                echo -n "$opType\\\"\"" >>$WS/$POI/ldap-poi.json
+            fi
+            if [[ $status ]]; then
+                echo "," >>$WS/$POI/ldap-poi.json
+                echo -n '"\"status\":\"' >>$WS/$POI/ldap-poi.json
+                echo -n "$status\\\"\"" >>$WS/$POI/ldap-poi.json
+            fi
+            if [[ $statuscode ]]; then
+                echo "," >>$WS/$POI/ldap-poi.json
+                echo -n '"\"statusCode\":\"' >>$WS/$POI/ldap-poi.json
+                echo "$statuscode\\\"\"" >>$WS/$POI/ldap-poi.json
+            fi
+            if [[ $searchtype ]]; then
+                echo "," >>$WS/$POI/ldap-poi.json
+                echo -n '"\"searchType\":\"' >>$WS/$POI/ldap-poi.json
+                echo "$searchtype\\\"\"" >>$WS/$POI/ldap-poi.json
+            fi
+            echo '],
+  "lapsedtimefield": "elapsedTime",' >>$WS/$POI/ldap-poi.json
+            echo "\"timescale\": $etu," >>$WS/$POI/ldap-poi.json
+            case $operation in
+            ABANDON)
+                sla=10
+                ;;
+            ADD)
+                sla=100
+                ;;
+            BIND)
+                sla=10
+                ;;
+            DELETE)
+                sla=300
+                ;;
+            MODIFY)
+                sla=100
+                ;;
+            MODIFYDN)
+                sla=100
+                ;;
+            SEARCH)
+                sla=20
+                ;;
+            *)
+                sla=200
+                ;;
+            esac
+            echo "\"sla\": $sla" >>$WS/$POI/ldap-poi.json
+            echo '},' >>$WS/$POI/ldap-poi.json
+        done
+        echo '"end":{}
+         }' >>$WS/$POI/ldap-poi.json
+        IFS=$OLDIFS
+    fi
+}
+
+create_http_poi() {
+    echo -n "Creating HTTP poi..."
+    etu="MILLISECONDS"
+    pois=$(cat $WS/combine/combine-http-poi.txt | grep '\"DELETE\"\|\"POST\"\|\"PUT\"\|\"PATCH\"\|\"GET\"' | tr -d "\"" | tr "," "~" | sort -ru)
+    if [[ $pois ]]; then
+        echo $JSONHEADER >$WS/$POI/http-poi.json
+        printf '%s\n' "${pois[@]}" | $JQ -R . | $JQ -s . >>$WS/$POI/http-poi.json
+        echo "," >>$WS/$POI/http-poi.json
+        OLDIFS=$IFS
+        IFS=$'\n'
+        for poi in $pois; do
+            method=$(echo $poi | cut -d"~" -f1)
+            fullpath=$(echo $poi | cut -d"~" -f2)
+            status=$(echo $poi | cut -d"~" -f3)
+            if [ "$fullpath" = "null" ]; then
+                path=""
+            else
+                path=$(echo $fullpath)
+            fi
+            echo "\"$poi\": { \"identifiers\": [ " >>$WS/$POI/http-poi.json
+            echo -n '"\"method\":\"' >>$WS/$POI/http-poi.json
+            echo "$method\\\"\"," >>$WS/$POI/http-poi.json
+            echo -n '"\"path\":\"' >>$WS/$POI/http-poi.json
+            echo "$path\\\"\"," >>$WS/$POI/http-poi.json
+            echo -n '"\"status\":\"' >>$WS/$POI/http-poi.json
+            echo "$status\\\"\"" >>$WS/$POI/http-poi.json
+            echo '],"lapsedtimefield": "elapsedTime",' >>$WS/$POI/http-poi.json
+            case $method in
+            DELETE)
+                sla=100
+                ;;
+            GET)
+                sla=10
+                ;;
+            PATCH)
+                sla=150
+                ;;
+            POST)
+                sla=300
+                ;;
+            PUT)
+                sla=200
+                ;;
+            *)
+                sla=200
+                ;;
+            esac
+            echo "\"sla\": $sla" >>$WS/$POI/http-poi.json
+            echo '},' >>$WS/$POI/http-poi.json
+        done
+        echo '"end":{}
+         }' >>$WS/$POI/http-poi.json
+        IFS=$OLDIFS
+    fi
+}
+
+combine_totals() {
+    firstfile=true
+    for log in $logs; do
+        if [[ -s $log ]]; then
+            if [ "$firstfile" = true ]; then
+                firstfile=false
+                echo -n "."
+                java -jar $SAWMILLHOME/dist/SawMill.jar --poi $WS/combine/$1-poi.json --startcut 1619828726000 --totalsonly --condense $log --label "$log" >$WS/combine/c-$1.csv
+            else
+                java -jar $SAWMILLHOME/dist/SawMill.jar --poi $WS/combine/$1-poi.json --startcut 1619828726000 --totalsonly --condense $log --noheader --label "$log" >>$WS/combine/c-$1.csv
+            fi
+        fi
+    done
+    head -1 $WS/combine/c-$1.csv >$WS/combine/combine-$1.csv
+    tail -n +2 $WS/combine/c-$1.csv | sort -r -k3 -t"," >>$WS/combine/combine-$1.csv
+    #   rm $WS/combine/c-$1.csv
 }
 
 # Main script
@@ -77,6 +244,61 @@ else
     ldaplogs=$(find $DATA -name "ldap-access.audit.json" -print)
     httplogs=$(find $DATA -type f \( -name "access.audit.json" -o -name "http-access.audit.json" \) -print)
 fi
+
+cat $(find . -name "ldap-poi.txt" -print) | sort -u >$WS/combine/combine-ldap-poi.txt &
+cat $(find . -name "http-poi.txt" -print) | sort -u >$WS/combine/combine-http-poi.txt &
+wait
+
+if [ -f "$WS/combine/combine-ldap-poi.txt" ]; then
+    create_ldap_poi &
+fi
+
+if [ -f "$WS/combine/combine-http-poi.txt" ]; then
+    create_http_poi &
+fi
+wait
+echo "...completed"
+
+if [ ! -z "$ldaplogs" ]; then
+    echo -n "Combining LDAP totals..."
+    logs=$ldaplogs
+    combine_totals "ldap" &
+fi
+
+if [ ! -z "$httplogs" ]; then
+    echo -n "Combining HTTP totals..."
+    logs=$httplogs
+    combine_totals "http" &
+fi
+wait
+echo "...completed"
+
+for instance in $instances; do
+    echo "Totals per $instance:"
+    OLDIFS=$IFS
+    IFS=","
+    x=7
+    for attr in $(head -1 $WS/combine/combine-ldap.csv); do
+        total=0
+        for value in $(grep $instance $WS/combine/combine-ldap.csv | cut -d"," -f7-); do
+            total=$(echo $total + $value | bc -l)
+        #    echo "$instance : $attr = $value of $total"
+            #    echo "Value = $value"
+            #    echo "At location $x --- $(echo $value | cut -d"," -f$x)"
+            #   ((x++))
+            #  echo "At location $x +++ $(echo $value | cut -d"," -f$x)"
+            ((x++))
+        done
+        #     echo "$instance : $attr = $total"
+    done
+    IFS=$OLDIFS
+    #    grep --no-filename $instance $WS/combine/combine-*.csv | sort -r -k3 -t","
+    #    while read value; do
+    #        echo "<tr><td>${value//,/</td><td>}</td></tr>"
+    #    done <$(head -1 $WS/combine/combine-ldap.csv)
+done
+
+exit
 
 if [ "$CREATESUMMARY" = true ]; then
     echo "<html> <head> <title>Summary for $FILENAMEONLY</title> </head> <body><pre>Summary for $FILENAMEONLY</pre>" >$WS/summary.html
